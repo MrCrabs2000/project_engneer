@@ -91,7 +91,7 @@ def login():
             session['usersurname'] = user.usersurname
             session['userclass'] = user.userclass
             flash('Вход выполнен успешно!', 'success')
-            return redirect(url_for(''))
+            return redirect(url_for('dashboard'))
         else:
             flash('Неверные данные для входа', 'error')
 
@@ -117,4 +117,3 @@ def login_telegram():
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=8000, debug=True)
-
