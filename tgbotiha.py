@@ -2,7 +2,7 @@ import hmac
 import hashlib
 
 
-def check_response(data):
+def check_response(app, data):
     d = data.copy()
     del d['hash']
     d_list = []
@@ -15,4 +15,5 @@ def check_response(data):
     hmac_string = hmac.new(secret_key, data_string, hashlib.sha256).hexdigest()
     if hmac_string == data['hash']:
         return True
+
     return False
