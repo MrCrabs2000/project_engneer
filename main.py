@@ -6,7 +6,6 @@ import os
 
 app = Flask(__name__)
 app.config['TELEGRAM_BOT_TOKEN'] = '8373230853:AAExLeEupdgJyfOZV7o3GtUEiAQZxlWVMr0'
-app.secret_key = 'your-secret-key-here'
 
 
 os.makedirs('db', exist_ok=True)
@@ -91,7 +90,7 @@ def login():
             session['usersurname'] = user.usersurname
             session['userclass'] = user.userclass
             flash('Вход выполнен успешно!', 'success')
-            return redirect(url_for('dashboard'))
+            return redirect(url_for(''))
         else:
             flash('Неверные данные для входа', 'error')
 
@@ -117,3 +116,4 @@ def login_telegram():
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=8000, debug=True)
+
