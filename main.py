@@ -23,11 +23,12 @@ def login_telegram():
         'auth_date': request.args.get('auth_date', None),
         'hash': request.args.get('hash', None)
     }
-    if check_response(data):
+    if check_response(app, data):
         return data
     else:
         return 'Authorization failed'
 
 
 if __name__ == "__main__":
+
     app.run(host='0.0.0.0', port=8000, debug=True)
