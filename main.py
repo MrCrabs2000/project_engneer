@@ -2,6 +2,7 @@ from flask import Flask, request, render_template, redirect, url_for, session, f
 from Classes import init_db, create_session, User
 from sqlalchemy.exc import IntegrityError
 from tgbotiha import check_response
+from werkzeug.security import generate_password_hash, check_password_hash
 import os
 
 app = Flask(__name__)
@@ -45,7 +46,7 @@ def register():
                 username=username,
                 usersurname=usersurname,
                 userclass=userclass,
-                userpassword=password,
+                userpassword=generate_password_hash(password),
                 phonenumber='',
                 role='user',
                 userbalance='0',
@@ -84,13 +85,13 @@ def login():
         ).first()
         db_session.close()
 
-        if user:
-            session['user_id'] = user.id
+        if user and check_password_hash(user.userpassword, password):
             session['username'] = user.username
             session['usersurname'] = user.usersurname
             session['userclass'] = user.userclass
+            session['password'] = user.userpassword
             flash('Вход выполнен успешно!', 'success')
-            return redirect(url_for(''))
+            return redirect(url_for('dashboard'))
         else:
             flash('Неверные данные для входа', 'error')
 
@@ -116,4 +117,3 @@ def login_telegram():
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=8000, debug=True)
-
