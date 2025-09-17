@@ -8,8 +8,12 @@ app.config['TELEGRAM_BOT_TOKEN'] = '8373230853:AAExLeEupdgJyfOZV7o3GtUEiAQZxlWVM
 
 @app.route('/')
 def index():
-    return render_template('shit.html')
+    return render_template('ind.html')
 
+
+@app.route('/register')
+def login():
+    return render_template('register.html')
 
 
 @app.route('/login/telegram')

@@ -1,0 +1,72 @@
+.centered-div, .reg-div {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    align-content: center;
+    display: flex;
+}
+
+.reg-div {
+    flex-direction: column;
+}
+
+.sign-button {
+    height: 160px;
+    width: auto;
+    padding-left: 50px;
+    padding-right: 50px;
+    margin-right: 20px;
+    font-size: 64px;
+    background-color: #a1c7e6;
+    border: 0;
+    border-radius: 30px;
+}
+
+.sign-button:hover {
+    background-color: #84b3d9;
+}
+
+.sign-button:active {
+    background-color: #709abd;
+}
+
+.inputs {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+}
+
+.inputs input{
+    height: 48px;
+    width: auto;
+    padding-left: 10px;
+    padding-right: 10px;
+    font-size: 30px;
+    background-color: #84b3d9;
+    margin-top: 4px;
+    margin-bottom: 4px;
+    border: 0;
+    border-radius: 16px;
+}
+
+.reg-button {
+    margin-top: 24px;
+    height: 64px;
+    width: auto;
+    font-size: 30px;
+    padding-left: 50px;
+    padding-right: 50px;
+    margin-right: 20px;
+    background-color: #a1c7e6;
+    border: 0;
+    border-radius: 16px;
+}
+
+.reg-button:hover {
+    background-color: #84b3d9;
+}
+
+.reg-button:active {
+    background-color: #709abd;
+}
