@@ -20,10 +20,10 @@ db_session.global_init(True, 'db/users.db')
 def index():
     return render_template('index.html')
 
-
+True
 @app.route('/register', methods=['GET', 'POST'])
 def register():
-    if True:
+    if request.method =='POST':
         username = request.form['username']
         usersurname = request.form['usersurname']
         userclass = request.form['userclass']
