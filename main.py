@@ -70,6 +70,7 @@ def register():
             flash('Ошибка при регистрации!', 'error')
         finally:
             session.close()
+        return redirect(url_for('main_page'))
     return render_template('register.html')
 
 
