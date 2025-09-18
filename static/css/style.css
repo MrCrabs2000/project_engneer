@@ -1,3 +1,8 @@
+html.main, body.main {
+    margin: 0;
+    height: 100%;
+}
+
 .centered-div, .reg-div {
     position: absolute;
     left: 50%;
@@ -5,6 +10,51 @@
     transform: translate(-50%, -50%);
     align-content: center;
     display: flex;
+}
+
+header {
+    background-color: #84b3d9;
+    height: 80px;
+    margin: 0 20px 0 20px;
+    align-items: center;
+    border-radius: 0 0 16px 16px;
+}
+
+.header-div {
+    height: 100%;
+    width: 100%;
+    display: flex;
+}
+
+.logo-div {
+    height: 100%;
+    width: fit-content;
+    margin: 0 10px 0 10px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    
+}
+
+.logo {
+    height: 70px;
+    width: auto; 
+}
+
+.menu-div {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.menu-div button {
+    width: 70px;
+    height: 70px;
+    padding: 0;
+    margin: 0 10px 0 10px;
+    border: 0;
+    border-radius: 16px;
 }
 
 .reg-div {
