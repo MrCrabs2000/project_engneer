@@ -8,6 +8,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 import os
 
 app = Flask(__name__)
+app.secret_key = '25112008'
 app.config['TELEGRAM_BOT_TOKEN'] = '8373230853:AAExLeEupdgJyfOZV7o3GtUEiAQZxlWVMr0'
 
 
@@ -127,3 +128,4 @@ def main_page():
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=8000, debug=True)
+
