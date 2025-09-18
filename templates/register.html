@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="/static/css/style.css">
   </head>
   <body>
+<<<<<<< HEAD
     <div class="reg-div">
       <div class="inputs">
         <input type="text" id="username" placeholder="Имя">
@@ -18,6 +19,17 @@
 
       <button onclick="document.location='main'" class="reg-button">Зарегистрироваться</button>
 
+=======
+    <div class="reg-div" >
+      <form class="inputs" method="POST" action="/register">
+        <input type="text" name="username" placeholder="Имя">
+        <input type="text" name="usersurname" placeholder="Фамилия">
+        <input type="text" name="userclass" placeholder="Класс">
+        <input type="password" name="password" placeholder="Пароль">
+        <input type="password" name="confirm_password" placeholder="Повторите пароль">
+        <input type="submit" class="reg-button" value="Зарегистрироваться">
+      </form>
+>>>>>>> 1837b98 (added form)
     </div>
   </body>
 </html>
