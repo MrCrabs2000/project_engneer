@@ -22,7 +22,7 @@ def index():
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
-    if request.method == 'POST':
+    if True:
         username = request.form['username']
         usersurname = request.form['usersurname']
         userclass = request.form['userclass']
@@ -118,6 +118,11 @@ def login_telegram():
         return data
     else:
         return 'Ошибка авторизации'
+
+
+@app.route('/main')
+def main_page():
+    return render_template('main.html')
 
 
 if __name__ == "__main__":
