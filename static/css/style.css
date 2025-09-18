@@ -50,7 +50,7 @@
     border-radius: 16px;
 }
 
-.reg-button {
+.submit-button {
     margin-top: 24px;
     height: 64px;
     width: auto;
@@ -63,9 +63,9 @@
     border-radius: 16px;
 }
 
-.reg-button:hover {
+.submit-button:hover {
     background-color: #84b3d9;
 }
-.reg-button:active {
+.submit-button:active {
     background-color: #709abd;
 }
