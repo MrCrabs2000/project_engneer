@@ -11,7 +11,6 @@ app = Flask(__name__)
 app.secret_key = '25112008'
 app.config['TELEGRAM_BOT_TOKEN'] = '8373230853:AAExLeEupdgJyfOZV7o3GtUEiAQZxlWVMr0'
 
-
 os.makedirs('db', exist_ok=True)
 db_session.global_init(True, 'db/users.db')
 
@@ -23,7 +22,7 @@ def index():
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
-    if request.method =='POST':
+    if request.method == 'POST':
         username = request.form['username']
         usersurname = request.form['usersurname']
         userclass = request.form['userclass']
@@ -47,7 +46,6 @@ def register():
             flash('Пользователь с таким именем уже существует', 'error')
             session.close()
             return redirect(url_for('register'))
-
 
         try:
             new_user = User(
@@ -83,26 +81,27 @@ def login():
 
         if not all([username, usersurname, password]):
             flash('Все поля обязательны для заполнения', 'error')
-            return render_template('register.html')
+            return render_template('login.html')
 
-        session = db_session.create_session()
+        session_db = db_session.create_session()
 
-        user = session.query(User).filter_by(
+        user = session_db.query(User).filter_by(
             username=username,
-            usersurname=usersurname,
-            userpassword=password
+            usersurname=usersurname
         ).first()
-        session.close()
 
         if user and check_password_hash(user.userpassword, password):
+            session['user_id'] = user.id
             session['username'] = user.username
             session['usersurname'] = user.usersurname
             session['userclass'] = user.userclass
-            session['password'] = user.userpassword
+            session['role'] = user.role
+            session_db.close()
             flash('Вход выполнен успешно!', 'success')
-            return redirect(url_for('dashboard'))
+            return redirect(url_for('main_page'))
         else:
-            flash('Неверные данные для входа', 'error')
+            session_db.close()
+            flash('Неверные имя, фамилия или пароль', 'error')
 
     return render_template('login.html')
 
