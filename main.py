@@ -20,7 +20,7 @@ db_session.global_init(True, 'db/users.db')
 def index():
     return render_template('index.html')
 
-True
+
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method =='POST':
@@ -29,7 +29,6 @@ def register():
         userclass = request.form['userclass']
         password = request.form['password']
         confirm_password = request.form['confirm_password']
-
         if not all([username, usersurname, userclass, password, confirm_password]):
             flash('Все поля обязательны для заполнения', 'error')
             return render_template('register.html')
@@ -47,24 +46,27 @@ def register():
         if session.query(User).filter(User.username == username).first():
             flash('Пользователь с таким именем уже существует', 'error')
             session.close()
-            return redirect(url_for('index'))
+            return redirect(url_for('register'))
 
 
         try:
             new_user = User(
                 username=username,
                 usersurname=usersurname,
+                userpassword=generate_password_hash(password),
+                phonenumber='',
                 userclass=userclass,
-                password=password,
                 role='Student',
+                userbalance='0',
+                avatar=''
             )
-
             session.add(new_user)
             session.commit()
 
             flash('Вы успешно зарегистрировались!', 'success')
         except Exception:
             session.rollback()
+            print('deb')
             flash('Ошибка при регистрации!', 'error')
         finally:
             session.close()
