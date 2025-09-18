@@ -1,5 +1,7 @@
 from flask import Flask, request, render_template, redirect, url_for, session, flash
-from Classes import init_db, create_session, User
+
+import db_session
+from Classes import Item, User
 from sqlalchemy.exc import IntegrityError
 from tgbotiha import check_response
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -10,7 +12,7 @@ app.config['TELEGRAM_BOT_TOKEN'] = '8373230853:AAExLeEupdgJyfOZV7o3GtUEiAQZxlWVM
 
 
 os.makedirs('db', exist_ok=True)
-engine = init_db('sqlite:///db/users.db')
+db_session.global_init(True, 'db/users.db')
 
 
 @app.route('/')
@@ -21,11 +23,11 @@ def index():
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
-        username = request.form.get('username')
-        usersurname = request.form.get('usersurname')
-        userclass = request.form.get('userclass')
-        password = request.form.get('password')
-        confirm_password = request.form.get('confirm_password')
+        username = request.form['username']
+        usersurname = request.form['usersurname']
+        userclass = request.form['userclass']
+        password = request.form['password']
+        confirm_password = request.form['confirm_password']
 
         if not all([username, usersurname, userclass, password, confirm_password]):
             flash('Все поля обязательны для заполнения', 'error')
@@ -39,51 +41,54 @@ def register():
             flash('Пароль должен содержать минимум 6 символов', 'error')
             return render_template('register.html')
 
+        session = db_session.create_session()
 
-        db_session = create_session(engine)
+        if session.query(User).filter(User.username == username).first():
+            flash('Пользователь с таким именем уже существует', 'error')
+            session.close()
+            return redirect(url_for('index'))
+
+
         try:
             new_user = User(
                 username=username,
                 usersurname=usersurname,
                 userclass=userclass,
-                userpassword=generate_password_hash(password),
-                phonenumber='',
-                role='user',
-                userbalance='0',
-                avatar=''
+                password=password,
+                role='Student',
             )
-            db_session.add(new_user)
-            db_session.commit()
-            flash('Регистрация прошла успешно! Теперь вы можете войти.', 'success')
-            return redirect(url_for('login'))
-        except IntegrityError:
-            db_session.rollback()
-            flash('Ошибка при регистрации. Возможно, пользователь уже существует.', 'error')
-        finally:
-            db_session.close()
 
+            session.add(new_user)
+            session.commit()
+
+            flash('Вы успешно зарегистрировались!', 'success')
+        except Exception:
+            session.rollback()
+            flash('Ошибка при регистрации!', 'error')
+        finally:
+            session.close()
     return render_template('register.html')
 
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        username = request.form.get('username')
-        usersurname = request.form.get('usersurname')
-        password = request.form.get('password')
+        username = request.form['username']
+        usersurname = request.form['usersurname']
+        password = request.form['password']
 
         if not all([username, usersurname, password]):
             flash('Все поля обязательны для заполнения', 'error')
-            return render_template('login.html')
+            return render_template('register.html')
 
+        session = db_session.create_session()
 
-        db_session = create_session(engine)
-        user = db_session.query(User).filter_by(
+        user = session.query(User).filter_by(
             username=username,
             usersurname=usersurname,
             userpassword=password
         ).first()
-        db_session.close()
+        session.close()
 
         if user and check_password_hash(user.userpassword, password):
             session['username'] = user.username
