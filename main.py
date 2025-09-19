@@ -127,7 +127,28 @@ def login_telegram():
 def main_page():
     return render_template('main.html')
 
+@app.route('/profile', methods=['GET'])
+def profile():
+    if request.method == 'GET':
+        username = session['username']
+        usersurname = session['usersurname']
+        userclass = session['userclass']
+        phonenumber = session['phonenumber']
+        role = session['role']
+        userbalance = session['userbalance']
+
+        data = {
+            'username': username,
+            'usersurname': usersurname,
+            'userclass': userclass,
+            'phonenumber': phonenumber,
+            'role': role,
+            'userbalance': userbalance
+                }
+        return render_template('/profile.html', data)
+
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=8000, debug=True)
+
 
