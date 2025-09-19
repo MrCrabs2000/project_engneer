@@ -1,6 +1,7 @@
-html.main, body.main {
+html, body {
     margin: 0;
     height: 100%;
+    width: 100%
 }
 
 .centered-div, .reg-div {
@@ -48,13 +49,23 @@ header {
     align-items: center;
 }
 
+.menu-div button img {
+    height: 85%;
+    width: 85%;
+    
+}
+
 .menu-div button {
     width: 70px;
     height: 70px;
     padding: 0;
-    margin: 0 10px 0 10px;
+    margin: 0 10px 0 0;
+    display:flex;
+    justify-content: center;
+    align-items: center;
     border: 0;
     border-radius: 16px;
+    background-color: white;
 }
 
 .reg-div {

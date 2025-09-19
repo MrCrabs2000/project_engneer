@@ -1,18 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Профиль</title>
     <link rel="stylesheet" href="/static/css/style.css">
-</head>
-<body>
+  </head>
+  <body>
+    <header>
+      <div class="header-div">
+        <div class="logo-div">
+          <img class="logo" src="https://ir.ozone.ru/s3/cms/81/t48/wc200/logo_ozon_1.png">
+        </div>
+        <div class="menu-div">
+          <button><img src="static/images/shop_icon.png"></button>
+          <button><img src="static/images/history_icon.png"></button>
+          <button onclick="document.location='/profile'"><img src="static/images/profile_icon.png"></button>
+        </div>
+      </div>
+    </header>
     <div>
-        <p>{{username}}</p>
-        <p>{{usersurname}}</p>
-        <p>{{userclass}}</p>
-        <p>{{phonenumber}}</p>
-        <p>{{role}}</p>
-        <p>{{userbalance}}</p>
+      <p>{{username}}</p>
+      <p>{{usersurname}}</p>
+      <p>{{userclass}}</p>
+      <p>{{phonenumber}}</p>
+      <p>{{role}}</p>
+      <p>{{userbalance}}</p>
     </div>
-</body>
+  </body>
 </html>
