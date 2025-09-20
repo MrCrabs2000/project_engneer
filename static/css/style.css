@@ -1,10 +1,23 @@
+:root {
+  --color: #8babda;
+  --accent-color: #e3512b;
+  --sign-hover-color: #779cd4;
+  /* --sign-click-color: #648ece; */
+}
+
+button:hover, input[type="submit"]:hover {
+    cursor: pointer;
+}
+
 html, body {
     margin: 0;
     height: 100%;
-    width: 100%
+    width: 100%;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 500;
 }
 
-.centered-div, .reg-div {
+.centered-div, .sign-div {
     position: absolute;
     left: 50%;
     top: 50%;
@@ -14,7 +27,7 @@ html, body {
 }
 
 header {
-    background-color: #84b3d9;
+    background-color: var(--color);
     height: 80px;
     margin: 0 20px 0 20px;
     align-items: center;
@@ -28,18 +41,27 @@ header {
 }
 
 .logo-div {
-    height: 100%;
+    height: fit-content;
     width: fit-content;
-    margin: 0 10px 0 10px;
+    margin: auto 6px;
     display: flex;
     justify-content: flex-start;
     align-items: center;
     
 }
 
+.logo-div a {
+    height: fit-content;
+    width: fit-content;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
 .logo {
     height: 70px;
     width: auto; 
+    border-radius: 16px;
 }
 
 .menu-div {
@@ -49,62 +71,101 @@ header {
     align-items: center;
 }
 
-.menu-div button img {
-    height: 85%;
-    width: 85%;
-    
-}
-
 .menu-div button {
     width: 70px;
     height: 70px;
     padding: 0;
-    margin: 0 10px 0 0;
+    margin: 0 5px 0 0;
     display:flex;
     justify-content: center;
     align-items: center;
     border: 0;
     border-radius: 16px;
-    background-color: white;
+    background-color: var(--accent-color);
 }
 
-.reg-div {
+.menu-div button img {
+    height: 58px;
+    width: auto;
+}
+
+.menu-div button:hover {
+    background-color: #ca4828;
+}
+
+#profile-popup {
+    visibility: hidden;
+    position: fixed;
+    height: 120px;
+    width: 200px;
+    top: 90px;
+    right: 20px;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    font-size: 32px;
+    font-weight: 600;
+    background-color: var(--color);
+    border-radius: 16px;
+    box-shadow: 0px 0px 16px 0px rgba(0,0,0,0.5);
+}
+
+#profile-popup.active {
+    visibility: visible;
+}
+
+#profile-popup a {
+    margin: 4px auto;
+    text-align: left;
+    color: black;
+    text-decoration: none;
+}
+
+#profile-popup a:hover {
+    color: var(--accent-color);
+}
+
+.sign-div {
     flex-direction: column;
 }
 
 .sign-button {
-    height: 160px;
+    height: auto;
     width: auto;
-    padding-left: 50px;
-    padding-right: 50px;
+    padding: 20px 50px;
     margin-right: 20px;
-    font-size: 64px;
-    background-color: #a1c7e6;
+    font-size: 56px;
+    font-family: inherit;
+    font-weight: inherit;
+    background-color: var(--color);
     border: 0;
     border-radius: 30px;
 }
 
-.sign-button:hover {
-    background-color: #84b3d9;
+.sign-button:hover, .submit-button:hover {
+    background-color: var(--sign-hover-color);
 }
 
-.sign-button:active {
-    background-color: #709abd;
-}
+/* .sign-button:active, .submit-button:active {
+    background-color: var(--sign-click-color);
+} */
 
 .inputs {
     display: flex;
     flex-direction: column;
-    align-items: start;
+    align-items: center;
 }
 
-.inputs input{
+.inputs input {
     height: 48px;
-    width: auto;
+    width: 400px;
     padding-left: 10px;
     padding-right: 10px;
     font-size: 30px;
-    background-color: #84b3d9;
+    font-family: inherit;
+    font-weight: inherit;
+    background-color: var(--color);
     margin-top: 4px;
     margin-bottom: 4px;
     border: 0;
@@ -112,21 +173,14 @@ header {
 }
 
 .submit-button {
-    margin-top: 24px;
+    margin-top: 16px;
+    margin-bottom: 0;
     height: 64px;
-    width: auto;
+    box-sizing: content-box;
     font-size: 30px;
-    padding-left: 50px;
-    padding-right: 50px;
-    margin-right: 20px;
-    background-color: #a1c7e6;
+    font-family: inherit;
+    font-weight: inherit;
+    background-color: var(--color);
     border: 0;
     border-radius: 16px;
-}
-
-.submit-button:hover {
-    background-color: #84b3d9;
-}
-.submit-button:active {
-    background-color: #709abd;
 }
