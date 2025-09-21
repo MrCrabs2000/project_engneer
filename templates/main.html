@@ -14,18 +14,7 @@
     </script> 
   </head>
   <body>
-    <header>
-      <div class="header-div">
-        <div class="logo-div">
-          <a href="/main"><img class="logo" src="static/images/logo.jpg"></a>
-        </div>
-        <div class="menu-div">
-          <button><img src="static/images/shop_icon.png"></button>
-          <button><img src="static/images/history_icon.png"></button>
-          <button onclick="popupToggle()"><img src="static/images/profile_icon.png"></button>
-        </div>
-      </div>
-    </header>
+    {% include 'header.html' %}
     <div id="profile-popup">
         <a href="/profile">Профиль</a>
         <a href="">Выход</a>

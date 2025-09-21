@@ -1,6 +1,6 @@
 :root {
   --color: #8babda;
-  --accent-color: #e3512b;
+  --accent-color: #dd582c;
   --sign-hover-color: #779cd4;
   /* --sign-click-color: #648ece; */
 }
@@ -62,6 +62,26 @@ header {
     height: 70px;
     width: auto; 
     border-radius: 16px;
+}
+
+.balance {
+    height: fit-content;
+    width: fit-content;
+    margin: auto 6px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.balance img {
+    height: 70px;
+    width: auto;
+}
+
+.balance a {
+    margin-left: 12px;
+    color: #000000;
+    font-size: 52px;
 }
 
 .menu-div {
