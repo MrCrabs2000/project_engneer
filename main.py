@@ -50,11 +50,11 @@ def register():
             flash('Пароль должен содержать минимум 6 символов', 'error')
             return render_template('register.html')
 
-        session = db_session.create_session()
+        session_db = db_session.create_session()
 
-        if session.query(User).filter(User.username == username).first():
+        if session_db.query(User).filter(User.username == username).first():
             flash('Пользователь с таким именем уже существует', 'error')
-            session.close()
+            session_db.close()
             return redirect(url_for('register'))
 
         try:
@@ -68,16 +68,23 @@ def register():
                 userbalance='0',
                 avatar=''
             )
-            session.add(new_user)
-            session.commit()
+            session['user_id'] = new_user.id
+            session['username'] = new_user.username
+            session['usersurname'] = new_user.usersurname
+            session['userclass'] = new_user.userclass
+            session['role'] = new_user.role
+            session['phonenumber'] = new_user.phonenumber
+            session['userbalance'] = new_user.userbalance
+            session_db.add(new_user)
+            session_db.commit()
             login_user(new_user)
             flash('Вы успешно зарегистрировались!', 'success')
         except Exception:
-            session.rollback()
+            session_db.rollback()
             print('deb')
             flash('Ошибка при регистрации!', 'error')
         finally:
-            session.close()
+            session_db.close()
         return redirect(url_for('main_page'))
     return render_template('register.html')
 
