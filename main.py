@@ -1,5 +1,5 @@
 from flask import Flask, request, render_template, redirect, url_for, session, flash
-
+from flask_login import logout_user, LoginManager, login_user
 import db_session
 from Classes import Item, User
 from sqlalchemy.exc import IntegrityError
@@ -10,9 +10,19 @@ import os
 app = Flask(__name__)
 app.secret_key = '25112008'
 app.config['TELEGRAM_BOT_TOKEN'] = '8373230853:AAExLeEupdgJyfOZV7o3GtUEiAQZxlWVMr0'
-
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = 'login'
 os.makedirs('db', exist_ok=True)
 db_session.global_init(True, 'db/users.db')
+
+
+@login_manager.user_loader
+def load_user(user_id):
+    session = db_session.create_session()
+    user = session.query(User).get(user_id)
+    session.close()
+    return user
 
 
 @app.route('/')
@@ -40,11 +50,11 @@ def register():
             flash('Пароль должен содержать минимум 6 символов', 'error')
             return render_template('register.html')
 
-        session = db_session.create_session()
+        session_db = db_session.create_session()
 
-        if session.query(User).filter(User.username == username).first():
+        if session_db.query(User).filter(User.username == username).first():
             flash('Пользователь с таким именем уже существует', 'error')
-            session.close()
+            session_db.close()
             return redirect(url_for('register'))
 
         try:
@@ -58,16 +68,23 @@ def register():
                 userbalance='0',
                 avatar=''
             )
-            session.add(new_user)
-            session.commit()
-
+            session['user_id'] = new_user.id
+            session['username'] = new_user.username
+            session['usersurname'] = new_user.usersurname
+            session['userclass'] = new_user.userclass
+            session['role'] = new_user.role
+            session['phonenumber'] = new_user.phonenumber
+            session['userbalance'] = new_user.userbalance
+            session_db.add(new_user)
+            session_db.commit()
+            login_user(new_user)
             flash('Вы успешно зарегистрировались!', 'success')
         except Exception:
-            session.rollback()
+            session_db.rollback()
             print('deb')
             flash('Ошибка при регистрации!', 'error')
         finally:
-            session.close()
+            session_db.close()
         return redirect(url_for('main_page'))
     return render_template('register.html')
 
@@ -99,6 +116,7 @@ def login():
             session['phonenumber'] = user.phonenumber
             session['userbalance'] = user.userbalance
             session_db.close()
+            login_user(user)
             flash('Вход выполнен успешно!', 'success')
             return redirect(url_for('main_page'))
         else:
@@ -128,6 +146,13 @@ def login_telegram():
 @app.route('/main')
 def main_page():
     return render_template('main.html')
+
+
+@app.route('/logout')
+def logout():
+    logout_user()
+    return redirect(url_for('index'))
+
 
 
 @app.route('/profile', methods=['GET'])
