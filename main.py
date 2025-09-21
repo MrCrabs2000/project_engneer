@@ -1,5 +1,5 @@
 from flask import Flask, request, render_template, redirect, url_for, session, flash
-from flask_login import logout_user, LoginManager, login_user
+from flask_login import logout_user, LoginManager, login_user, current_user
 import db_session
 from Classes import Item, User
 from sqlalchemy.exc import IntegrityError
@@ -26,7 +26,12 @@ def load_user(user_id):
 
 
 @app.route('/')
-def index():
+def main_page():
+    if current_user.is_authenticated:
+        return render_template('main.html', logged_in=True, username=current_user.username,
+                               usersurname=current_user.usersurname, userclass=current_user.userclass,
+                               userbalance=current_user.userbalance, phonenumber=current_user.phonenumber,
+                               avatar=current_user.avatar)
     return render_template('index.html')
 
 
@@ -143,15 +148,10 @@ def login_telegram():
         return 'Ошибка авторизации'
 
 
-@app.route('/main')
-def main_page():
-    return render_template('main.html')
-
-
 @app.route('/logout')
 def logout():
     logout_user()
-    return redirect(url_for('index'))
+    return redirect(url_for('main_page'))
 
 
 
