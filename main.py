@@ -1,5 +1,5 @@
 from flask import Flask, request, render_template, redirect, url_for, session, flash
-
+from flask_login import logout_user, LoginManager, login_user
 import db_session
 from Classes import Item, User
 from sqlalchemy.exc import IntegrityError
@@ -10,9 +10,19 @@ import os
 app = Flask(__name__)
 app.secret_key = '25112008'
 app.config['TELEGRAM_BOT_TOKEN'] = '8373230853:AAExLeEupdgJyfOZV7o3GtUEiAQZxlWVMr0'
-
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = 'login'
 os.makedirs('db', exist_ok=True)
 db_session.global_init(True, 'db/users.db')
+
+
+@login_manager.user_loader
+def load_user(user_id):
+    session = db_session.create_session()
+    user = session.query(User).get(user_id)
+    session.close()
+    return user
 
 
 @app.route('/')
@@ -60,7 +70,7 @@ def register():
             )
             session.add(new_user)
             session.commit()
-
+            login_user(new_user)
             flash('Вы успешно зарегистрировались!', 'success')
         except Exception:
             session.rollback()
@@ -99,6 +109,7 @@ def login():
             session['phonenumber'] = user.phonenumber
             session['userbalance'] = user.userbalance
             session_db.close()
+            login_user(user)
             flash('Вход выполнен успешно!', 'success')
             return redirect(url_for('main_page'))
         else:
@@ -128,6 +139,13 @@ def login_telegram():
 @app.route('/main')
 def main_page():
     return render_template('main.html')
+
+
+@app.route('/logout')
+def logout():
+    logout_user()
+    return redirect(url_for('index'))
+
 
 
 @app.route('/profile', methods=['GET'])
