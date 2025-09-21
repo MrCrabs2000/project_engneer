@@ -145,7 +145,7 @@ def login_telegram():
 
 @app.route('/main')
 def main_page():
-    return render_template('main.html')
+    return render_template('main.html', userbalance = session['userbalance'])
 
 
 @app.route('/logout')
