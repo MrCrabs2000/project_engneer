@@ -1,5 +1,6 @@
 from flask import Flask, request, render_template, redirect, url_for, session, flash
 from flask_login import logout_user, LoginManager, login_user, current_user
+from sqlalchemy.dialects.oracle.dictionary import all_users
 
 import db_session
 from Classes import Item, User
@@ -171,6 +172,11 @@ def login_telegram():
         return data
     else:
         return 'Ошибка авторизации'
+
+
+@app.route('edit_profile')
+def edit_profile():
+    return redirect(url_for('main_page'))
 
 
 @app.route('/logout')
