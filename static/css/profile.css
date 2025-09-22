@@ -2,14 +2,51 @@
     flex-direction: column;
 }
 
-.profile-div div {
+.userdata {
+    padding: 32px;
+    flex-direction: column;
+    background-color: var(--color);
+    border-radius: 16px;
+}
+
+.userdata div {
+    display: flex;
+    flex-direction: row;
     margin: 12px 0;
 }
 
-.profile-div a {
-    margin: 12px 0;
+.userdata div a {
+    height: 64px;
+    width: 220px;
+    margin: 12px 8px;
     padding: 0 12px;
+    color: #292929;
     font-size: 48px;
+    font-weight: 700;
     background-color: var(--color);
+    border-radius: 16px;
+}
+
+.userdata div a + a {
+    height: 64px;
+    width: 220px;
+    margin: 12px 8px;
+    padding: 0 12px;
+    color: #292929;
+    font-size: 48px;
+    font-weight: inherit;
+    background-color: var(--accent-color);
+    border-radius: 16px;
+}
+
+.edit-button {
+    height: 80px;
+    margin-top: 12px;
+    color: #292929;
+    font-family: inherit;
+    font-size: 48px;
+    font-weight: 700;
+    background-color: var(--color);
+    border: 0;
     border-radius: 16px;
 }

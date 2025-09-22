@@ -5,27 +5,29 @@
     <meta name="viewport" content="width=device-width" />
     <title>Профиль</title>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/static/css/style.css">
-    <script>
-      function popupToggle() {
-        const  popup = document.getElementById('profile-popup');
-        popup.classList.toggle('active')
-      }
-    </script>
+    <link rel="stylesheet" href="static/css/style.css">
+    <link rel="stylesheet" href="static/css/profile.css">
   </head>
   <body>
     {% include 'header.html' %}
-    <div id="profile-popup">
-        <a href="/profile">Профиль</a>
-        <a href="/logout">Выход</a>
-    </div>
+    {% include 'profile-popup.html' %}
     <div class="profile-div">
-      <a>{{username}}</a>
-      <a>{{usersurname}}</a>
-      <a>{{userclass}}</a>
-      <a>{{phonenumber}}</a>
-      <a>{{role}}</a>
-      <a>{{userbalance}}</a>
+      <div class="userdata">
+        <div>
+          <a>Имя:</a>
+          <a>{{username}}</a>
+        </div>
+        <div>
+          <a>Фамилия:</a>
+          <a>{{usersurname}}</a>
+        </div>
+        <div>
+          <a>Класс:</a>
+          <a>{{userclass}}</a>
+        </div>
+      </div>
+      <button class="edit-button" onclick="document.location='/profile_edit'">Редактировать</button>
     </div>
+      <!-- <a>{{phonenumber}}</a> -->
   </body>
 </html>
