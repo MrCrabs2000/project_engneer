@@ -1,0 +1,58 @@
+.sign-div {
+    flex-direction: column;
+}
+
+.sign-button {
+    height: auto;
+    width: auto;
+    padding: 20px 50px;
+    margin-right: 20px;
+    font-size: 56px;
+    font-family: inherit;
+    font-weight: inherit;
+    background-color: var(--color);
+    border: 0;
+    border-radius: 30px;
+}
+
+.sign-button:hover, .submit-button:hover {
+    background-color: var(--sign-hover-color);
+}
+
+/* .sign-button:active, .submit-button:active {
+    background-color: var(--sign-click-color);
+} */
+
+.inputs {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.inputs input {
+    height: 48px;
+    width: 400px;
+    padding-left: 10px;
+    padding-right: 10px;
+    font-size: 30px;
+    font-family: inherit;
+    font-weight: inherit;
+    background-color: var(--color);
+    margin-top: 4px;
+    margin-bottom: 4px;
+    border: 0;
+    border-radius: 16px;
+}
+
+.submit-button {
+    margin-top: 16px;
+    margin-bottom: 0;
+    height: 64px;
+    box-sizing: content-box;
+    font-size: 30px;
+    font-family: inherit;
+    font-weight: inherit;
+    background-color: var(--color);
+    border: 0;
+    border-radius: 16px;
+}

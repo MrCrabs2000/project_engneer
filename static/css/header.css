@@ -1,0 +1,86 @@
+header {
+    background-color: var(--color);
+    height: 80px;
+    margin: 0 20px 0 20px;
+    align-items: center;
+    border-radius: 0 0 16px 16px;
+}
+
+.header-div {
+    height: 100%;
+    width: 100%;
+    display: flex;
+}
+
+.logo-div {
+    height: fit-content;
+    width: fit-content;
+    margin: auto 6px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    
+}
+
+.logo-div a {
+    height: fit-content;
+    width: fit-content;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.logo {
+    height: 70px;
+    width: auto; 
+    border-radius: 16px;
+}
+
+.balance {
+    height: fit-content;
+    width: fit-content;
+    margin: auto 6px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.balance img {
+    height: 70px;
+    width: auto;
+}
+
+.balance a {
+    margin-left: 12px;
+    color: #080808;
+    font-size: 52px;
+}
+
+.menu-div {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.menu-div button {
+    width: 70px;
+    height: 70px;
+    padding: 0;
+    margin: 0 5px 0 0;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    border: 0;
+    border-radius: 16px;
+    background-color: var(--accent-color);
+}
+
+.menu-div button:hover {
+    background-color: #ca4828;
+}
+
+.menu-div button img {
+    height: 58px;
+    width: auto;
+}
