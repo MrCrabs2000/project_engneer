@@ -1,5 +1,7 @@
 from flask import Flask, request, render_template, redirect, url_for, session, flash
 from flask_login import logout_user, LoginManager, login_user, current_user
+from sqlalchemy.dialects.oracle.dictionary import all_users
+
 import db_session
 from Classes import Item, User
 from sqlalchemy.exc import IntegrityError
@@ -28,10 +30,43 @@ def load_user(user_id):
 @app.route('/')
 def main_page():
     if current_user.is_authenticated:
-        return render_template('main.html', logged_in=True, username=current_user.username,
+        if current_user.role == 'Student':
+            return render_template('main.html', logged_in=True, username=current_user.username,
                                usersurname=current_user.usersurname, userclass=current_user.userclass,
                                userbalance=current_user.userbalance, phonenumber=current_user.phonenumber,
                                avatar=current_user.avatar)
+        else:
+            if current_user.role == 'Admin':
+                return render_template('main.html', logged_in=True, username=current_user.username,
+                                       usersurname=current_user.usersurname, userclass=current_user.userclass,
+                                       userbalance=current_user.userbalance, phonenumber=current_user.phonenumber,
+                                       avatar=current_user.avatar, all_users=[])
+
+            all_users = []
+            if current_user.role == 'admin':
+                users = session.query(User).all()
+                all_users = []
+                for user in users:
+                    userr = {}
+                    userr['id'] = user.id
+                    userr['username'] = user.username
+                    userr['userclass'] = user.userclass
+                    userr['userrole'] = user.role
+                    userr['phonenumber'] = user.phonenumber
+                    userr['userbalance'] = user.userbalance
+                    userr['avatar'] = user.avatar
+                    all_users.append(userr.copy())
+
+            session.close()
+
+
+            return render_template('admin_main.html',
+                                         logged_in=True,
+                                         username=current_user.username,
+                                         role=current_user.role,
+                                         all_users=all_users)
+        return flask.render_template('base.html', logged_in=False)
+
     return render_template('index.html')
 
 
