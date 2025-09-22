@@ -1,6 +1,5 @@
 from flask import Flask, request, render_template, redirect, url_for, session, flash
 from flask_login import logout_user, LoginManager, login_user, current_user
-from sqlalchemy.dialects.oracle.dictionary import all_users
 
 import db_session
 from Classes import Item, User

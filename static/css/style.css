@@ -17,7 +17,7 @@ html, body {
     font-weight: 500;
 }
 
-.centered-div, .sign-div {
+.centered-div, .sign-div, .profile-div {
     position: absolute;
     left: 50%;
     top: 50%;
@@ -203,4 +203,8 @@ header {
     background-color: var(--color);
     border: 0;
     border-radius: 16px;
+}
+
+.profile-div {
+    flex-direction: column;
 }
