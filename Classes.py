@@ -1,12 +1,8 @@
 from sqlalchemy import Column, Integer, String, ForeignKey
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-import os
+from db_session import SqlAlchemyBase
 from flask_login import UserMixin
 
 
-SqlAlchemyBase = declarative_base()
 
 class User(SqlAlchemyBase, UserMixin):
     __tablename__ = 'users'
@@ -28,5 +24,4 @@ class Item(SqlAlchemyBase, UserMixin):
     usersid = Column(Integer, ForeignKey('users.id'))
     count = Column(Integer, nullable=False)
     price = Column(Integer, nullable=False)
-
 
