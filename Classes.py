@@ -30,13 +30,3 @@ class Item(SqlAlchemyBase, UserMixin):
     price = Column(Integer, nullable=False)
 
 
-def init_db(db_path='sqlite:///db/users.db'):
-    os.makedirs('db', exist_ok=True)
-    engine = create_engine(db_path)
-    SqlAlchemyBase.metadata.create_all(engine)
-    return engine
-
-
-def create_session(engine):
-    Session = sessionmaker(bind=engine)
-    return Session()
