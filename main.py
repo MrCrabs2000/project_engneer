@@ -174,7 +174,7 @@ def login_telegram():
         return 'Ошибка авторизации'
 
 
-@app.route('edit_profile')
+@app.route('/edit_profile')
 def edit_profile():
     return redirect(url_for('main_page'))
 
