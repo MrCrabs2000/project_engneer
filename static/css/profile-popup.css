@@ -23,7 +23,7 @@
 #profile-popup a {
     margin: 4px auto;
     text-align: left;
-    color: black;
+    color: var(--text-color);
     text-decoration: none;
 }
 

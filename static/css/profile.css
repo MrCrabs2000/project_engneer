@@ -20,7 +20,7 @@
     width: 220px;
     margin: 12px 8px;
     padding: 0 12px;
-    color: #292929;
+    color: var(--text-color);
     font-size: 48px;
     font-weight: 700;
     background-color: var(--color);
@@ -32,7 +32,7 @@
     width: 220px;
     margin: 12px 8px;
     padding: 0 12px;
-    color: #292929;
+    color: var(--text-color);
     font-size: 48px;
     font-weight: inherit;
     background-color: var(--accent-color);
@@ -42,7 +42,7 @@
 .edit-button {
     height: 80px;
     margin-top: 12px;
-    color: #292929;
+    color: var(--text-color);
     font-family: inherit;
     font-size: 48px;
     font-weight: 700;
