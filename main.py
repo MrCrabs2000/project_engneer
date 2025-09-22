@@ -32,39 +32,39 @@ def main_page():
     if current_user.is_authenticated:
         if current_user.role == 'Student':
             return render_template('main.html', logged_in=True, username=current_user.username,
-                               usersurname=current_user.usersurname, userclass=current_user.userclass,
-                               userbalance=current_user.userbalance, phonenumber=current_user.phonenumber,
-                               avatar=current_user.avatar)
+                                   usersurname=current_user.usersurname, userclass=current_user.userclass,
+                                   userbalance=current_user.userbalance, phonenumber=current_user.phonenumber,
+                                   avatar=current_user.avatar)
         else:
             if current_user.role == 'Admin':
+                all_users = []
+                if current_user.role == 'admin':
+                    users = session.query(User).all()
+                    all_users = []
+                    for user in users:
+                        userr = {}
+                        userr['id'] = user.id
+                        userr['username'] = user.username
+                        userr['userclass'] = user.userclass
+                        userr['userrole'] = user.role
+                        userr['phonenumber'] = user.phonenumber
+                        userr['userbalance'] = user.userbalance
+                        userr['avatar'] = user.avatar
+                        all_users.append(userr.copy())
                 return render_template('main.html', logged_in=True, username=current_user.username,
                                        usersurname=current_user.usersurname, userclass=current_user.userclass,
                                        userbalance=current_user.userbalance, phonenumber=current_user.phonenumber,
                                        avatar=current_user.avatar, all_users=[])
-
-            all_users = []
-            if current_user.role == 'admin':
-                users = session.query(User).all()
-                all_users = []
-                for user in users:
-                    userr = {}
-                    userr['id'] = user.id
-                    userr['username'] = user.username
-                    userr['userclass'] = user.userclass
-                    userr['userrole'] = user.role
-                    userr['phonenumber'] = user.phonenumber
-                    userr['userbalance'] = user.userbalance
-                    userr['avatar'] = user.avatar
-                    all_users.append(userr.copy())
-
+                
+                
+                
             session.close()
 
-
             return render_template('admin_main.html',
-                                         logged_in=True,
-                                         username=current_user.username,
-                                         role=current_user.role,
-                                         all_users=all_users)
+                                   logged_in=True,
+                                   username=current_user.username,
+                                   role=current_user.role,
+                                   all_users=all_users)
         return flask.render_template('base.html', logged_in=False)
 
     return render_template('index.html')
@@ -192,14 +192,13 @@ def logout():
 @app.route('/profile', methods=['GET'])
 def profile():
     if request.method == 'GET':
-        return render_template('profile.html', username = session['username'],
-        usersurname = session['usersurname'],
-        userclass = session['userclass'],
-        phonenumber = session['phonenumber'],
-        role = session['role'],
-        userbalance = session['userbalance'])
+        return render_template('profile.html', username=session['username'],
+                               usersurname=session['usersurname'],
+                               userclass=session['userclass'],
+                               phonenumber=session['phonenumber'],
+                               role=session['role'],
+                               userbalance=session['userbalance'])
 
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=8000, debug=True)
-
