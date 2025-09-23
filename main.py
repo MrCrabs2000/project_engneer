@@ -211,14 +211,22 @@ def profile_edit():
         new_phonenumber = request.form['phonenumber']
         new_userclass = request.form['userclass']
 
+        if user and (new_username or new_userclass or new_usersurname or new_phonenumber) and all([new_usersurname,
+            new_username, new_userclass]):
 
-        if (new_username or new_userclass or new_usersurname or new_phonenumber) and all([new_usersurname, 
-            new_username, new_userclass, new_phonenumber]):
             user.username = new_username
             user.surname = new_usersurname
             user.phonenumber = new_phonenumber
             user.userclass = new_userclass
+
+            session_db.commit()
             session_db.close()
+
+            render_template('profile.html')
+
+        else:
+            render_template('profile.html')
+
 
 
 
