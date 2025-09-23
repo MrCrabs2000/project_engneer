@@ -1,6 +1,6 @@
 from flask import Flask, request, render_template, redirect, url_for, session, flash
 from flask_login import logout_user, LoginManager, login_user, current_user
-from sqlalchemy.dialects.oracle.dictionary import all_users
+from sqlalchemy.testing.suite.test_reflection import users
 
 import db_session
 from Classes import Item, User
@@ -195,6 +195,39 @@ def profile():
         role = session['role'],
         userbalance = session['userbalance'])
 
+
+@app.route('/profile_edit')
+def profile_edit():
+    if request.method == 'POST':
+        session_db = db_session.create_session()
+
+        user = session_db.query(User).filter_by(
+            username=current_user.username,
+            usersurname=current_user.usersurname
+        ).first()
+
+        new_username = request.form['username']
+        new_usersurname = request.form['usersurname']
+        new_phonenumber = request.form['phonenumber']
+        new_userclass = request.form['userclass']
+
+
+        if (new_username or new_userclass or new_usersurname or new_phonenumber) and all([new_usersurname, 
+            new_username, new_userclass, new_phonenumber]):
+            user.username = new_username
+            user.surname = new_usersurname
+            user.phonenumber = new_phonenumber
+            user.userclass = new_userclass
+            session_db.close()
+
+
+
+    return render_template('profile_edit.html', username=session['username'],
+        usersurname=session['usersurname'],
+        userclass=session['userclass'],
+        phonenumber=session['phonenumber'],
+        role=session['role'],
+        userbalance=session['userbalance'])
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=8000, debug=True)
