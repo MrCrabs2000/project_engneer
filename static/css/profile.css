@@ -27,19 +27,21 @@
     border-radius: 16px;
 }
 
-.userdata div a + a {
+.userdata div a + a, .userdata div a + input {
     height: 64px;
-    width: 220px;
+    width: 300px;
     margin: 12px 8px;
     padding: 0 12px;
     color: var(--text-color);
     font-size: 48px;
+    font-family: inherit;
     font-weight: inherit;
     background-color: var(--accent-color);
+    border: 0;
     border-radius: 16px;
 }
 
-.edit-button {
+.edit-button, .save-button, .cancel-button {
     height: 80px;
     margin-top: 12px;
     color: var(--text-color);
@@ -49,4 +51,22 @@
     background-color: var(--color);
     border: 0;
     border-radius: 16px;
+}
+
+.edit-profile-buttons {
+    margin-top: 12px;
+    display: flex;
+    justify-content: center;
+}
+
+.save-button {
+    width: auto;
+    margin: 0;
+    background-color: green;
+}
+
+.cancel-button {
+    width: auto;
+    margin: 0;
+    background-color: red;
 }

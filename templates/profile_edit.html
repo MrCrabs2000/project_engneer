@@ -1,145 +1,38 @@
 <!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Редактирование данных</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 600px;
-            margin: 50px auto;
-            padding: 20px;
-            background-color: #f5f5f5;
-        }
-
-        .container {
-            background-color: white;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-
-        h1 {
-            color: #333;
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .form-group {
-            display: flex;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        label {
-            width: 150px;
-            font-weight: bold;
-            color: #555;
-            margin-right: 15px;
-        }
-
-        input[type="text"],
-        input[type="email"] {
-            flex: 1;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 14px;
-        }
-
-        input[type="text"]:focus,
-        input[type="email"]:focus {
-            outline: none;
-            border-color: #4CAF50;
-            box-shadow: 0 0 5px rgba(76, 175, 80, 0.3);
-        }
-
-        .buttons {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-top: 30px;
-        }
-
-        button {
-            padding: 12px 30px;
-            border: none;
-            border-radius: 4px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        .save-btn {
-            background-color: #4CAF50;
-            color: white;
-        }
-
-        .save-btn:hover {
-            background-color: #45a049;
-        }
-
-        .cancel-btn {
-            background-color: #f44336;
-            color: white;
-        }
-
-        .cancel-btn:hover {
-            background-color: #da190b;
-        }
-
-        .readonly-field {
-            flex: 1;
-            padding: 10px;
-            background-color: #f9f9f9;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 14px;
-            color: #666;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1>Редактирование</h1>
-
-        <form class="inputs" method="POST" action="/profile_edit">
-            <div class="form-group">
-                <label for="name">Имя:</label>
-                <input type="text" id="name" name="username" value="{{username}}">
-            </div>
-
-            <div class="form-group">
-                <label for="surname">Фамилия:</label>
-                <input type="text" id="surname" name="usersurname" value="{{usersurname}}">
-            </div>
-
-            <div class="form-group">
-                <label for="phone">Телефон:</label>
-                <input type="text" id="phone" name="phonenumber" value="{{phonenumber}}">
-            </div>
-
-            <div class="form-group">
-                <label for="phone">Класс:</label>
-                <input type="text" id="class" name="userclass" value="{{userclass}}">
-            </div>
-
-            <div class="form-group">
-                <label for="role">Роль:</label>
-                <div class="readonly-field" id="role">{{role}}</div>
-            </div>
-
-            <div class="form-group">
-                <label for="userbalance">Баланс:</label>
-                <div class="readonly-field" id="userbalance">{{userbalance}}</div>
-            </div>
-
-            <div class="buttons">
-                <button type="submit" class="save-btn">Сохранить</button>
-                <button type="button" class="cancel-btn" onclick="document.location='/profile'">Отменить</button>
-            </div>
-        </form>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Профиль</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="static/css/style.css">
+    <link rel="stylesheet" href="static/css/profile.css">
+  </head>
+  <body>
+    {% include 'header.html' %}
+    {% include 'profile-popup.html' %}
+    <div class="profile-div">
+      <form>
+          <div class="userdata" action="/edit_profile">
+              <div>
+              <a>Имя:</a>
+              <input name="username" type="text" value="{{username}}">
+              </div>
+              <div>
+              <a>Фамилия:</a>
+              <input name="username" type="text" value="{{usersurname}}"></input>
+              </div>
+              <div>
+              <a>Класс:</a>
+              <input name="userclass" type="text" value="{{userclass}}">
+              </div>
+          </div>
+          <div class="edit-profile-buttons">
+            <input class="save-button" type="submit" value="Сохранить">
+            <button class="cancel-button">Отмена</button>
+          </div>
+      </form>
     </div>
-</body>
+      <!-- <a>{{phonenumber}}</a> -->
+  </body>
 </html>
