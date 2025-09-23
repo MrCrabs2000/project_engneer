@@ -196,46 +196,36 @@ def profile():
         userbalance = session['userbalance'])
 
 
-@app.route('/profile_edit')
+@app.route('/profile_edit', methods=['GET', 'POST'])
 def profile_edit():
     if request.method == 'POST':
         session_db = db_session.create_session()
 
-        user = session_db.query(User).filter_by(
-            username=current_user.username,
-            usersurname=current_user.usersurname
-        ).first()
+        user = session_db.query(User).filter_by(id=current_user.id).first()
 
         new_username = request.form['username']
         new_usersurname = request.form['usersurname']
-        new_phonenumber = request.form['phonenumber']
         new_userclass = request.form['userclass']
 
-        if user and (new_username or new_userclass or new_usersurname or new_phonenumber) and all([new_usersurname,
-            new_username, new_userclass]):
-
+        if user and all([new_usersurname, new_username, new_userclass]):
             user.username = new_username
-            user.surname = new_usersurname
-            user.phonenumber = new_phonenumber
+            user.usersurname = new_usersurname
             user.userclass = new_userclass
 
             session_db.commit()
+
+            session['username'] = new_username
+            session['usersurname'] = new_usersurname
+            session['userclass'] = new_userclass
+
             session_db.close()
+            return redirect(url_for('profile'))
 
-            render_template('profile.html')
+    return render_template('profile_edit.html',
+                           username=session['username'],
+                           usersurname=session['usersurname'],
+                           userclass=session['userclass'])
 
-        else:
-            render_template('profile.html')
-
-
-
-
-    return render_template('profile_edit.html', username=session['username'],
-        usersurname=session['usersurname'],
-        userclass=session['userclass'],
-        phonenumber=session['phonenumber'],
-        role=session['role'],
-        userbalance=session['userbalance'])
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=8000, debug=True)
