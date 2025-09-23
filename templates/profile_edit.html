@@ -12,8 +12,8 @@
     {% include 'header.html' %}
     {% include 'profile-popup.html' %}
     <div class="profile-div">
-      <form>
-          <div class="userdata" action="/profile_edit">
+      <form method="POST" action="/profile_edit">
+          <div class="userdata">
               <div>
               <a>Имя:</a>
               <input name="username" type="text" value="{{username}}">
