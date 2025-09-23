@@ -60,13 +60,23 @@
 }
 
 .save-button {
-    width: auto;
+    width: 50%;
     margin: 0;
-    background-color: green;
+    margin-right: 8px;
+    background-color: #43a72a;
+}
+
+.save-button:hover {
+    background-color: #348320;
 }
 
 .cancel-button {
-    width: auto;
+    width: 50%;
     margin: 0;
-    background-color: red;
+    margin-left: 8px;
+    background-color: #fd2929;
+}
+
+.cancel-button:hover {
+    background-color: #be2020;
 }

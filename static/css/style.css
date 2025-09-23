@@ -23,6 +23,6 @@ html, body {
     display: flex;
 }
 
-button:hover, input[type="submit"]:hover {
+button:hover, input[type="submit"]:hover, input[type="button"]:hover {
     cursor: pointer;
 }
