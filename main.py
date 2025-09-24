@@ -48,14 +48,12 @@ def main_page():
                         userr['userrole'] = user.role
                         userr['phonenumber'] = user.phonenumber
                         userr['userbalance'] = user.userbalance
-                        userr['avatar'] = user.avatar
                         all_users.append(userr.copy())
                 session.close()
 
                 return render_template('main.html', logged_in=True, username=current_user.username,
                                        usersurname=current_user.usersurname, userclass=current_user.userclass,
-                                       userbalance=current_user.userbalance, phonenumber=current_user.phonenumber,
-                                       avatar=current_user.avatar, all_users=[])
+                                       userbalance=current_user.userbalance, phonenumber=current_user.phonenumber, all_users=[])
 
     return render_template('index.html')
 
@@ -96,7 +94,6 @@ def register():
                 userclass=userclass,
                 role='Student',
                 userbalance='0',
-                avatar=''
             )
             session['user_id'] = new_user.id
             session['username'] = new_user.username
@@ -111,7 +108,6 @@ def register():
             flash('Вы успешно зарегистрировались!', 'success')
         except Exception:
             session_db.rollback()
-            print('deb')
             flash('Ошибка при регистрации!', 'error')
         finally:
             session_db.close()
@@ -229,5 +225,3 @@ def profile_edit():
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=8000, debug=True)
-
-
