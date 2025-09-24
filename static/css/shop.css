@@ -1,0 +1,38 @@
+.shop {
+    margin: 0 20px;
+    margin-top: 12px;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr) ;
+    grid-gap: 10px;
+    grid-auto-rows: minmax(400px, auto);
+}
+
+
+
+.card {
+    min-width: 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: var(--color);
+    border-radius: 16px;
+}
+
+.content {
+    margin: 12px;
+}
+
+.content img {
+    width: 100%;
+    height: auto;
+    border-radius: 16px;
+}
+
+.content p {
+    margin: 0;
+    margin-top: 10px;
+    width: 100%;
+    color: var(--text-color);
+    font-size: 30px;
+    font-weight: 700;
+}
