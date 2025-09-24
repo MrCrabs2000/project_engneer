@@ -3,7 +3,7 @@ from flask_login import logout_user, LoginManager, login_user, current_user
 from sqlalchemy.testing.suite.test_reflection import users
 
 import db_session
-from Classes import Item, User
+from Classes import Item_user, User, Item_shop
 from sqlalchemy.exc import IntegrityError
 from tgbotiha import check_response
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -230,3 +230,4 @@ def profile_edit():
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=8000, debug=True)
+
