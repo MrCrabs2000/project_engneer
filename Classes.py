@@ -15,13 +15,23 @@ class User(SqlAlchemyBase, UserMixin):
     userclass = Column(String(100), nullable=False)
     role = Column(String(10), nullable=False, default='user')
     userbalance = Column(String(5), nullable=False, default='0')
-    avatar = Column(String(255), nullable=True)
 
-class Item(SqlAlchemyBase, UserMixin):
-    __tablename__ = 'items'
+class Item_shop(SqlAlchemyBase):
+    __tablename__ = 'items_shop'
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    usersid = Column(Integer, ForeignKey('users.id'))
+    name = Column(String(100), nullable=False)
+    description = Column(String(300), nullable=False)
     count = Column(Integer, nullable=False)
     price = Column(Integer, nullable=False)
+    photo = Column(String(1000), nullable=False)
+
+
+class Item_user(SqlAlchemyBase):
+    __tablename__ = 'items_users'
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    name = Column(String(100), nullable=False)
+    description = Column(String(300), nullable=False)
+    photo = Column(String(1000), nullable=False)
 
