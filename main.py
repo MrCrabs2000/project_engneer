@@ -224,7 +224,8 @@ def profile_edit():
     return render_template('profile_edit.html',
                            username=session['username'],
                            usersurname=session['usersurname'],
-                           userclass=session['userclass'])
+                           userclass=session['userclass'],
+                           userbalance=current_user.userbalance)
 
 
 if __name__ == "__main__":

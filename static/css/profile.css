@@ -27,7 +27,7 @@
     border-radius: 16px;
 }
 
-.userdata div a + a, .userdata div a + input {
+.userdata div a + input {
     height: 64px;
     width: 300px;
     margin: 12px 8px;
