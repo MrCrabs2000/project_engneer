@@ -35,7 +35,7 @@ def global_init(*db_file):
         engine = sa.create_engine(url)
         __factory = orm.sessionmaker(bind=engine)
 
-        from Classes import User, Item
+        from Classes import User, Item_user, Item_shop
 
         SqlAlchemyBase.metadata.create_all(engine)
 
@@ -43,5 +43,6 @@ def global_init(*db_file):
 def create_session() -> Session:
     global __factory
     return __factory()
+
 
 
