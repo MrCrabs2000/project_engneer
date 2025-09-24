@@ -34,8 +34,7 @@ def main_page():
         if current_user.role == 'Student':
             return render_template('main.html', logged_in=True, username=current_user.username,
                                usersurname=current_user.usersurname, userclass=current_user.userclass,
-                               userbalance=current_user.userbalance, phonenumber=current_user.phonenumber,
-                               avatar=current_user.avatar)
+                               userbalance=current_user.userbalance, phonenumber=current_user.phonenumber)
         else:
             if current_user.role == 'Admin':
                 if current_user.role == 'admin':
@@ -230,4 +229,5 @@ def profile_edit():
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=8000, debug=True)
+
 
