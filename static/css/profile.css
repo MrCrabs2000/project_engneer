@@ -27,7 +27,7 @@
     border-radius: 16px;
 }
 
-.userdata div a + a, .userdata div a + input {
+.userdata div a + input {
     height: 64px;
     width: 300px;
     margin: 12px 8px;
@@ -60,13 +60,23 @@
 }
 
 .save-button {
-    width: auto;
+    width: 50%;
     margin: 0;
-    background-color: green;
+    margin-right: 8px;
+    background-color: #43a72a;
+}
+
+.save-button:hover {
+    background-color: #348320;
 }
 
 .cancel-button {
-    width: auto;
+    width: 50%;
     margin: 0;
-    background-color: red;
+    margin-left: 8px;
+    background-color: #fd2929;
+}
+
+.cancel-button:hover {
+    background-color: #be2020;
 }

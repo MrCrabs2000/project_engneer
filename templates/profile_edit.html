@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
-    <title>Профиль</title>
+    <title>Редактирование</title>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="static/css/style.css">
     <link rel="stylesheet" href="static/css/profile.css">
@@ -14,18 +14,18 @@
     <div class="profile-div">
       <form method="POST" action="/profile_edit">
           <div class="userdata">
-              <div>
+            <div>
               <a>Имя:</a>
               <input name="username" type="text" value="{{username}}">
               </div>
               <div>
               <a>Фамилия:</a>
-              <input name="username" type="text" value="{{usersurname}}"></input>
+              <input name="usersurname" type="text" value="{{usersurname}}">
               </div>
               <div>
               <a>Класс:</a>
               <input name="userclass" type="text" value="{{userclass}}">
-              </div>
+            </div>
           </div>
           <div class="edit-profile-buttons">
             <input class="save-button" type="submit" value="Сохранить">
