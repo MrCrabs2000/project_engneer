@@ -219,7 +219,8 @@ def profile_edit():
                            username=session['username'],
                            usersurname=session['usersurname'],
                            userclass=session['userclass'],
-                           userbalance=session['userbalance'])
+                           userbalance=session['userbalance'],
+                           role=session['role'])
 
 
 if __name__ == "__main__":
