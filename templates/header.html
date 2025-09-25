@@ -4,14 +4,20 @@
     <div class="logo-div">
       <a href="/"><img class="logo" src="static/images/logo.jpg"></a>
     </div>
-    <div class="balance">
-      <img src="static/images/coin.png">
-      <a>{{userbalance}}</a>
-    </div>
+        <div class="balance">
+            <img src="static/images/coin.png">
+            {% if role == 'Teacher' %}
+                <a>{{userbalance}} - Вы можете раздать</a>
+            {% elif role == 'Student' %}
+                <a>{{userbalance}}</a>
+            {% endif %}
+        </div>
     <div class="menu-div">
-      <button onclick="document.location='/'"><img src="static/images/shop_icon.png"></button>
-      <button><img src="static/images/history_icon.png"></button>
-      <button onclick="popupToggle()"><img src="static/images/profile_icon.png"></button>
+        {% if role == 'Student' %}
+            <button onclick="document.location='/'"><img src="static/images/shop_icon.png"></button>
+            <button><img src="static/images/history_icon.png"></button>
+        {% endif %}
+        <button onclick="popupToggle()"><img src="static/images/profile_icon.png"></button>
     </div>
   </div>
 </header>

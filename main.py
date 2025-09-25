@@ -3,7 +3,7 @@ from flask_login import logout_user, LoginManager, login_user, current_user
 from sqlalchemy.testing.suite.test_reflection import users
 
 import db_session
-from Classes import Item, User
+from Classes import Item_user, User, Item_shop
 from sqlalchemy.exc import IntegrityError
 from tgbotiha import check_response
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -31,11 +31,10 @@ def load_user(user_id):
 def main_page():
     if current_user.is_authenticated:
         session = db_session.create_session()
-        if current_user.role == 'Student':
+        if current_user.role == 'Student' or current_user.role == 'Teacher':
             return render_template('main.html', logged_in=True, username=current_user.username,
                                usersurname=current_user.usersurname, userclass=current_user.userclass,
-                               userbalance=current_user.userbalance, phonenumber=current_user.phonenumber,
-                               avatar=current_user.avatar)
+                               userbalance=current_user.userbalance, phonenumber=current_user.phonenumber)
         else:
             if current_user.role == 'Admin':
                 if current_user.role == 'admin':
@@ -49,14 +48,12 @@ def main_page():
                         userr['userrole'] = user.role
                         userr['phonenumber'] = user.phonenumber
                         userr['userbalance'] = user.userbalance
-                        userr['avatar'] = user.avatar
                         all_users.append(userr.copy())
                 session.close()
 
                 return render_template('main.html', logged_in=True, username=current_user.username,
                                        usersurname=current_user.usersurname, userclass=current_user.userclass,
-                                       userbalance=current_user.userbalance, phonenumber=current_user.phonenumber,
-                                       avatar=current_user.avatar, all_users=[])
+                                       userbalance=current_user.userbalance, phonenumber=current_user.phonenumber, all_users=[])
 
     return render_template('index.html')
 
@@ -97,7 +94,6 @@ def register():
                 userclass=userclass,
                 role='Student',
                 userbalance='0',
-                avatar=''
             )
             session['user_id'] = new_user.id
             session['username'] = new_user.username
@@ -112,7 +108,6 @@ def register():
             flash('Вы успешно зарегистрировались!', 'success')
         except Exception:
             session_db.rollback()
-            print('deb')
             flash('Ошибка при регистрации!', 'error')
         finally:
             session_db.close()
@@ -196,46 +191,37 @@ def profile():
         userbalance = session['userbalance'])
 
 
-@app.route('/profile_edit')
+@app.route('/profile_edit', methods=['GET', 'POST'])
 def profile_edit():
     if request.method == 'POST':
         session_db = db_session.create_session()
 
-        user = session_db.query(User).filter_by(
-            username=current_user.username,
-            usersurname=current_user.usersurname
-        ).first()
+        user = session_db.query(User).filter_by(id=current_user.id).first()
 
         new_username = request.form['username']
         new_usersurname = request.form['usersurname']
-        new_phonenumber = request.form['phonenumber']
         new_userclass = request.form['userclass']
 
-        if user and (new_username or new_userclass or new_usersurname or new_phonenumber) and all([new_usersurname,
-            new_username, new_userclass]):
-
+        if user and all([new_usersurname, new_username, new_userclass]):
             user.username = new_username
-            user.surname = new_usersurname
-            user.phonenumber = new_phonenumber
+            user.usersurname = new_usersurname
             user.userclass = new_userclass
 
             session_db.commit()
+
+            session['username'] = new_username
+            session['usersurname'] = new_usersurname
+            session['userclass'] = new_userclass
+
             session_db.close()
+            return redirect(url_for('profile'))
 
-            render_template('profile.html')
+    return render_template('profile_edit.html',
+                           username=session['username'],
+                           usersurname=session['usersurname'],
+                           userclass=session['userclass'],
+                           userbalance=session['userbalance'])
 
-        else:
-            render_template('profile.html')
-
-
-
-
-    return render_template('profile_edit.html', username=session['username'],
-        usersurname=session['usersurname'],
-        userclass=session['userclass'],
-        phonenumber=session['phonenumber'],
-        role=session['role'],
-        userbalance=session['userbalance'])
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=8000, debug=True)
