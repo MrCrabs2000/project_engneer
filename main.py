@@ -2,7 +2,6 @@ from flask import Flask, request, render_template, redirect, url_for, session, f
 from flask_login import logout_user, LoginManager, login_user, current_user
 import db_session
 from Classes import Item_user, User, Item_shop
-from sqlalchemy.exc import IntegrityError
 from tgbotiha import check_response
 from werkzeug.security import generate_password_hash, check_password_hash
 import os
