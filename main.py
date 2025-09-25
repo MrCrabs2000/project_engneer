@@ -1,13 +1,13 @@
 from flask import Flask, request, render_template, redirect, url_for, session, flash
 from flask_login import logout_user, LoginManager, login_user, current_user
 from sqlalchemy.testing.suite.test_reflection import users
-
 import db_session
 from Classes import Item_user, User, Item_shop
 from sqlalchemy.exc import IntegrityError
 from tgbotiha import check_response
 from werkzeug.security import generate_password_hash, check_password_hash
 import os
+
 
 app = Flask(__name__)
 app.secret_key = '25112008'
@@ -34,7 +34,8 @@ def main_page():
         if current_user.role == 'Student' or current_user.role == 'Teacher':
             return render_template('main.html', logged_in=True, username=current_user.username,
                                usersurname=current_user.usersurname, userclass=current_user.userclass,
-                               userbalance=current_user.userbalance, phonenumber=current_user.phonenumber)
+                               userbalance=current_user.userbalance, phonenumber=current_user.phonenumber,
+                                   role=current_user.role)
         else:
             if current_user.role == 'Admin':
                 if current_user.role == 'admin':
