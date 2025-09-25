@@ -11,7 +11,7 @@ class User(SqlAlchemyBase, UserMixin):
     username = Column(String(100), nullable=False)
     usersurname = Column(String(100), nullable=False)
     userpassword = Column(String(200), nullable=False)
-    phonenumber = Column(String(20), nullable=True)
+    userotchestvo = Column(String(100), nullable=True)
     userclass = Column(String(100), nullable=False)
     role = Column(String(10), nullable=False, default='user')
     userbalance = Column(String(5), nullable=False, default='0')
