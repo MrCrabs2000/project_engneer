@@ -1,6 +1,5 @@
 from flask import Flask, request, render_template, redirect, url_for, session, flash
 from flask_login import logout_user, LoginManager, login_user, current_user
-from sqlalchemy.testing.suite.test_reflection import users
 import db_session
 from Classes import Item_user, User, Item_shop
 from sqlalchemy.exc import IntegrityError
@@ -11,7 +10,7 @@ import os
 
 app = Flask(__name__)
 app.secret_key = '25112008'
-app.config['TELEGRAM_BOT_TOKEN'] = '8373230853:AAExLeEupdgJyfOZV7o3GtUEiAQZxlWVMr0'
+app.config['TELEGRAM_BOT_TOKEN'] = '83732308533:AAExLeEupdgJyfOZV7o3GtUEiAQZxlWVMr0'
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
