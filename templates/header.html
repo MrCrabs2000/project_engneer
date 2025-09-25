@@ -1,23 +1,24 @@
 <link rel="stylesheet" href="static/css/header.css">
 <header>
-  <div class="header-div">
-    <div class="logo-div">
-      <a href="/"><img class="logo" src="static/images/logo.jpg"></a>
-    </div>
-        <div class="balance">
-            <img src="static/images/coin.png">
-            {% if role == 'Teacher' %}
-                <a>{{userbalance}} - Вы можете раздать</a>
-            {% elif role == 'Student' %}
-                <a>{{userbalance}}</a>
-            {% endif %}
-        </div>
-    <div class="menu-div">
-        {% if role == 'Student' %}
-            <button onclick="document.location='/'"><img src="static/images/shop_icon.png"></button>
-            <button><img src="static/images/history_icon.png"></button>
-        {% endif %}
-        <button onclick="popupToggle()"><img src="static/images/profile_icon.png"></button>
+  <div class="header-left">
+    <a class="logo-a" href="/"><img class="logo" src="static/images/logo.jpg"></a>
+
+    <div class="balance">
+      <img class="balance-ico" src="static/images/coin.png">
+      {% if role == 'Teacher' %}
+        <div>{{userbalance}} - Вы можете раздать</div>
+      {% elif role == 'Student' %}
+        <div>{{userbalance}}</div>
+      {% endif %}
     </div>
   </div>
+
+  <nav class="menu">
+    {% if role == 'Student' %}
+      <button class="menu-btn" onclick="document.location='/'"><img src="static/images/shop_icon.png"></button>
+      <button class="menu-btn"><img src="static/images/history_icon.png"></button>
+    {% endif %}
+    <button class="menu-btn" onclick="popupToggle()"><img src="static/images/profile_icon.png"></button>
+  </nav>
+  
 </header>

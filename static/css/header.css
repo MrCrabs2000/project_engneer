@@ -2,32 +2,21 @@ header {
     background-color: var(--color);
     height: 80px;
     margin: 0 20px 0 20px;
-    align-items: center;
+    display: flex;
+    justify-content: space-between;
     border-radius: 0 0 16px 16px;
 }
 
-.header-div {
-    height: 100%;
-    width: 100%;
+.header-left {
     display: flex;
+    flex-direction: row;
 }
 
-.logo-div {
+.logo-a {
     height: fit-content;
     width: fit-content;
     margin: auto 6px;
     display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    
-}
-
-.logo-div a {
-    height: fit-content;
-    width: fit-content;
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
 }
 
 .logo {
@@ -45,30 +34,29 @@ header {
     align-items: center;
 }
 
-.balance img {
+.balance-ico {
     height: 70px;
     width: auto;
 }
 
-.balance a {
+.balance div {
     margin-left: 12px;
-    color: #292929;
+    color: var(--text-color);
     font-size: 52px;
 }
 
-.menu-div {
-    width: 100%;
+.menu {
+    margin-right: 5px;
     display: flex;
-    justify-content: flex-end;
+    gap: 5px;
     align-items: center;
 }
 
-.menu-div button {
+.menu-btn {
     width: 70px;
     height: 70px;
     padding: 0;
-    margin: 0 5px 0 0;
-    display:flex;
+    display: flex;
     justify-content: center;
     align-items: center;
     border: 0;
@@ -76,11 +64,11 @@ header {
     background-color: var(--accent-color);
 }
 
-.menu-div button:hover {
+.menu-btn:hover {
     background-color: #ca4828;
 }
 
-.menu-div button img {
+.menu-btn img {
     height: 58px;
     width: auto;
 }
