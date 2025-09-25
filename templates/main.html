@@ -11,8 +11,17 @@
   <body>
     {% include 'header.html' %}
     {% include 'profile-popup.html' %}
-
-    <div class="shop">
+    {% if role == 'Student' %}
+        <div class="shop">
+          <div class="card">
+            <a>
+              <div class="content">
+                <img src="static/images/test.jpg"/>
+                <p>1111111111111</p>
+              </div>
+            </a>
+          </div>
+        </div>
 
       <div class="card">
         <a>
@@ -20,36 +29,64 @@
             <img src="static/images/test.jpg"/>
             <p>Картошка1</p>
           </div>
+          <div class="card">
+            <a>
+              <div class="content">
+                <img src="static/images/test.jpg"/>
+                <p>22222222222</p>
+              </div>
+            </a>
+          </div>
         </a>
       </div>
-
       <div class="card">
         <a>
           <div class="content">
             <img src="static/images/test.jpg"/>
             <p>Картошка2</p>
           </div>
+          <div class="card">
+            <a>
+              <div class="content">
+                <img src="static/images/test.jpg"/>
+                <p>3333333333</p>
+              </div>
+            </a>
+          </div>
         </a>
       </div>
-
       <div class="card">
         <a>
           <div class="content">
             <img src="static/images/test.jpg"/>
             <p>Картошка3</p>
           </div>
+          <div class="card">
+            <a>
+              <div class="content">
+                <img src="static/images/test.jpg"/>
+                <p>44444 fdfsdf fsdfsdfdfsdfdsfsdf</p>
+              </div>
+            </a>
+          </div>
         </a>
       </div>
-
       <div class="card">
         <a>
           <div class="content"> 
             <img src="static/images/test.jpg"/>
             <p>Картошка4</p>
           </div>
+          <div class="card">
+            <a>
+              <div class="content">
+                <img src="static/images/test.jpg"/>
+                <p>555555555555</p>
+              </div>
+            </a>
+          </div>
         </a>
       </div>
-
       <div class="card">
         <a>
           <div class="content">
@@ -67,8 +104,7 @@
           </div>
         </a>
       </div>
-
-    </div>
+    {% endif %}
 
   </body>
 </html>

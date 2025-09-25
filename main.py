@@ -32,8 +32,8 @@ def main_page():
         if current_user.role == 'Student' or current_user.role == 'Teacher':
             return render_template('main.html', logged_in=True, username=current_user.username,
                                usersurname=current_user.usersurname, userclass=current_user.userclass,
-                               userbalance=current_user.userbalance, phonenumber=current_user.phonenumber,
-                                   role=current_user.role)
+                               userbalance=current_user.userbalance, userotchestvo=current_user.userotchestvo,
+                               role=current_user.role)
         else:
             if current_user.role == 'Admin':
                 if current_user.role == 'admin':
@@ -45,14 +45,14 @@ def main_page():
                         userr['username'] = user.username
                         userr['userclass'] = user.userclass
                         userr['userrole'] = user.role
-                        userr['phonenumber'] = user.phonenumber
+                        userr['userotchestvo'] = user.userotchestvo
                         userr['userbalance'] = user.userbalance
                         all_users.append(userr.copy())
                 session.close()
 
                 return render_template('main.html', logged_in=True, username=current_user.username,
                                        usersurname=current_user.usersurname, userclass=current_user.userclass,
-                                       userbalance=current_user.userbalance, phonenumber=current_user.phonenumber, all_users=[])
+                                       userbalance=current_user.userbalance, userotchestvo=current_user.userotchestvo, all_users=[])
 
     return render_template('index.html')
 
@@ -89,7 +89,7 @@ def register():
                 username=username,
                 usersurname=usersurname,
                 userpassword=generate_password_hash(password),
-                phonenumber='',
+                userotchestvo='x',
                 userclass=userclass,
                 role='Student',
                 userbalance='0',
@@ -99,7 +99,7 @@ def register():
             session['usersurname'] = new_user.usersurname
             session['userclass'] = new_user.userclass
             session['role'] = new_user.role
-            session['phonenumber'] = new_user.phonenumber
+            session['userotchestvo'] = new_user.userotchestvo
             session['userbalance'] = new_user.userbalance
             session_db.add(new_user)
             session_db.commit()
@@ -138,7 +138,7 @@ def login():
             session['usersurname'] = user.usersurname
             session['userclass'] = user.userclass
             session['role'] = user.role
-            session['phonenumber'] = user.phonenumber
+            session['userotchestvo'] = user.userotchestvo
             session['userbalance'] = user.userbalance
             session_db.close()
             login_user(user)
@@ -185,7 +185,7 @@ def profile():
         return render_template('profile.html', username = session['username'],
         usersurname = session['usersurname'],
         userclass = session['userclass'],
-        phonenumber = session['phonenumber'],
+        userotchestvo = session['userotchestvo'],
         role = session['role'],
         userbalance = session['userbalance'])
 
