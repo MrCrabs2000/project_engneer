@@ -36,23 +36,23 @@ def main_page():
                                role=current_user.role)
         else:
             if current_user.role == 'Admin':
-                if current_user.role == 'admin':
-                    users = session.query(User).all()
-                    all_users = []
-                    for user in users:
-                        userr = {}
-                        userr['id'] = user.id
-                        userr['username'] = user.username
-                        userr['userclass'] = user.userclass
-                        userr['userrole'] = user.role
-                        userr['userotchestvo'] = user.userotchestvo
-                        userr['userbalance'] = user.userbalance
-                        all_users.append(userr.copy())
+                users = session.query(User).all()
+                all_users = []
+                for user in users:
+                    userr = {}
+                    userr['id'] = user.id
+                    userr['username'] = user.username
+                    userr['userclass'] = user.userclass
+                    userr['userrole'] = user.role
+                    userr['userotchestvo'] = user.userotchestvo
+                    userr['userbalance'] = user.userbalance
+                    all_users.append(userr.copy())
                 session.close()
 
                 return render_template('main.html', logged_in=True, username=current_user.username,
                                        usersurname=current_user.usersurname, userclass=current_user.userclass,
-                                       userbalance=current_user.userbalance, userotchestvo=current_user.userotchestvo, all_users=[])
+                                       userbalance=current_user.userbalance, userotchestvo=current_user.userotchestvo,
+                                       all_users=all_users, colvousers=len(all_users))
 
     return render_template('index.html')
 
