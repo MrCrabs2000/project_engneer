@@ -1,24 +1,28 @@
-.shop {
-    margin: 0 20px;
-    margin-top: 12px;
+.products-grid {
     display: grid;
-    grid-template-columns: repeat(6, 1fr) ;
-    grid-gap: 10px;
-    grid-auto-rows:  minmax(300px, 0px) 22vw;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1rem;
+    padding: 2rem 20px;
+    max-width: 1400px;
+    margin: 0 auto;
 }
 
-
-
-.card {
-    min-width: 200px;
+.product-card {
     display: flex;
     flex-direction: column;
     align-items: center;
     background-color: var(--color);
     border-radius: 16px;
+    box-shadow: 0 4px 3px 0 rgba(0,0,0,0.2);
+    transition: transform 0.3s;
 }
 
-.card a {
+.product-card:hover {
+    cursor: pointer;
+    transform: translateY(-6px);
+}
+
+.product-card a {
     width: 100%;
     height: 100%;
 }

@@ -1,4 +1,4 @@
-:root {
+* {
   --color: #8babda;
   --accent-color: #dd582c;
   --sign-hover-color: #779cd4;
@@ -15,7 +15,7 @@ html, body {
     font-weight: 500;
 }
 
-.centered-div, .sign-div, .profile-div {
+.centered-div, .sign-div, .profile {
     position: absolute;
     left: 50%;
     top: 50%;

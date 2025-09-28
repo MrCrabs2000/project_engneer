@@ -11,18 +11,18 @@
   <body>
     {% include 'header.html' %}
     {% include 'profile-popup.html' %}
-    <div class="profile-div">
-      <div class="userdata">
-        <div>
-          <a>Имя:</a>
+    <div class="profile">
+      <div class="userdata-list">
+        <div class="userdata">
+          <label>Имя:</label>
           <input type="text" value="{{username}}" readonly>
         </div>
-        <div>
-          <a>Фамилия:</a>
+        <div class="userdata">
+          <label>Фамилия:</label>
           <input type="text" value="{{usersurname}}" readonly>
         </div>
-        <div>
-          <a>Класс:</a>
+        <div class="userdata">
+          <label>Класс:</label>
           <input text="text" value="{{userclass}}" readonly>
         </div>
       </div>

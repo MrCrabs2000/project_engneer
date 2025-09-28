@@ -1,21 +1,21 @@
-.profile-div {
+.profile {
     flex-direction: column;
 }
 
-.userdata {
+.userdata-list {
     padding: 32px;
     flex-direction: column;
     background-color: var(--color);
     border-radius: 16px;
 }
 
-.userdata div {
+.userdata {
     display: flex;
     flex-direction: row;
     margin: 12px 0;
 }
 
-.userdata div a {
+.userdata label {
     height: 64px;
     width: 220px;
     margin: 12px 8px;
@@ -27,7 +27,7 @@
     border-radius: 16px;
 }
 
-.userdata div a + input {
+.userdata label + input {
     height: 64px;
     width: 300px;
     margin: 12px 8px;
