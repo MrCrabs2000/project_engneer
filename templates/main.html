@@ -12,14 +12,17 @@
     {% include 'header.html' %}
     {% include 'profile-popup.html' %}
     {% if role == 'Admin' %}
-        <div class="adminchose">
-            <button onclick="document.location='/users'" class="userbutton">Пользователи</button>
-            <button onclick="document.location='/items'" class="itembutton">Предметы</button>
-        </div>
-        <div>
-            {% for i in range(colvousers) %}
-                <p>{{all_users['']}}</p>
-        </div>
+      <div class="adminchose">
+          <button onclick="document.location='/users'" class="userbutton">Пользователи</button>
+          <button onclick="document.location='/items'" class="itembutton">Предметы</button>
+      </div>
+      <div>
+          {% for i in range(colvousers) %}
+              <p>{{all_users['']}}</p>
+          {% endfor %}
+      </div>
+    
+    {% endif %}
     {% if role == 'Student' %}
       <div class="products-grid">
         <div class="product-card">
