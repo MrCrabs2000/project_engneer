@@ -6,11 +6,7 @@
 
       <div class="balance">
         <img class="balance-ico" src="static/images/coin.png">
-        {% if role == 'Teacher' %}
-          <div>{{userbalance}} - Вы можете раздать</div>
-        {% elif role == 'Student' %}
           <div>{{userbalance}}</div>
-        {% endif %}
       </div>
     </div>
 

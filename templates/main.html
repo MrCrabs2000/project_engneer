@@ -23,9 +23,7 @@
           {% endfor %}
       </div>
 
-    {% endif %}
-
-    {% if role == 'Student' %}
+    {% elif role == 'Student' %}
       <div class="products-grid">
         <div class="product-card">
           <a>
@@ -72,28 +70,24 @@
           </a>
         </div>
       </div>
-    {% endif %}
 
-    {% if role == 'Teacher' %}
-      <div class="teacher-section">
-        <h2>Мои классы</h2>
-        <div class="class-grid">
-          {% if teacher_classes %}
-            {% for class_name in teacher_classes %}
-                   <div class="teacher-section">
-                     <div class="class-card">
-                       <a>
-                         <div class="content">
-                           <p>Класс:</p>
-                           <p> {{ class_name }}</p>
-                         </div>
-                       </a>
-                     </div>
-                     </div>
-            {% endfor %}
-        </div>
+    {% elif role == 'Teacher' %}
+      <h1 class="classes-header">Мои классы:</h1>
+      <div class="class-grid">
+        {% if teacher_classes %}
+          {% for class_name in teacher_classes %}
+                  <div class="teacher-section">
+                   <div class="class-card">
+                      <a>
+                        <div class="content">
+                          <p>{{ class_name }}</p>
+                        </div>
+                      </a>
+                    </div>
+                  </div>
+          {% endfor %}
+        {% endif %}
       </div>
-    {% endif %}
     {% endif %}
 
   </body>
