@@ -48,11 +48,11 @@ def main_page():
                     userr['userbalance'] = user.userbalance
                     all_users.append(userr.copy())
                 session.close()
-
+                print(all_users)
                 return render_template('main.html', logged_in=True, username=current_user.username,
                                        usersurname=current_user.usersurname, userclass=current_user.userclass,
                                        userbalance=current_user.userbalance, userotchestvo=current_user.userotchestvo,
-                                       all_users=all_users, colvousers=len(all_users))
+                                       all_users=all_users, colvousers=len(all_users), role=current_user.role)
 
     return render_template('index.html')
 
