@@ -29,30 +29,36 @@ def load_user(user_id):
 def main_page():
     if current_user.is_authenticated:
         session = db_session.create_session()
-        if current_user.role == 'Student' or current_user.role == 'Teacher':
+        if current_user.role == 'Student':
             return render_template('main.html', logged_in=True, username=current_user.username,
                                usersurname=current_user.usersurname, userclass=current_user.userclass,
                                userbalance=current_user.userbalance, userotchestvo=current_user.userotchestvo,
                                role=current_user.role)
-        else:
-            if current_user.role == 'Admin':
-                users = session.query(User).all()
-                all_users = []
-                for user in users:
-                    userr = {}
-                    userr['id'] = user.id
-                    userr['username'] = user.username
-                    userr['userclass'] = user.userclass
-                    userr['userrole'] = user.role
-                    userr['userotchestvo'] = user.userotchestvo
-                    userr['userbalance'] = user.userbalance
-                    all_users.append(userr.copy())
-                session.close()
-                print(all_users)
-                return render_template('main.html', logged_in=True, username=current_user.username,
-                                       usersurname=current_user.usersurname, userclass=current_user.userclass,
-                                       userbalance=current_user.userbalance, userotchestvo=current_user.userotchestvo,
-                                       all_users=all_users, colvousers=len(all_users), role=current_user.role)
+        elif current_user.role == 'Admin':
+            users = session.query(User).all()
+            all_users = []
+            for user in users:
+                userr = {}
+                userr['id'] = user.id
+                userr['username'] = user.username
+                userr['userclass'] = user.userclass
+                userr['userrole'] = user.role
+                userr['userotchestvo'] = user.userotchestvo
+                userr['userbalance'] = user.userbalance
+                all_users.append(userr.copy())
+            session.close()
+
+            return render_template('main.html', logged_in=True, username=current_user.username,
+                                    usersurname=current_user.usersurname, userclass=current_user.userclass,
+                                    userbalance=current_user.userbalance, userotchestvo=current_user.userotchestvo,
+                                    all_users=all_users, colvousers=len(all_users))
+
+        elif current_user.role == 'Teacher':
+            teacher_classes = current_user.userclass.split(' ')
+            return render_template('main.html', logged_in=True, username=current_user.username,
+                                   usersurname=current_user.usersurname, userclass=current_user.userclass,
+                                   userbalance=current_user.userbalance, userotchestvo=current_user.userotchestvo,
+                                   role=current_user.role, teacher_classes=teacher_classes)
 
     return render_template('index.html')
 

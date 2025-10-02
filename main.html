@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Магазин</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/static/css/shop.css">
+    <link rel="stylesheet" href="/static/css/classes.css">
+  </head>
+  <body>
+    {% include 'header.html' %}
+
+    {% if role == 'Admin' %}
+      <div class="adminchose">
+          <button onclick="document.location='/users'" class="userbutton">Пользователи</button>
+          <button onclick="document.location='/items'" class="itembutton">Предметы</button>
+      </div>
+      <div>
+          {% for i in range(colvousers) %}
+              <p>{{all_users['']}}</p>
+          {% endfor %}
+      </div>
+
+    {% endif %}
+
+    {% if role == 'Student' %}
+      <div class="products-grid">
+        <div class="product-card">
+          <a>
+            <div class="content">
+              <img src="static/images/test.jpg"/>
+              <p>Картошка</p>
+            </div>
+          </a>
+        </div>
+
+        <div class="product-card">
+          <a>
+            <div class="content">
+              <img src="static/images/test.jpg"/>
+              <p>Картошка</p>
+            </div>
+          </a>
+        </div>
+
+        <div class="product-card">
+          <a>
+            <div class="content">
+              <img src="static/images/test.jpg"/>
+              <p>Картошка</p>
+            </div>
+          </a>
+        </div>
+
+        <div class="product-card">
+          <a>
+            <div class="content">
+              <img src="static/images/test.jpg"/>
+              <p>Картошка</p>
+            </div>
+          </a>
+        </div>
+
+        <div class="product-card">
+          <a>
+            <div class="content">
+              <img src="static/images/test.jpg"/>
+              <p>Картошка</p>
+            </div>
+          </a>
+        </div>
+      </div>
+    {% endif %}
+
+    {% if role == 'Teacher' %}
+      <div class="teacher-section">
+        <h2>Мои классы</h2>
+        <div class="class-grid">
+          {% if teacher_classes %}
+            {% for class_name in teacher_classes %}
+                   <div class="teacher-section">
+                     <div class="class-card">
+                       <a>
+                         <div class="content">
+                           <p>Класс:</p>
+                           <p> {{ class_name }}</p>
+                         </div>
+                       </a>
+                     </div>
+                     </div>
+            {% endfor %}
+        </div>
+      </div>
+    {% endif %}
+    {% endif %}
+
+  </body>
+</html>
