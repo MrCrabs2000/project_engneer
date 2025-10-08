@@ -18,9 +18,11 @@
           <button onclick="document.location='/items'" class="itembutton">Предметы</button>
       </div>
       <div>
-          {% for i in range(colvousers) %}
-              <p>{{all_users['']}}</p>
-          {% endfor %}
+          <div>
+              {% for i in range(colvousers) %}
+                  <button onclick="document.location='/user'">{{all_users[i]['username']}} {{all_users[i]['usersurname']}} {{all_users[i]['userotchestvo']}}</button>
+              {% endfor %}
+          </div>
       </div>
 
     {% endif %}
