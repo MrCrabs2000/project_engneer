@@ -30,9 +30,9 @@ def main_page():
         session = db_session.create_session()
         if current_user.role == 'Student':
             return render_template('main.html', logged_in=True, username=current_user.username,
-                               usersurname=current_user.usersurname, userclass=current_user.userclass,
-                               userbalance=current_user.userbalance, userotchestvo=current_user.userotchestvo,
-                               role=current_user.role)
+                                   usersurname=current_user.usersurname, userclass=current_user.userclass,
+                                   userbalance=current_user.userbalance, userotchestvo=current_user.userotchestvo,
+                                   role=current_user.role)
         elif current_user.role == 'Admin':
             users = session.query(User).all()
             all_users = []
@@ -48,9 +48,9 @@ def main_page():
             session.close()
 
             return render_template('main.html', logged_in=True, username=current_user.username,
-                                    usersurname=current_user.usersurname, userclass=current_user.userclass,
-                                    userbalance=current_user.userbalance, userotchestvo=current_user.userotchestvo,
-                                    all_users=all_users, colvousers=len(all_users), role=current_user.role)
+                                   usersurname=current_user.usersurname, userclass=current_user.userclass,
+                                   userbalance=current_user.userbalance, userotchestvo=current_user.userotchestvo,
+                                   all_users=all_users, colvousers=len(all_users), role=current_user.role)
 
         elif current_user.role == 'Teacher':
             teacher_classes = current_user.userclass.split(' ')
@@ -68,9 +68,9 @@ def history():
         session = db_session.create_session()
         if current_user.role == 'Student' or current_user.role == 'Teacher':
             return render_template('history.html', logged_in=True, username=current_user.username,
-                               usersurname=current_user.usersurname, userclass=current_user.userclass,
-                               userbalance=current_user.userbalance, userotchestvo=current_user.userotchestvo,
-                               role=current_user.role)
+                                   usersurname=current_user.usersurname, userclass=current_user.userclass,
+                                   userbalance=current_user.userbalance, userotchestvo=current_user.userotchestvo,
+                                   role=current_user.role)
         else:
             if current_user.role == 'Admin':
                 users = session.query(User).all()
@@ -97,6 +97,7 @@ def register():
     if request.method == 'POST':
         username = request.form['username']
         usersurname = request.form['usersurname']
+        userotchestvo = request.form['userotchestvo']
         userclass = request.form['userclass']
         password = request.form['password']
         confirm_password = request.form['confirm_password']
@@ -124,7 +125,7 @@ def register():
                 username=username,
                 usersurname=usersurname,
                 userpassword=generate_password_hash(password),
-                userotchestvo='x',
+                userotchestvo=userotchestvo,
                 userclass=userclass,
                 role='Student',
                 userbalance='0',
@@ -217,12 +218,12 @@ def logout():
 @app.route('/profile', methods=['GET'])
 def profile():
     if request.method == 'GET':
-        return render_template('profile.html', username = session['username'],
-        usersurname = session['usersurname'],
-        userclass = session['userclass'],
-        userotchestvo = session['userotchestvo'],
-        role = session['role'],
-        userbalance = session['userbalance'])
+        return render_template('profile.html', username=session['username'],
+                               usersurname=session['usersurname'],
+                               userclass=session['userclass'],
+                               userotchestvo=session['userotchestvo'],
+                               role=session['role'],
+                               userbalance=session['userbalance'])
 
 
 @app.route('/profile_edit', methods=['GET', 'POST'])
@@ -262,6 +263,47 @@ def profile_edit():
 def user():
     render_template('user.html')
 
+
+@app.route('/<class_name>', methods=['GET'])
+def class_page(class_name):
+    if current_user.is_authenticated:
+        session_db = db_session.create_session()
+
+        students = session_db.query(User).filter(User.userclass == class_name, User.role == 'Student').all()
+
+        students_list = []
+        for student in students:
+            student_data = {
+                'id': student.id,
+                'username': student.username,
+                'usersurname': student.usersurname,
+                'userotchestvo': student.userotchestvo,
+                'userbalance': student.userbalance
+            }
+            students_list.append(student_data)
+
+        session_db.close()
+
+        return render_template('class_board.html',
+                               logged_in=True,
+                               username=current_user.username,
+                               usersurname=current_user.usersurname,
+                               userclass=current_user.userclass,
+                               userbalance=current_user.userbalance,
+                               userotchestvo=current_user.userotchestvo,
+                               role=current_user.role,
+                               class_name=class_name,
+                               students=students_list,
+                               students_count=len(students_list),
+                               id=current_user.id)
+
+    return redirect(url_for('login'))
+
+
+@app.route('/student/<id>')
+def student_page(id):
+    if id:
+        return render_template('student.html')
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=8000, debug=True)
