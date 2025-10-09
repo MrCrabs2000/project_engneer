@@ -230,24 +230,18 @@ def profile():
 def profile_edit():
     if request.method == 'POST':
         session_db = db_session.create_session()
-
         user = session_db.query(User).filter_by(id=current_user.id).first()
-
         new_username = request.form['username']
         new_usersurname = request.form['usersurname']
         new_userclass = request.form['userclass']
-
         if user and all([new_usersurname, new_username, new_userclass]):
             user.username = new_username
             user.usersurname = new_usersurname
             user.userclass = new_userclass
-
             session_db.commit()
-
             session['username'] = new_username
             session['usersurname'] = new_usersurname
             session['userclass'] = new_userclass
-
             session_db.close()
             return redirect(url_for('profile'))
 
