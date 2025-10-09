@@ -12,23 +12,22 @@
     {% include 'header.html' %} 
     <h1 class="class-header">Класс: {{ class_name }}</h1>
     <div class="students-count">Учеников: {{ students_count }}</div>  
-    <div class="students-grid">
-
+    
       {% if students %}
         <div class="students-grid">
           {% for student in students %}
             <div class="student-card">
-              <div class="student-info">
-                <div class="student-name">
-                  <a href="/student/{{id}}">
-                    {{ student.usersurname }} {{ student.username }} {{ student.userotchestvo }}
-                  </a>
+              <a>
+                <div class="student-info">
+                  <div class="student-name">{{ student.usersurname }} {{ student.username[0] }}. {{ student.userotchestvo[0] }}.</div>
+
+                  <div class="student-balance">
+                    <img class="student-balance-ico" src="static/images/coin.png">
+                    <div>{{userbalance}}</div>
+                  </div>
+
                 </div>
-                <div class="studetn-balance">
-                  <img class="student-balance-ico" src="static/images/coin.png">
-                  <div>{{userbalance}}</div>
-                </div>
-              </div>
+              </a>
             </div>
           {% endfor %}
         </div>

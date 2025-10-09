@@ -2,6 +2,7 @@
     max-width: 1400px;
     margin: 20px auto 0 auto;
     text-align: left;
+    color: var(--text-color);
     font-size: 40px;
     font-weight: 800;
 }
@@ -10,15 +11,73 @@
     max-width: 1400px;
     margin: 20px auto 0 auto;
     text-align: left;
-    font-size: 40px;
-    font-weight: 800;
+    color: var(--text-color);
+    font-size: 32px;
+    font-weight: 600;
 }
 
 .students-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     gap: 1rem;
     padding: 1rem 0px;
     max-width: 1400px;
     margin: 0 auto;
+}
+
+.student-card {
+    width: 100%;
+    aspect-ratio: 4 / 2;
+    background-color: var(--color);
+    border-radius: 16px;
+    box-shadow: 0 4px 3px 0 rgba(0,0,0,0.2);
+    transition: transform 0.3s;
+}
+
+.student-card:hover {
+    cursor: pointer;
+    transform: translateY(-6px);
+}
+
+.student-card a {
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+}
+
+.student-info {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 8px 8px;
+    width: 100%;
+    height: 100%;
+    word-wrap: break-word;
+    color: var(--text-color);
+}
+
+.student-name {
+    font-size: 32px;
+    font-weight: 600;
+}
+
+.student-balance {
+    height: fit-content;
+    width: fit-content;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.student-balance-ico {
+    height: 50px;
+    width: auto;
+}
+
+.student-balance div {
+    margin-left: 12px;
+    color: var(--text-color);
+    font-size: 40px;
 }
