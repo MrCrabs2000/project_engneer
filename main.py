@@ -156,6 +156,7 @@ def login():
     if request.method == 'POST':
         username = request.form['username']
         usersurname = request.form['usersurname']
+        userotchestvo = request.form['userotchestvo']
         password = request.form['password']
 
         if not all([username, usersurname, password]):
@@ -166,7 +167,8 @@ def login():
 
         user = session_db.query(User).filter_by(
             username=username,
-            usersurname=usersurname
+            usersurname=usersurname,
+            userotchestvo=userotchestvo
         ).first()
 
         if user and check_password_hash(user.userpassword, password):
@@ -297,7 +299,10 @@ def class_page(class_name):
 
 @app.route('/userprofile/<userid>')
 def userprof(userid):
-    return render_template('user.html', id=userid)
+    session_db = db_session.create_session()
+    user = session_db.query(User).filter_by(id=userid).first()
+    session_db.close()
+    return render_template('user.html', user=user)
 
 
 @app.route('/itemsshop')
