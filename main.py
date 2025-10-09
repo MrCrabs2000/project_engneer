@@ -6,6 +6,7 @@ from tgbotiha import check_response
 from werkzeug.security import generate_password_hash, check_password_hash
 import os
 
+
 app = Flask(__name__)
 app.secret_key = '25112008'
 app.config['TELEGRAM_BOT_TOKEN'] = '83732308533:AAExLeEupdgJyfOZV7o3GtUEiAQZxlWVMr0'
@@ -40,13 +41,13 @@ def main_page():
                 userr = {}
                 userr['id'] = user.id
                 userr['username'] = user.username
+                userr['usersurname'] = user.usersurname
                 userr['userclass'] = user.userclass
                 userr['userrole'] = user.role
                 userr['userotchestvo'] = user.userotchestvo
                 userr['userbalance'] = user.userbalance
                 all_users.append(userr.copy())
             session.close()
-
             return render_template('main.html', logged_in=True, username=current_user.username,
                                    usersurname=current_user.usersurname, userclass=current_user.userclass,
                                    userbalance=current_user.userbalance, userotchestvo=current_user.userotchestvo,
@@ -292,6 +293,16 @@ def class_page(class_name):
                                id=current_user.id)
 
     return redirect(url_for('login'))
+
+
+@app.route('/userprofile/<userid>')
+def userprof(userid):
+    return render_template('user.html', id=userid)
+
+
+@app.route('/itemsshop')
+def itemsshop():
+    return render_template('')
 
 
 @app.route('/student/<id>')
