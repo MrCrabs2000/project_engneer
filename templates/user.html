@@ -3,10 +3,11 @@
   <head>
       <meta charset="UTF-8">
       <title>Title</title>
-      <meta name="viewport" content="width=device-width" />
-      <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
+      <meta name="viewport" content="width=device-width"/>
   </head>
   <body>
-    <p>{{ user }}</p>
+    {% include 'header.html' %}
+    <p>{{ user['username'] }}<br>{{ user['usersurname'] }}<br>{{ user['userotchestvo'] }}<br>{{ user['role'] }}<br>{{ user['userclass'] }}</p>
+    <br><button onclick="document.location='/edituser/{{ user['id'] }}'">Редактировать пользователя</button>
   </body>
 </html>

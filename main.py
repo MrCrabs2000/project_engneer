@@ -307,7 +307,18 @@ def userprof(userid):
 
 @app.route('/itemsshop')
 def itemsshop():
-    return render_template('')
+    return render_template('items.html')
+
+
+@app.route('/edituser/<id>')
+def edituser(userid):
+    session_db = db_session.create_session()
+    user = session_db.query(User).filter_by(id=userid).first()
+    if request.method == 'POST':
+        user.username = request.form['name']
+        user.usersurname = request.form['surname']
+    session_db.close()
+    return render_template('edituser.html', user=user)
 
 
 @app.route('/student/<id>')
