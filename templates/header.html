@@ -1,21 +1,21 @@
-<link rel="stylesheet" href="static/css/header.css">
+<link rel="stylesheet" href="/static/css/header.css">
 <header>
   <div class="header-container">
     <div class="header-left">
-      <a class="logo-a" href="/"><img class="logo" src="static/images/logo.jpg"></a>
+      <a class="logo-a" href="/"><img class="logo" src="/static/images/logo.jpg"></a>
 
       <div class="balance">
-        <img class="balance-ico" src="static/images/coin.png">
+        <img class="balance-ico" src="/static/images/coin.png">
           <div>{{userbalance}}</div>
       </div>
     </div>
 
     <nav class="menu">
       {% if role == 'Student' %}
-        <button class="menu-btn" onclick="document.location='/'"><img src="static/images/shop_icon.png"></button>
-        <button class="menu-btn" onclick="document.location='/history'"><img src="static/images/history_icon.png"></button>
+        <button class="menu-btn" onclick="document.location='/'"><img src="/static/images/shop_icon.png"></button>
+        <button class="menu-btn" onclick="document.location='/history'"><img src="/static/images/history_icon.png"></button>
       {% endif %}
-      <button class="menu-btn" onclick="popupToggle()"><img src="static/images/profile_icon.png"></button>
+      <button class="menu-btn" onclick="popupToggle()"><img src="/static/images/profile_icon.png"></button>
     </nav>
   </div>
   {% include 'profile-popup.html' %}
