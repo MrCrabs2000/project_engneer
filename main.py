@@ -256,11 +256,6 @@ def profile_edit():
                            role=session['role'])
 
 
-@app.route('/user', methods=['GET', 'POST'])
-def user():
-    render_template('user.html')
-
-
 @app.route('/<class_name>', methods=['GET'])
 def class_page(class_name):
     if current_user.is_authenticated:
@@ -302,7 +297,7 @@ def userprof(userid):
     session_db = db_session.create_session()
     user = session_db.query(User).filter_by(id=userid).first()
     session_db.close()
-    return render_template('user.html', user=user)
+    return render_template('user.html', user=user, role=current_user.role)
 
 
 @app.route('/itemsshop')
@@ -310,20 +305,39 @@ def itemsshop():
     return render_template('items.html')
 
 
-@app.route('/edituser/<id>')
+@app.route('/edituser/<userid>', methods=['GET', 'POST'])
 def edituser(userid):
     session_db = db_session.create_session()
     user = session_db.query(User).filter_by(id=userid).first()
     if request.method == 'POST':
-        user.username = request.form['name']
-        user.usersurname = request.form['surname']
+        nusername = request.form['name']
+        nusersurname = request.form['surname']
+        nuserotchestvo = request.form['otchestvo']
+        nuserclass = request.form['class']
+        nrole = request.form['role']
+        nuserbalance = request.form['balance']
+        if nusersurname:
+            user.usersurname = nusersurname
+        if nuserotchestvo:
+            user.userotchestvo = nuserotchestvo
+        if nusername:
+            user.username = nusername
+        if nuserclass:
+            user.userclass = nuserclass
+        if nuserbalance:
+            user.userbalance = nuserbalance
+        if nrole:
+            user.role = nrole
+        print(1)
+        session_db.commit()
+        return redirect(url_for('userprof', userid=user.id))
     session_db.close()
     return render_template('edituser.html', user=user)
 
 
-@app.route('/student/<id>')
-def student_page(id):
-    if id:
+@app.route('/student/<iduser>')
+def student_page(iduser):
+    if iduser:
         return render_template('student.html')
 
 if __name__ == "__main__":
