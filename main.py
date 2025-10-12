@@ -340,5 +340,16 @@ def student_page(iduser):
     if iduser:
         return render_template('student.html')
 
+
+@app.route('/deluser/<iduser>')
+def deluser_page(iduser):
+    session_db = db_session.create_session()
+    user = session_db.query(User).filter_by(id=iduser).first()
+    session_db.delete(user)
+    session_db.commit()
+    session_db.close()
+    return redirect(url_for('main_page'))
+
+
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=8000, debug=True)

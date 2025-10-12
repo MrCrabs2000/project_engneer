@@ -26,9 +26,11 @@
                 <option>Teacher</option>
             {% endif %}
         </select>
-        <input value="Введите новый пароль" name="password">
+        <input placeholder="Введите новый пароль" name="password">
         <input value="{{ user['userbalance'] }}" type="number" name="balance">
         <input type="submit">
     </form>
+    <button onclick="document.location='/deluser/{{ user['id'] }}'">удалить пользователя</button><br>
+    <button onclick="document.location='/userprofile/{{ user['id'] }}'">Назад</button>
 </body>
 </html>
