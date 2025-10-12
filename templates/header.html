@@ -14,6 +14,9 @@
       {% if role == 'Student' %}
         <button class="menu-btn" onclick="document.location='/'"><img src="/static/images/shop_icon.png"></button>
         <button class="menu-btn" onclick="document.location='/history'"><img src="/static/images/history_icon.png"></button>
+      {% elif role == 'Admin'%}
+        <a href="/" class="userbutton">Пользователи</a>
+        <a href="/items" class="itembutton">Предметы</a>       
       {% endif %}
       <button class="menu-btn" onclick="popupToggle()"><img src="/static/images/profile_icon.png"></button>
     </nav>

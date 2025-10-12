@@ -276,7 +276,7 @@ def class_page(class_name):
 
         session_db.close()
 
-        return render_template('class_board.html',
+        return render_template('class.html',
                                logged_in=True,
                                username=current_user.username,
                                usersurname=current_user.usersurname,
