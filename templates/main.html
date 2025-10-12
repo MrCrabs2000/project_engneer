@@ -18,6 +18,10 @@
           <button onclick="document.location='/items'" class="itembutton">Предметы</button>
       </div>
         <button onclick="document.location='/adduser'">Добавить пользователя</button>
+        <form enctype="multipart/form-data" method="post">
+            <input type="number" name="razdbalance">
+            <input type="submit" value="Раздать">
+        </form>
       <div>
           <div>
               {% for i in range(colvousers) %}
