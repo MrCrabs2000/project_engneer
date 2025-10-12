@@ -16,6 +16,6 @@
     <p>{{ user['username'] }}<br>{{ user['usersurname'] }}<br>{{ user['userotchestvo'] }}<br>{{ user['role'] }}<br>{{ user['userclass'] }}<br>{{ user['userbalance'] }}</p>
     <br><button onclick="document.location='/edituser/{{ user['id'] }}'">Редактировать пользователя</button>
     <br><br><button onclick="document.location='/'">Назад</button><br><br>
-
+    <button onclick="document.location='/enteracc/{{ user['id'] }}'"></button>
   </body>
 </html>

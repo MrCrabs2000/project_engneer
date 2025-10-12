@@ -49,15 +49,28 @@ def main_page():
                 all_users.append(userr.copy())
             session.close()
             if request.method == 'POST':
-                for user in all_users:
-                    razdbal = request.form['razdbalance']
-                    if user['role'] == 'Teacher':
-                        session_db = db_session.create_session()
-                        userr = session_db.query(User).filter_by(id=user['id']).first()
-                        user['userbalance'] = int(user['userbalance']) + int(razdbal)
-                        userr.userbalance = user['userbalance']
-                        session_db.commit()
-                        session_db.close()
+                if request.form['razbalance']:
+                    for user in all_users:
+                        razdbal = request.form['razdbalance']
+                        if user['role'] == 'Teacher':
+                            session_db = db_session.create_session()
+                            userr = session_db.query(User).filter_by(id=user['id']).first()
+                            user['userbalance'] = int(user['userbalance']) + int(razdbal)
+                            userr.userbalance = user['userbalance']
+                            session_db.commit()
+                            session_db.close()
+                else:
+                    sort = request.form['sort']
+                    bysort = request.form['bysort']
+                    session_db = db_session.create_session()
+                    print(sort, bysort)
+                    if sort == 'Класс':
+                        all_users = session_db.query(User).filter_by(userclass=bysort).all()
+                    elif sort == 'Фамилия':
+                        all_users = session_db.query(User).filter_by(usersurname=bysort).all()
+                    else:
+                        all_users = session_db.query(User).filter_by(role=bysort).all()
+                    session_db.close()
             return render_template('main.html', logged_in=True, username=current_user.username,
                                    usersurname=current_user.usersurname, userclass=current_user.userclass,
                                    userbalance=current_user.userbalance, userotchestvo=current_user.userotchestvo,
