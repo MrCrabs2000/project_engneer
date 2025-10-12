@@ -14,6 +14,12 @@
     {% include 'header.html' %}
 
     {% if role == 'Admin' %}
+      <button onclick="document.location='/adduser'">Добавить пользователя</button>
+      <form enctype="multipart/form-data" method="post">
+          <input type="number" name="razdbalance">
+          <input type="submit" value="Раздать">
+      </form>
+      
       <div class="users-grid">
         {% for i in range(colvousers) %}
           <div class="user-card">
