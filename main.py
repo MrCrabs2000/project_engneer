@@ -351,5 +351,40 @@ def deluser_page(iduser):
     return redirect(url_for('main_page'))
 
 
+@app.route('/adduser', methods=['GET', 'POST'])
+def adduser():
+    if request.method == 'POST':
+        name = request.form['name']
+        surname = request.form['surname']
+        otchestvo = request.form['otchestvo']
+        userclass = request.form['class']
+        userbalance = request.form['balance']
+        role = request.form['role']
+        password = request.form['password']
+        secondpassword = request.form['secondpassword']
+        if password == secondpassword:
+            new_user = User(
+                username=name,
+                usersurname=surname,
+                userpassword=generate_password_hash(password),
+                userotchestvo=otchestvo,
+                userclass=userclass,
+                role=role,
+                userbalance=userbalance,
+            )
+            session_db = db_session.create_session()
+            session['user_id'] = new_user.id
+            session['username'] = new_user.username
+            session['usersurname'] = new_user.usersurname
+            session['userclass'] = new_user.userclass
+            session['role'] = new_user.role
+            session['userotchestvo'] = new_user.userotchestvo
+            session['userbalance'] = new_user.userbalance
+            session_db.add(new_user)
+            session_db.commit()
+            return redirect(url_for('main_page'))
+    return render_template('adduser.html')
+
+
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=8000, debug=True)
