@@ -49,9 +49,9 @@ def main_page():
                 all_users.append(userr.copy())
             session.close()
             if request.method == 'POST':
-                if request.form['razbalance']:
+                try:
+                    razdbal = request.form['razdbalance']
                     for user in all_users:
-                        razdbal = request.form['razdbalance']
                         if user['role'] == 'Teacher':
                             session_db = db_session.create_session()
                             userr = session_db.query(User).filter_by(id=user['id']).first()
@@ -59,11 +59,10 @@ def main_page():
                             userr.userbalance = user['userbalance']
                             session_db.commit()
                             session_db.close()
-                else:
+                except Exception:
                     sort = request.form['sort']
                     bysort = request.form['bysort']
                     session_db = db_session.create_session()
-                    print(sort, bysort)
                     if sort == 'Класс':
                         all_users = session_db.query(User).filter_by(userclass=bysort).all()
                     elif sort == 'Фамилия':
@@ -71,6 +70,12 @@ def main_page():
                     else:
                         all_users = session_db.query(User).filter_by(role=bysort).all()
                     session_db.close()
+                finally:
+                    return render_template('main.html', logged_in=True, username=current_user.username,
+                                           usersurname=current_user.usersurname, userclass=current_user.userclass,
+                                           userbalance=current_user.userbalance,
+                                           userotchestvo=current_user.userotchestvo,
+                                           all_users=all_users, colvousers=len(all_users), role=current_user.role)
             return render_template('main.html', logged_in=True, username=current_user.username,
                                    usersurname=current_user.usersurname, userclass=current_user.userclass,
                                    userbalance=current_user.userbalance, userotchestvo=current_user.userotchestvo,
