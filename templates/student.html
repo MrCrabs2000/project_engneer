@@ -1,16 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Ученик {{ username }}</title>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/static/css/style.css">
-    <link rel="stylesheet" href="/static/css/sign.css">
-    <link rel="stylesheet" href="/static/css/header.css">
-</head>
-<body>
-  {% include 'header.html' %}
+{% extends "base.html" %}
 
+{% block title %}Ученик {{ username }}{% endblock  %}
+
+{% block links %}
+  <link rel="stylesheet" href="/static/css/sign.css">
+{% endblock %}
+
+{% block content %}
   <div class="sign-div">
     <form class="inputs" method="POST" action="/student/{{ iduser }}">
       <h2>{{ username }} {{ usersurname }}</h2>
@@ -22,5 +18,4 @@
       <button type="button" class="back-button" onclick="document.location='/{{ userclass }}'">Назад</button>
     </form>
   </div>
-</body>
-</html>
+{% endblock %}
