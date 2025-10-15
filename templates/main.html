@@ -10,7 +10,6 @@
     <link rel="stylesheet" href="/static/css/classes.css">
     <link rel="stylesheet" href="/static/css/users-list.css">
   </head>
-  <body>
     {% include 'header.html' %}
     {% if role == 'Admin' %}
         <button onclick="document.location='/adduser'">Добавить пользователя</button>
@@ -33,6 +32,7 @@
             <input type="submit" value="Искать">
           </div>
         </form><br>
+        <button onclick="document.location='/'">Отменить все фильтры</button>
       <div class="users-grid">
         {% for i in range(colvousers) %}
           <div class="user-card">
