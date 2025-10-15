@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy import Column, Integer, String
 from db_session import SqlAlchemyBase
 from flask_login import UserMixin
 

@@ -2,9 +2,25 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Ученик {{ username }}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/static/css/sign.css">
+    <link rel="stylesheet" href="/static/css/header.css">
 </head>
 <body>
+  {% include 'header.html' %}
 
+  <div class="sign-div">
+    <form class="inputs" method="POST" action="/student/{{ iduser }}">
+      <h2>{{ username }} {{ usersurname }}</h2>
+      <p class="class-info">Класс: {{ userclass }}</p>
+      <p class="balance-info">Баланс: <strong>{{ userbalance }} монет</strong></p>
+      <input type="number" name="stud_balance" placeholder="Число монет" min="1" required>
+      <input type="submit" name="action" value="Добавить" class="submit-button">
+      <input type="submit" name="action" value="Отнять" class="submit-button">
+      <button type="button" class="back-button" onclick="document.location='/{{ userclass }}'">Назад</button>
+    </form>
+  </div>
 </body>
 </html>

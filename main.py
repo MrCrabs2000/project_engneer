@@ -321,10 +321,56 @@ def edituser(userid):
     return render_template('edituser.html', user=user)
 
 
-@app.route('/student/<id>')
-def student_page(id):
-    if id:
-        return render_template('student.html')
+@app.route('/student/<iduser>', methods=['GET', 'POST'])
+def student_page(iduser):
+    if iduser:
+        session_db = db_session.create_session()
+        user = session_db.query(User).filter_by(id=iduser).first()
+        teacher = session_db.query(User).filter_by(id=current_user.id).first()
+
+        if not user or not teacher:
+            session_db.close()
+            return redirect(url_for('main_page'))
+
+        if request.method == 'POST':
+            stud_balance = request.form.get('stud_balance')
+            action = request.form.get('action')
+
+            if stud_balance and stud_balance.isdigit():
+                balance_change = int(stud_balance)
+
+                if balance_change <= 0:
+                    flash("Сумма должна быть положительной", "error")
+                else:
+                    if action == 'Добавить':
+                        if int(teacher.userbalance) >= balance_change:
+                            user.userbalance = str(int(user.userbalance) + balance_change)
+                            teacher.userbalance = str(int(teacher.userbalance) - balance_change)
+                            session_db.commit()
+
+                    elif action == 'Отнять':
+                        if int(user.userbalance) >= balance_change:
+                            user.userbalance = str(int(user.userbalance) - balance_change)
+                            teacher.userbalance = str(int(teacher.userbalance) + balance_change)
+                            session_db.commit()
+
+        username = user.username
+        usersurname = user.usersurname
+        userclass = user.userclass
+        userbalance = user.userbalance
+        teacher_balance = teacher.userbalance
+
+        session_db.close()
+
+        return render_template('student.html',
+                               username=username,
+                               usersurname=usersurname,
+                               userclass=userclass,
+                               userbalance=userbalance,
+                               teacher_balance=teacher_balance,
+                               iduser=iduser)
+
+    return redirect(url_for('main_page'))
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=8000, debug=True)

@@ -17,7 +17,7 @@
         <div class="students-grid">
           {% for student in students %}
             <div class="student-card">
-              <a>
+              <a href="/student/{{ student.id }}">
                 <div class="student-info">
                   <div class="student-name">{{ student.usersurname }} {{ student.username[0] }}. {{ student.userotchestvo[0] }}.</div>
 
@@ -36,6 +36,7 @@
           <p>В этом классе пока нет учеников</p>
         </div>
       {% endif %}
+    <br><button onclick="document.location='/'">Назад</button>
     </div>
   </body>
 </html>

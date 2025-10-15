@@ -58,3 +58,51 @@ input.submit-button {
     border: 0;
     border-radius: 16px;
 }
+
+.student-info {
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: #f5f5f5;
+    border-radius: 8px;
+}
+
+.student-info p {
+    margin: 10px 0;
+    font-size: 16px;
+}
+
+.balance-control {
+    margin: 20px 0;
+}
+
+.balance-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.balance-buttons input[type="submit"] {
+    flex: 1;
+}
+
+.back-button {
+    width: 100%;
+    padding: 12px;
+    background-color: #6c757d;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.back-button:hover {
+    background-color: #5a6268;
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+}
