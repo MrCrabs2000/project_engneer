@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body>
     {% include 'header.html' %}
@@ -26,9 +27,11 @@
                 <option>Teacher</option>
             {% endif %}
         </select>
-        <input value="Введите новый пароль" name="password">
+        <input placeholder="Введите новый пароль" name="password">
         <input value="{{ user['userbalance'] }}" type="number" name="balance">
-        <input type="submit">
-    </form>>
+        <input type="submit" value="Подтвердить изменения">
+    </form>
+    <button onclick="document.location='/deluser/{{ user['id'] }}'">удалить пользователя</button><br>
+    <button onclick="document.location='/userprofile/{{ user['id'] }}'">Назад</button>
 </body>
 </html>

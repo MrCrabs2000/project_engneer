@@ -25,7 +25,7 @@ def load_user(user_id):
     return user
 
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def main_page():
     if current_user.is_authenticated:
         session = db_session.create_session()
@@ -43,11 +43,39 @@ def main_page():
                 userr['username'] = user.username
                 userr['usersurname'] = user.usersurname
                 userr['userclass'] = user.userclass
-                userr['userrole'] = user.role
+                userr['role'] = user.role
                 userr['userotchestvo'] = user.userotchestvo
                 userr['userbalance'] = user.userbalance
                 all_users.append(userr.copy())
             session.close()
+            if request.method == 'POST':
+                try:
+                    razdbal = request.form['razdbalance']
+                    for user in all_users:
+                        if user['role'] == 'Teacher':
+                            session_db = db_session.create_session()
+                            userr = session_db.query(User).filter_by(id=user['id']).first()
+                            user['userbalance'] = int(user['userbalance']) + int(razdbal)
+                            userr.userbalance = user['userbalance']
+                            session_db.commit()
+                            session_db.close()
+                except Exception:
+                    sort = request.form['sort']
+                    bysort = request.form['bysort']
+                    session_db = db_session.create_session()
+                    if sort == 'Класс':
+                        all_users = session_db.query(User).filter_by(userclass=bysort).all()
+                    elif sort == 'Фамилия':
+                        all_users = session_db.query(User).filter_by(usersurname=bysort).all()
+                    else:
+                        all_users = session_db.query(User).filter_by(role=bysort).all()
+                    session_db.close()
+                finally:
+                    return render_template('main.html', logged_in=True, username=current_user.username,
+                                           usersurname=current_user.usersurname, userclass=current_user.userclass,
+                                           userbalance=current_user.userbalance,
+                                           userotchestvo=current_user.userotchestvo,
+                                           all_users=all_users, colvousers=len(all_users), role=current_user.role)
             return render_template('main.html', logged_in=True, username=current_user.username,
                                    usersurname=current_user.usersurname, userclass=current_user.userclass,
                                    userbalance=current_user.userbalance, userotchestvo=current_user.userotchestvo,
@@ -81,7 +109,7 @@ def history():
                     userr['id'] = user.id
                     userr['username'] = user.username
                     userr['userclass'] = user.userclass
-                    userr['userrole'] = user.role
+                    userr['role'] = user.role
                     userr['userotchestvo'] = user.userotchestvo
                     userr['userbalance'] = user.userbalance
                     all_users.append(userr.copy())
@@ -129,7 +157,7 @@ def register():
                 userotchestvo=userotchestvo,
                 userclass=userclass,
                 role='Student',
-                userbalance='0',
+                userbalance=0,
             )
             session['user_id'] = new_user.id
             session['username'] = new_user.username
@@ -256,11 +284,6 @@ def profile_edit():
                            role=session['role'])
 
 
-@app.route('/user', methods=['GET', 'POST'])
-def user():
-    render_template('user.html')
-
-
 @app.route('/<class_name>', methods=['GET'])
 def class_page(class_name):
     if current_user.is_authenticated:
@@ -281,7 +304,7 @@ def class_page(class_name):
 
         session_db.close()
 
-        return render_template('class_board.html',
+        return render_template('class.html',
                                logged_in=True,
                                username=current_user.username,
                                usersurname=current_user.usersurname,
@@ -302,7 +325,7 @@ def userprof(userid):
     session_db = db_session.create_session()
     user = session_db.query(User).filter_by(id=userid).first()
     session_db.close()
-    return render_template('user.html', user=user)
+    return render_template('user.html', user=user, role=current_user.role)
 
 
 @app.route('/itemsshop')
@@ -310,13 +333,31 @@ def itemsshop():
     return render_template('items.html')
 
 
-@app.route('/edituser/<id>')
+@app.route('/edituser/<userid>', methods=['GET', 'POST'])
 def edituser(userid):
     session_db = db_session.create_session()
     user = session_db.query(User).filter_by(id=userid).first()
     if request.method == 'POST':
-        user.username = request.form['name']
-        user.usersurname = request.form['surname']
+        nusername = request.form['name']
+        nusersurname = request.form['surname']
+        nuserotchestvo = request.form['otchestvo']
+        nuserclass = request.form['class']
+        nrole = request.form['role']
+        nuserbalance = request.form['balance']
+        if nusersurname:
+            user.usersurname = nusersurname
+        if nuserotchestvo:
+            user.userotchestvo = nuserotchestvo
+        if nusername:
+            user.username = nusername
+        if nuserclass:
+            user.userclass = nuserclass
+        if nuserbalance:
+            user.userbalance = nuserbalance
+        if nrole:
+            user.role = nrole
+        session_db.commit()
+        return redirect(url_for('userprof', userid=user.id))
     session_db.close()
     return render_template('edituser.html', user=user)
 
@@ -371,6 +412,52 @@ def student_page(iduser):
                                iduser=iduser)
 
     return redirect(url_for('main_page'))
+
+
+@app.route('/deluser/<iduser>')
+def deluser_page(iduser):
+    session_db = db_session.create_session()
+    user = session_db.query(User).filter_by(id=iduser).first()
+    session_db.delete(user)
+    session_db.commit()
+    session_db.close()
+    return redirect(url_for('main_page'))
+
+
+@app.route('/adduser', methods=['GET', 'POST'])
+def adduser():
+    if request.method == 'POST':
+        name = request.form['name']
+        surname = request.form['surname']
+        otchestvo = request.form['otchestvo']
+        userclass = request.form['class']
+        userbalance = request.form['balance']
+        role = request.form['role']
+        password = request.form['password']
+        secondpassword = request.form['secondpassword']
+        if password == secondpassword:
+            new_user = User(
+                username=name,
+                usersurname=surname,
+                userpassword=generate_password_hash(password),
+                userotchestvo=otchestvo,
+                userclass=userclass,
+                role=role,
+                userbalance=userbalance,
+            )
+            session_db = db_session.create_session()
+            session['user_id'] = new_user.id
+            session['username'] = new_user.username
+            session['usersurname'] = new_user.usersurname
+            session['userclass'] = new_user.userclass
+            session['role'] = new_user.role
+            session['userotchestvo'] = new_user.userotchestvo
+            session['userbalance'] = new_user.userbalance
+            session_db.add(new_user)
+            session_db.commit()
+            return redirect(url_for('main_page'))
+    return render_template('adduser.html')
+
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=8000, debug=True)

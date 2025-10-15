@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html lang="en-US">
   <head>
+      <meta charset="UTF-8">
+      <title>Title</title>
+      <meta name="viewport" content="width=device-width"/>
+      <link rel="stylesheet" href="/static/css/style.css">
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width"/>
     <title>Title</title>
@@ -9,7 +13,9 @@
   </head>
   <body>
     {% include 'header.html' %}
-    <p>{{ user['username'] }}<br>{{ user['usersurname'] }}<br>{{ user['userotchestvo'] }}<br>{{ user['role'] }}<br>{{ user['userclass'] }}</p>
+    <p>{{ user['username'] }}<br>{{ user['usersurname'] }}<br>{{ user['userotchestvo'] }}<br>{{ user['role'] }}<br>{{ user['userclass'] }}<br>{{ user['userbalance'] }}</p>
     <br><button onclick="document.location='/edituser/{{ user['id'] }}'">Редактировать пользователя</button>
+    <br><br><button onclick="document.location='/'">Назад</button><br><br>
+    <button onclick="document.location='/enteracc/{{ user['id'] }}'"></button>
   </body>
 </html>
