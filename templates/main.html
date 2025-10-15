@@ -9,30 +9,36 @@
     <link rel="stylesheet" href="/static/css/shop.css">
     <link rel="stylesheet" href="/static/css/classes.css">
     <link rel="stylesheet" href="/static/css/users-list.css">
+    <link rel="stylesheet" href="/static/css/admin.css">
   </head>
     {% include 'header.html' %}
     {% if role == 'Admin' %}
-        <button onclick="document.location='/adduser'">Добавить пользователя</button>
-        <form enctype="multipart/form-data" method="post">
-            <input type="number" name="razdbalance">
-            <input type="submit" value="Раздать">
-        </form>
-        <form enctype="multipart/form-data" method="post">
-          <div>
-            <input type="text" name="bysort">
-            <p>Искать по:</p>
+      <button onclick="document.location='/adduser'">Добавить пользователя</button>
+      <form class="distribute" enctype="multipart/form-data" method="post">
+        <input type="number" name="razdbalance">
+        <input type="submit" value="Раздать">
+      </form>
+
+      <div class="search-container">
+        <input type="text" name="bysort">
+        <div class="filters">
+          <form enctype="multipart/form-data" method="post">
+            <div>Искать по:</div>
             <div>
-                <input type="radio" value="Фамилия" name="sort" checked/>
-                <label for="Фамилия">Фамилии</label>
-                <input type="radio" value="Класс" name="sort" />
-                <label for="Класс">Классу</label>
-                <input type="radio" value="Роль" name="sort" />
-                <label for="Роль">Роли</label>
+              <input type="radio" value="Фамилия" name="sort" checked/>
+              <label for="Фамилия">Фамилии</label>
+              <input type="radio" value="Класс" name="sort" />
+              <label for="Класс">Классу</label>
+              <input type="radio" value="Роль" name="sort" />
+              <label for="Роль">Роли</label>
             </div>
             <input type="submit" value="Искать">
-          </div>
-        </form><br>
-        <button onclick="document.location='/'">Отменить все фильтры</button>
+          </form>
+          <button onclick="document.location='/'">Отменить все фильтры</button>
+        </div>
+
+      </div>
+
       <div class="users-grid">
         {% for i in range(colvousers) %}
           <div class="user-card">
