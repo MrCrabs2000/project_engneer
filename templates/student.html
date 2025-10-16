@@ -15,7 +15,7 @@
     <form class="inputs" method="POST" action="/student/{{ iduser }}">
       <h2>{{ username }} {{ usersurname }}</h2>
       <p class="class-info">Класс: {{ userclass }}</p>
-      <p class="balance-info">Баланс: <strong>{{ userbalance }} монет</strong></p>
+      <p class="balance-info">Баланс: <strong>{{ studbalance }} монет</strong></p>
       <input type="number" name="stud_balance" placeholder="Число монет" min="1" required>
       <input type="submit" name="action" value="Добавить" class="submit-button">
       <input type="submit" name="action" value="Отнять" class="submit-button">

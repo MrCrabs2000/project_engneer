@@ -301,6 +301,7 @@ def class_page(class_name):
                 'userbalance': student.userbalance
             }
             students_list.append(student_data)
+            students_list = sorted(students_list, key=lambda d: d['usersurname'])
 
         session_db.close()
 
@@ -398,7 +399,7 @@ def student_page(iduser):
         username = user.username
         usersurname = user.usersurname
         userclass = user.userclass
-        userbalance = user.userbalance
+        stud_balance = user.userbalance
         teacher_balance = teacher.userbalance
 
         session_db.close()
@@ -407,8 +408,8 @@ def student_page(iduser):
                                username=username,
                                usersurname=usersurname,
                                userclass=userclass,
-                               userbalance=userbalance,
-                               teacher_balance=teacher_balance,
+                               userbalance=teacher_balance,
+                               studbalance=stud_balance,
                                iduser=iduser)
 
     return redirect(url_for('main_page'))
