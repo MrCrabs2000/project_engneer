@@ -221,55 +221,59 @@ def login_telegram():
 
 @app.route('/edit_profile')
 def edit_profile():
-    return redirect(url_for('main_page'))
+    if current_user.is_authenticated:
+        return redirect(url_for('main_page'))
 
 
 @app.route('/logout')
 def logout():
-    logout_user()
-    return redirect(url_for('main_page'))
+    if current_user.is_authenticated:
+        logout_user()
+        return redirect(url_for('main_page'))
 
 
 @app.route('/profile', methods=['GET'])
 def profile():
-    if request.method == 'GET':
-        return render_template('profile.html', username=session['username'],
-                               usersurname=session['usersurname'],
-                               userclass=session['userclass'],
-                               userotchestvo=session['userotchestvo'],
-                               role=session['role'],
-                               userbalance=session['userbalance'])
+    if current_user.is_authenticated:
+        if request.method == 'GET':
+            return render_template('profile.html', username=session['username'],
+                                   usersurname=session['usersurname'],
+                                   userclass=session['userclass'],
+                                   userotchestvo=session['userotchestvo'],
+                                   role=session['role'],
+                                   userbalance=session['userbalance'])
 
 
 @app.route('/profile_edit', methods=['GET', 'POST'])
 def profile_edit():
-    if request.method == 'POST':
-        session_db = db_session.create_session()
-        user = session_db.query(User).filter_by(id=current_user.id).first()
-        new_username = request.form['username']
-        new_usersurname = request.form['usersurname']
-        new_userclass = request.form['userclass']
-        if user and all([new_usersurname, new_username, new_userclass]):
-            user.username = new_username
-            user.usersurname = new_usersurname
-            user.userclass = new_userclass
-            session_db.commit()
-            session['username'] = new_username
-            session['usersurname'] = new_usersurname
-            session['userclass'] = new_userclass
-            session_db.close()
-            return redirect(url_for('profile'))
-    return render_template('profile_edit.html',
-                           username=session['username'],
-                           usersurname=session['usersurname'],
-                           userclass=session['userclass'],
-                           userbalance=session['userbalance'],
-                           role=session['role'])
+    if current_user.is_authenticated:
+        if request.method == 'POST':
+            session_db = db_session.create_session()
+            user = session_db.query(User).filter_by(id=current_user.id).first()
+            new_username = request.form['username']
+            new_usersurname = request.form['usersurname']
+            new_userclass = request.form['userclass']
+            if user and all([new_usersurname, new_username, new_userclass]):
+                user.username = new_username
+                user.usersurname = new_usersurname
+                user.userclass = new_userclass
+                session_db.commit()
+                session['username'] = new_username
+                session['usersurname'] = new_usersurname
+                session['userclass'] = new_userclass
+                session_db.close()
+                return redirect(url_for('profile'))
+        return render_template('profile_edit.html',
+                               username=session['username'],
+                               usersurname=session['usersurname'],
+                               userclass=session['userclass'],
+                               userbalance=session['userbalance'],
+                               role=session['role'])
 
 
 @app.route('/<class_name>', methods=['GET'])
 def class_page(class_name):
-    if current_user.is_authenticated:
+    if current_user.is_authenticated and (current_user.role == 'Teacher' or current_user.role == 'Admin'):
         session_db = db_session.create_session()
         students = session_db.query(User).filter(User.userclass == class_name, User.role == 'Student').all()
         students_list = []
@@ -300,146 +304,153 @@ def class_page(class_name):
 
 @app.route('/userprofile/<userid>')
 def userprof(userid):
-    session_db = db_session.create_session()
-    user = session_db.query(User).filter_by(id=userid).first()
-    session_db.close()
-    return render_template('user.html', user=user, role=current_user.role)
+    if current_user.is_authenticated:
+        session_db = db_session.create_session()
+        user = session_db.query(User).filter_by(id=userid).first()
+        session_db.close()
+        return render_template('user.html', user=user, role=current_user.role)
 
 
 @app.route('/itemsshop')
 def itemsshop():
-    return render_template('items.html')
+    if current_user.is_authenticated:
+        return render_template('items.html')
 
 
 @app.route('/edituser/<userid>', methods=['GET', 'POST'])
 def edituser(userid):
-    session_db = db_session.create_session()
-    user = session_db.query(User).filter_by(id=userid).first()
-    if request.method == 'POST':
-        nusername = request.form['name']
-        nusersurname = request.form['surname']
-        nuserotchestvo = request.form['otchestvo']
-        nuserclass = request.form['class']
-        nrole = request.form['role']
-        nuserbalance = request.form['balance']
-        if nusersurname:
-            user.usersurname = nusersurname
-        if nuserotchestvo:
-            user.userotchestvo = nuserotchestvo
-        if nusername:
-            user.username = nusername
-        if nuserclass:
-            user.userclass = nuserclass
-        if nuserbalance:
-            user.userbalance = nuserbalance
-        if nrole:
-            user.role = nrole
-        session_db.commit()
-        return redirect(url_for('userprof', userid=user.id))
-    session_db.close()
-    return render_template('edituser.html', user=user)
+    if current_user.is_authenticated and current_user.role == 'Admin':
+        session_db = db_session.create_session()
+        user = session_db.query(User).filter_by(id=userid).first()
+        if request.method == 'POST':
+            nusername = request.form['name']
+            nusersurname = request.form['surname']
+            nuserotchestvo = request.form['otchestvo']
+            nuserclass = request.form['class']
+            nrole = request.form['role']
+            nuserbalance = request.form['balance']
+            if nusersurname:
+                user.usersurname = nusersurname
+            if nuserotchestvo:
+                user.userotchestvo = nuserotchestvo
+            if nusername:
+                user.username = nusername
+            if nuserclass:
+                user.userclass = nuserclass
+            if nuserbalance:
+                user.userbalance = nuserbalance
+            if nrole:
+                user.role = nrole
+            session_db.commit()
+            return redirect(url_for('userprof', userid=user.id))
+        session_db.close()
+        return render_template('edituser.html', user=user)
 
 
 @app.route('/student/<iduser>', methods=['GET', 'POST'])
 def student_page(iduser):
-    if iduser:
-        session_db = db_session.create_session()
-        user = session_db.query(User).filter_by(id=iduser).first()
-        teacher = session_db.query(User).filter_by(id=current_user.id).first()
-        if not user or not teacher:
+    if current_user.is_authenticated and (current_user.role == 'Teacher' or current_user.role == 'Admin'):
+        if iduser:
+            session_db = db_session.create_session()
+            user = session_db.query(User).filter_by(id=iduser).first()
+            teacher = session_db.query(User).filter_by(id=current_user.id).first()
+            if not user or not teacher:
+                session_db.close()
+                return redirect(url_for('main_page'))
+            if request.method == 'POST':
+                stud_balance = request.form.get('stud_balance')
+                action = request.form.get('action')
+                if stud_balance and stud_balance.isdigit():
+                    balance_change = int(stud_balance)
+                    if balance_change <= 0:
+                        flash("Сумма должна быть положительной", "error")
+                    else:
+                        if action == 'Добавить':
+                            if int(teacher.userbalance) >= balance_change:
+                                user.userbalance = str(int(user.userbalance) + balance_change)
+                                teacher.userbalance = str(int(teacher.userbalance) - balance_change)
+                                session_db.commit()
+
+                        elif action == 'Отнять':
+                            if int(user.userbalance) >= balance_change:
+                                user.userbalance = str(int(user.userbalance) - balance_change)
+                                teacher.userbalance = str(int(teacher.userbalance) + balance_change)
+                                session_db.commit()
+            username = user.username
+            usersurname = user.usersurname
+            userclass = user.userclass
+            userbalance = user.userbalance
+            teacher_balance = teacher.userbalance
             session_db.close()
-            return redirect(url_for('main_page'))
-        if request.method == 'POST':
-            stud_balance = request.form.get('stud_balance')
-            action = request.form.get('action')
-            if stud_balance and stud_balance.isdigit():
-                balance_change = int(stud_balance)
-                if balance_change <= 0:
-                    flash("Сумма должна быть положительной", "error")
-                else:
-                    if action == 'Добавить':
-                        if int(teacher.userbalance) >= balance_change:
-                            user.userbalance = str(int(user.userbalance) + balance_change)
-                            teacher.userbalance = str(int(teacher.userbalance) - balance_change)
-                            session_db.commit()
+            return render_template('student.html',
+                                   username=username,
+                                   usersurname=usersurname,
+                                   userclass=userclass,
+                                   userbalance=teacher_balance,
+                                   studbalance=userbalance,
+                                   iduser=iduser)
 
-                    elif action == 'Отнять':
-                        if int(user.userbalance) >= balance_change:
-                            user.userbalance = str(int(user.userbalance) - balance_change)
-                            teacher.userbalance = str(int(teacher.userbalance) + balance_change)
-                            session_db.commit()
-        username = user.username
-        usersurname = user.usersurname
-        userclass = user.userclass
-        userbalance = user.userbalance
-        teacher_balance = teacher.userbalance
-        session_db.close()
-        return render_template('student.html',
-                               username=username,
-                               usersurname=usersurname,
-                               userclass=userclass,
-                               userbalance=userbalance,
-                               teacher_balance=teacher_balance,
-                               iduser=iduser)
-
-    return redirect(url_for('main_page'))
+        return redirect(url_for('main_page'))
 
 
 @app.route('/deluser/<iduser>')
 def deluser_page(iduser):
-    session_db = db_session.create_session()
-    user = session_db.query(User).filter_by(id=iduser).first()
-    session_db.delete(user)
-    session_db.commit()
-    session_db.close()
-    return redirect(url_for('main_page'))
+    if current_user.is_authenticated and current_user.role == 'Admin':
+        session_db = db_session.create_session()
+        user = session_db.query(User).filter_by(id=iduser).first()
+        session_db.delete(user)
+        session_db.commit()
+        session_db.close()
+        return redirect(url_for('main_page'))
 
 
 @app.route('/adduser', methods=['GET', 'POST'])
 def adduser():
-    if request.method == 'POST':
-        name = request.form['name']
-        surname = request.form['surname']
-        otchestvo = request.form['otchestvo']
-        userclass = request.form['class']
-        userbalance = request.form['balance']
-        role = request.form['role']
-        password = request.form['password']
-        secondpassword = request.form['secondpassword']
-        if password == secondpassword:
-            new_user = User(
-                username=name,
-                usersurname=surname,
-                userpassword=generate_password_hash(password),
-                userotchestvo=otchestvo,
-                userclass=userclass,
-                role=role,
-                userbalance=userbalance,
-            )
-            session_db = db_session.create_session()
-            session['user_id'] = new_user.id
-            session['username'] = new_user.username
-            session['usersurname'] = new_user.usersurname
-            session['userclass'] = new_user.userclass
-            session['role'] = new_user.role
-            session['userotchestvo'] = new_user.userotchestvo
-            session['userbalance'] = new_user.userbalance
-            session_db.add(new_user)
-            session_db.commit()
-            return redirect(url_for('main_page'))
-    return render_template('adduser.html')
+    if current_user.is_authenticated and current_user.role == 'Admin':
+        if request.method == 'POST':
+            name = request.form['name']
+            surname = request.form['surname']
+            otchestvo = request.form['otchestvo']
+            userclass = request.form['class']
+            userbalance = request.form['balance']
+            role = request.form['role']
+            password = request.form['password']
+            secondpassword = request.form['secondpassword']
+            if password == secondpassword:
+                new_user = User(
+                    username=name,
+                    usersurname=surname,
+                    userpassword=generate_password_hash(password),
+                    userotchestvo=otchestvo,
+                    userclass=userclass,
+                    role=role,
+                    userbalance=userbalance,
+                )
+                session_db = db_session.create_session()
+                session['user_id'] = new_user.id
+                session['username'] = new_user.username
+                session['usersurname'] = new_user.usersurname
+                session['userclass'] = new_user.userclass
+                session['role'] = new_user.role
+                session['userotchestvo'] = new_user.userotchestvo
+                session['userbalance'] = new_user.userbalance
+                session_db.add(new_user)
+                session_db.commit()
+                return redirect(url_for('main_page'))
+        return render_template('adduser.html')
 
 
 @app.route('/enterteach/<userid>')
 def enteracc(userid):
-    session_db = db_session.create_session()
-    teacher = session_db.query(User).filter_by(id=userid).first()
-    session_db.close()
-    adminid = current_user.id
-    print(teacher.userclass)
-    return render_template('main.html', adminid=adminid, teachername=teacher.username,
-                           teacersurname=teacher.usersurname, teacherotchestvo=teacher.userotchestvo, role=teacher.role,
-                           teacherbalance=teacher.userbalance, teacherid=teacher.id, teacher_classes=teacher.userclass.split())
+    if current_user.is_authenticated and current_user.role == 'Admin':
+        session_db = db_session.create_session()
+        teacher = session_db.query(User).filter_by(id=userid).first()
+        session_db.close()
+        adminid = current_user.id
+        return render_template('main.html', adminid=adminid, teachername=teacher.username,
+                               teacersurname=teacher.usersurname, teacherotchestvo=teacher.userotchestvo,
+                               role=teacher.role, userbalance=teacher.userbalance, teacherid=teacher.id,
+                               teacher_classes=teacher.userclass.split())
 
 
 if __name__ == "__main__":
