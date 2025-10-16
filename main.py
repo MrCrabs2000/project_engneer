@@ -30,10 +30,12 @@ def main_page():
     if current_user.is_authenticated:
         session = db_session.create_session()
         if current_user.role == 'Student':
+            session_db = db_session.create_session()
+            items = session_db.query(Item_shop).all()
             return render_template('shop/shop.html', logged_in=True, username=current_user.username,
                                    usersurname=current_user.usersurname, userclass=current_user.userclass,
                                    userbalance=current_user.userbalance, userotchestvo=current_user.userotchestvo,
-                                   role=current_user.role)
+                                   role=current_user.role, items=items)
         elif current_user.role == 'Admin':
             users = session.query(User).all()
             all_users = []
@@ -99,20 +101,19 @@ def history():
                                    userbalance=current_user.userbalance, userotchestvo=current_user.userotchestvo,
                                    role=current_user.role)
         else:
-            if current_user.role == 'Admin':
-                users = session.query(User).all()
-                all_users = []
-                for user in users:
-                    userr = {}
-                    userr['id'] = user.id
-                    userr['username'] = user.username
-                    userr['userclass'] = user.userclass
-                    userr['role'] = user.role
-                    userr['userotchestvo'] = user.userotchestvo
-                    userr['userbalance'] = user.userbalance
-                    all_users.append(userr.copy())
-                session.close()
-                return render_template('history.html', logged_in=True, username=current_user.username,
+            users = session.query(User).all()
+            all_users = []
+            for user in users:
+                userr = {}
+                userr['id'] = user.id
+                userr['username'] = user.username
+                userr['userclass'] = user.userclass
+                userr['role'] = user.role
+                userr['userotchestvo'] = user.userotchestvo
+                userr['userbalance'] = user.userbalance
+                all_users.append(userr.copy())
+            session.close()
+            return render_template('history.html', logged_in=True, username=current_user.username,
                                        usersurname=current_user.usersurname, userclass=current_user.userclass,
                                        userbalance=current_user.userbalance, userotchestvo=current_user.userotchestvo,
                                        all_users=all_users, colvousers=len(all_users))
@@ -319,10 +320,13 @@ def userprof(userid):
         return render_template('user.html', user=user, role=current_user.role, userbalance=current_user.userbalance)
 
 
-@app.route('/itemsshop')
-def itemsshop():
+@app.route('/itemshop/<itemid>')
+def itemshop(itemid):
     if current_user.is_authenticated:
-        return render_template('items.html')
+        session_db = db_session.create_session()
+        item = session_db.query(Item_shop).filter_by(id=itemid).first()
+        return render_template('items.html', userbalance=current_user.userbalance, role=current_user.role,
+                               item=item)
 
 
 @app.route('/edituser/<userid>', methods=['GET', 'POST'])
