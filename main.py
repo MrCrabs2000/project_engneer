@@ -349,7 +349,7 @@ def edituser(userid):
 
 @app.route('/student/<iduser>', methods=['GET', 'POST'])
 def student_page(iduser):
-    if current_user.is_authenticated and current_user.role == 'Teacher':
+    if current_user.is_authenticated and (current_user.role == 'Teacher' or current_user.role == 'Admin'):
         if iduser:
             session_db = db_session.create_session()
             user = session_db.query(User).filter_by(id=iduser).first()
@@ -446,8 +446,11 @@ def enteracc(userid):
         session_db = db_session.create_session()
         teacher = session_db.query(User).filter_by(id=userid).first()
         session_db.close()
-        admin = current_user
-        return render_template('class.html', admin=admin, teacher=teacher)
+        adminid = current_user.id
+        return render_template('main.html', adminid=adminid, teachername=teacher.username,
+                               teacersurname=teacher.usersurname, teacherotchestvo=teacher.userotchestvo,
+                               role=teacher.role, userbalance=teacher.userbalance, teacherid=teacher.id,
+                               teacher_classes=teacher.userclass.split())
 
 
 if __name__ == "__main__":
