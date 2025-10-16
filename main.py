@@ -80,14 +80,12 @@ def main_page():
                                    usersurname=current_user.usersurname, userclass=current_user.userclass,
                                    userbalance=current_user.userbalance, userotchestvo=current_user.userotchestvo,
                                    all_users=all_users, colvousers=len(all_users), role=current_user.role)
-
         elif current_user.role == 'Teacher':
             teacher_classes = current_user.userclass.split(' ')
             return render_template('main.html', logged_in=True, username=current_user.username,
                                    usersurname=current_user.usersurname, userclass=current_user.userclass,
                                    userbalance=current_user.userbalance, userotchestvo=current_user.userotchestvo,
                                    role=current_user.role, teacher_classes=teacher_classes)
-
     return render_template('index.html')
 
 
@@ -114,7 +112,6 @@ def history():
                     userr['userbalance'] = user.userbalance
                     all_users.append(userr.copy())
                 session.close()
-
                 return render_template('history.html', logged_in=True, username=current_user.username,
                                        usersurname=current_user.usersurname, userclass=current_user.userclass,
                                        userbalance=current_user.userbalance, userotchestvo=current_user.userotchestvo,
@@ -133,22 +130,17 @@ def register():
         if not all([username, usersurname, userclass, password, confirm_password]):
             flash('Все поля обязательны для заполнения', 'error')
             return render_template('register.html')
-
         if password != confirm_password:
             flash('Пароли не совпадают', 'error')
             return render_template('register.html')
-
         if len(password) < 6:
             flash('Пароль должен содержать минимум 6 символов', 'error')
             return render_template('register.html')
-
         session_db = db_session.create_session()
-
         if session_db.query(User).filter(User.username == username).first():
             flash('Пользователь с таким именем уже существует', 'error')
             session_db.close()
             return redirect(url_for('register'))
-
         try:
             new_user = User(
                 username=username,
@@ -157,8 +149,7 @@ def register():
                 userotchestvo=userotchestvo,
                 userclass=userclass,
                 role='Student',
-                userbalance=0,
-            )
+                userbalance=0,)
             session['user_id'] = new_user.id
             session['username'] = new_user.username
             session['usersurname'] = new_user.usersurname
@@ -186,19 +177,14 @@ def login():
         usersurname = request.form['usersurname']
         userotchestvo = request.form['userotchestvo']
         password = request.form['password']
-
         if not all([username, usersurname, password]):
             flash('Все поля обязательны для заполнения', 'error')
             return render_template('login.html')
-
         session_db = db_session.create_session()
-
         user = session_db.query(User).filter_by(
             username=username,
             usersurname=usersurname,
-            userotchestvo=userotchestvo
-        ).first()
-
+            userotchestvo=userotchestvo).first()
         if user and check_password_hash(user.userpassword, password):
             session['user_id'] = user.id
             session['username'] = user.username
@@ -214,7 +200,6 @@ def login():
         else:
             session_db.close()
             flash('Неверные имя, фамилия или пароль', 'error')
-
     return render_template('login.html')
 
 
@@ -227,8 +212,7 @@ def login_telegram():
         'username': request.args.get('username', None),
         'photo_url': request.args.get('photo_url', None),
         'auth_date': request.args.get('auth_date', None),
-        'hash': request.args.get('hash', None)
-    }
+        'hash': request.args.get('hash', None)}
     if check_response(data):
         return data
     else:
@@ -275,7 +259,6 @@ def profile_edit():
             session['userclass'] = new_userclass
             session_db.close()
             return redirect(url_for('profile'))
-
     return render_template('profile_edit.html',
                            username=session['username'],
                            usersurname=session['usersurname'],
@@ -288,9 +271,7 @@ def profile_edit():
 def class_page(class_name):
     if current_user.is_authenticated:
         session_db = db_session.create_session()
-
         students = session_db.query(User).filter(User.userclass == class_name, User.role == 'Student').all()
-
         students_list = []
         for student in students:
             student_data = {
@@ -301,9 +282,7 @@ def class_page(class_name):
                 'userbalance': student.userbalance
             }
             students_list.append(student_data)
-
         session_db.close()
-
         return render_template('class.html',
                                logged_in=True,
                                username=current_user.username,
@@ -316,7 +295,6 @@ def class_page(class_name):
                                students=students_list,
                                students_count=len(students_list),
                                id=current_user.id)
-
     return redirect(url_for('login'))
 
 
@@ -368,18 +346,14 @@ def student_page(iduser):
         session_db = db_session.create_session()
         user = session_db.query(User).filter_by(id=iduser).first()
         teacher = session_db.query(User).filter_by(id=current_user.id).first()
-
         if not user or not teacher:
             session_db.close()
             return redirect(url_for('main_page'))
-
         if request.method == 'POST':
             stud_balance = request.form.get('stud_balance')
             action = request.form.get('action')
-
             if stud_balance and stud_balance.isdigit():
                 balance_change = int(stud_balance)
-
                 if balance_change <= 0:
                     flash("Сумма должна быть положительной", "error")
                 else:
@@ -394,15 +368,12 @@ def student_page(iduser):
                             user.userbalance = str(int(user.userbalance) - balance_change)
                             teacher.userbalance = str(int(teacher.userbalance) + balance_change)
                             session_db.commit()
-
         username = user.username
         usersurname = user.usersurname
         userclass = user.userclass
         userbalance = user.userbalance
         teacher_balance = teacher.userbalance
-
         session_db.close()
-
         return render_template('student.html',
                                username=username,
                                usersurname=usersurname,
@@ -457,6 +428,15 @@ def adduser():
             session_db.commit()
             return redirect(url_for('main_page'))
     return render_template('adduser.html')
+
+
+@app.route('/enterteach/<userid>')
+def enteracc(userid):
+    session_db = db_session.create_session()
+    teacher = session_db.query(User).filter_by(id=userid).first()
+    session_db.close()
+    admin = current_user
+    return render_template('class.html', admin=admin, teacher=teacher)
 
 
 if __name__ == "__main__":
