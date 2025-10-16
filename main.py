@@ -86,7 +86,7 @@ def main_page():
                                    usersurname=current_user.usersurname, userclass=current_user.userclass,
                                    userbalance=current_user.userbalance, userotchestvo=current_user.userotchestvo,
                                    role=current_user.role, teacher_classes=teacher_classes)
-    return render_template('index.html')
+    return render_template('sign/sign.html')
 
 
 @app.route('/history')
@@ -129,13 +129,13 @@ def register():
         confirm_password = request.form['confirm_password']
         if not all([username, usersurname, userclass, password, confirm_password]):
             flash('Все поля обязательны для заполнения', 'error')
-            return render_template('register.html')
+            return render_template('sign/register.html')
         if password != confirm_password:
             flash('Пароли не совпадают', 'error')
-            return render_template('register.html')
+            return render_template('sign/register.html')
         if len(password) < 6:
             flash('Пароль должен содержать минимум 6 символов', 'error')
-            return render_template('register.html')
+            return render_template('sign/register.html')
         session_db = db_session.create_session()
         if session_db.query(User).filter(User.username == username).first():
             flash('Пользователь с таким именем уже существует', 'error')
@@ -167,7 +167,7 @@ def register():
         finally:
             session_db.close()
         return redirect(url_for('main_page'))
-    return render_template('register.html')
+    return render_template('sign/register.html')
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -179,7 +179,7 @@ def login():
         password = request.form['password']
         if not all([username, usersurname, password]):
             flash('Все поля обязательны для заполнения', 'error')
-            return render_template('login.html')
+            return render_template('sign/login.html')
         session_db = db_session.create_session()
         user = session_db.query(User).filter_by(
             username=username,
@@ -200,7 +200,7 @@ def login():
         else:
             session_db.close()
             flash('Неверные имя, фамилия или пароль', 'error')
-    return render_template('login.html')
+    return render_template('sign/login.html')
 
 
 @app.route('/login/telegram')
