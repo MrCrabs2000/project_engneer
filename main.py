@@ -85,7 +85,7 @@ def main_page():
             return render_template('classes/classes_list.html', logged_in=True, username=current_user.username,
                                    usersurname=current_user.usersurname, userclass=current_user.userclass,
                                    userbalance=current_user.userbalance, userotchestvo=current_user.userotchestvo,
-                                   role=current_user.role, teacher_classes=teacher_classes)
+                                   role=current_user.role, teacher_classes=teacher_classes, teacherid=current_user.id)
     return render_template('sign/sign.html')
 
 
