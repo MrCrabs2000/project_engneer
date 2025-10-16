@@ -365,99 +365,102 @@ def edituser(userid):
 
 @app.route('/student/<iduser>', methods=['GET', 'POST'])
 def student_page(iduser):
-    if iduser:
-        session_db = db_session.create_session()
-        user = session_db.query(User).filter_by(id=iduser).first()
-        teacher = session_db.query(User).filter_by(id=current_user.id).first()
+    if current_user.is_authenticated:
+        if iduser:
+            session_db = db_session.create_session()
+            user = session_db.query(User).filter_by(id=iduser).first()
+            teacher = session_db.query(User).filter_by(id=current_user.id).first()
 
-        if not user or not teacher:
+            if not user or not teacher:
+                session_db.close()
+                return redirect(url_for('main_page'))
+
+            if request.method == 'POST':
+                stud_balance = request.form.get('stud_balance')
+                action = request.form.get('action')
+
+                if stud_balance and stud_balance.isdigit():
+                    balance_change = int(stud_balance)
+
+                    if balance_change <= 0:
+                        flash("Сумма должна быть положительной", "error")
+                    else:
+                        if action == 'Добавить':
+                            if int(teacher.userbalance) >= balance_change:
+                                user.userbalance = str(int(user.userbalance) + balance_change)
+                                teacher.userbalance = str(int(teacher.userbalance) - balance_change)
+                                session_db.commit()
+
+                        elif action == 'Отнять':
+                            if int(user.userbalance) >= balance_change:
+                                user.userbalance = str(int(user.userbalance) - balance_change)
+                                teacher.userbalance = str(int(teacher.userbalance) + balance_change)
+                                session_db.commit()
+
+            username = user.username
+            usersurname = user.usersurname
+            userclass = user.userclass
+            stud_balance = user.userbalance
+            teacher_balance = teacher.userbalance
+
             session_db.close()
-            return redirect(url_for('main_page'))
 
-        if request.method == 'POST':
-            stud_balance = request.form.get('stud_balance')
-            action = request.form.get('action')
+            return render_template('student.html',
+                                   username=username,
+                                   usersurname=usersurname,
+                                   userclass=userclass,
+                                   userbalance=teacher_balance,
+                                   studbalance=stud_balance,
+                                   iduser=iduser)
 
-            if stud_balance and stud_balance.isdigit():
-                balance_change = int(stud_balance)
-
-                if balance_change <= 0:
-                    flash("Сумма должна быть положительной", "error")
-                else:
-                    if action == 'Добавить':
-                        if int(teacher.userbalance) >= balance_change:
-                            user.userbalance = str(int(user.userbalance) + balance_change)
-                            teacher.userbalance = str(int(teacher.userbalance) - balance_change)
-                            session_db.commit()
-
-                    elif action == 'Отнять':
-                        if int(user.userbalance) >= balance_change:
-                            user.userbalance = str(int(user.userbalance) - balance_change)
-                            teacher.userbalance = str(int(teacher.userbalance) + balance_change)
-                            session_db.commit()
-
-        username = user.username
-        usersurname = user.usersurname
-        userclass = user.userclass
-        stud_balance = user.userbalance
-        teacher_balance = teacher.userbalance
-
-        session_db.close()
-
-        return render_template('student.html',
-                               username=username,
-                               usersurname=usersurname,
-                               userclass=userclass,
-                               userbalance=teacher_balance,
-                               studbalance=stud_balance,
-                               iduser=iduser)
-
-    return redirect(url_for('main_page'))
+        return redirect(url_for('main_page'))
 
 
 @app.route('/deluser/<iduser>')
 def deluser_page(iduser):
-    session_db = db_session.create_session()
-    user = session_db.query(User).filter_by(id=iduser).first()
-    session_db.delete(user)
-    session_db.commit()
-    session_db.close()
-    return redirect(url_for('main_page'))
+    if current_user.is_authenticated:
+        session_db = db_session.create_session()
+        user = session_db.query(User).filter_by(id=iduser).first()
+        session_db.delete(user)
+        session_db.commit()
+        session_db.close()
+        return redirect(url_for('main_page'))
 
 
 @app.route('/adduser', methods=['GET', 'POST'])
 def adduser():
-    if request.method == 'POST':
-        name = request.form['name']
-        surname = request.form['surname']
-        otchestvo = request.form['otchestvo']
-        userclass = request.form['class']
-        userbalance = request.form['balance']
-        role = request.form['role']
-        password = request.form['password']
-        secondpassword = request.form['secondpassword']
-        if password == secondpassword:
-            new_user = User(
-                username=name,
-                usersurname=surname,
-                userpassword=generate_password_hash(password),
-                userotchestvo=otchestvo,
-                userclass=userclass,
-                role=role,
-                userbalance=userbalance,
-            )
-            session_db = db_session.create_session()
-            session['user_id'] = new_user.id
-            session['username'] = new_user.username
-            session['usersurname'] = new_user.usersurname
-            session['userclass'] = new_user.userclass
-            session['role'] = new_user.role
-            session['userotchestvo'] = new_user.userotchestvo
-            session['userbalance'] = new_user.userbalance
-            session_db.add(new_user)
-            session_db.commit()
-            return redirect(url_for('main_page'))
-    return render_template('adduser.html')
+    if current_user.is_authenticated:
+        if request.method == 'POST':
+            name = request.form['name']
+            surname = request.form['surname']
+            otchestvo = request.form['otchestvo']
+            userclass = request.form['class']
+            userbalance = request.form['balance']
+            role = request.form['role']
+            password = request.form['password']
+            secondpassword = request.form['secondpassword']
+            if password == secondpassword:
+                new_user = User(
+                    username=name,
+                    usersurname=surname,
+                    userpassword=generate_password_hash(password),
+                    userotchestvo=otchestvo,
+                    userclass=userclass,
+                    role=role,
+                    userbalance=userbalance,
+                )
+                session_db = db_session.create_session()
+                session['user_id'] = new_user.id
+                session['username'] = new_user.username
+                session['usersurname'] = new_user.usersurname
+                session['userclass'] = new_user.userclass
+                session['role'] = new_user.role
+                session['userotchestvo'] = new_user.userotchestvo
+                session['userbalance'] = new_user.userbalance
+                session_db.add(new_user)
+                session_db.commit()
+                return redirect(url_for('main_page'))
+        return render_template('adduser.html')
 
 
 if __name__ == "__main__":
