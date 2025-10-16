@@ -4,19 +4,19 @@
 
 {% block links %}
   <link rel="stylesheet" href="/static/css/users-list.css">
-  <link rel="stylesheet" href="/static/css/admin.css">
+  <link rel="stylesheet" href="/static/css/search.css">
 {% endblock %}
 
 {% block content %}
-  <button onclick="document.location='/adduser'">Добавить пользователя</button>
+  {# <button onclick="document.location='/adduser'">Добавить пользователя</button>
   <form class="distribute" enctype="multipart/form-data" method="post">
     <input type="number" name="razdbalance">
     <input type="submit" value="Раздать">
-  </form>
+  </form> #}
   <div class="search-container">
-    <input type="text" name="bysort">
-    <div class="filters">
-      <form enctype="multipart/form-data" method="post">
+    <input class="search-bar" type="text" name="bysort" placeholder="Поиск">
+    <div class="filters-container">
+      <form class="filters" enctype="multipart/form-data" method="post">
         <div>Искать по:</div>
         <div>
           <input type="radio" value="Фамилия" name="sort" checked/>
@@ -31,7 +31,7 @@
       <button onclick="document.location='/'">Отменить все фильтры</button>
     </div>
   </div>
-  <div class="users-grid">
+  <div class="users-flex">
     {% for i in range(colvousers) %}
       <div class="user-card">
         <a href="/userprofile/{{ all_users[i]['id'] }}">
