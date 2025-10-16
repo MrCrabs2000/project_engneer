@@ -435,8 +435,11 @@ def enteracc(userid):
     session_db = db_session.create_session()
     teacher = session_db.query(User).filter_by(id=userid).first()
     session_db.close()
-    admin = current_user
-    return render_template('class.html', admin=admin, teacher=teacher)
+    adminid = current_user.id
+    print(teacher.userclass)
+    return render_template('main.html', adminid=adminid, teachername=teacher.username,
+                           teacersurname=teacher.usersurname, teacherotchestvo=teacher.userotchestvo, role=teacher.role,
+                           teacherbalance=teacher.userbalance, teacherid=teacher.id, teacher_classes=teacher.userclass.split())
 
 
 if __name__ == "__main__":
