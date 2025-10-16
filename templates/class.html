@@ -17,7 +17,7 @@
         <div class="students-grid">
           {% for student in students %}
             <div class="student-card">
-              <a href="/student/{{ student.id }}">
+              <a href="/student/{{ student.id }}/{{ tid }}">
                 <div class="student-info">
                   <div class="student-name">{{ student.usersurname }} {{ student.username[0] }}. {{ student.userotchestvo[0] }}.</div>
 

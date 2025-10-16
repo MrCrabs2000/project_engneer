@@ -271,10 +271,11 @@ def profile_edit():
                                role=session['role'])
 
 
-@app.route('/<class_name>', methods=['GET'])
-def class_page(class_name):
+@app.route('/<class_name>/<teacherid>', methods=['GET'])
+def class_page(class_name, teacherid):
     if current_user.is_authenticated and (current_user.role == 'Teacher' or current_user.role == 'Admin'):
         session_db = db_session.create_session()
+        teacher = session_db.query(User).filter_by(id=teacherid).first()
         students = session_db.query(User).filter(User.userclass == class_name, User.role == 'Student').all()
         students_list = []
         for student in students:
@@ -287,18 +288,25 @@ def class_page(class_name):
             }
             students_list.append(student_data)
         session_db.close()
-        return render_template('class.html',
-                               logged_in=True,
-                               username=current_user.username,
-                               usersurname=current_user.usersurname,
-                               userclass=current_user.userclass,
-                               userbalance=current_user.userbalance,
-                               userotchestvo=current_user.userotchestvo,
-                               role=current_user.role,
-                               class_name=class_name,
-                               students=students_list,
-                               students_count=len(students_list),
-                               id=current_user.id)
+        if teacherid == current_user.id:
+            return render_template('class.html',
+                                   logged_in=True,
+                                   username=teacher.username,
+                                   usersurname=teacher.usersurname,
+                                   userclass=teacher.userclass,
+                                   userbalance=teacher.userbalance,
+                                   userotchestvo=teacher.userotchestvo,
+                                   role=teacher.role,
+                                   class_name=class_name,
+                                   students=students_list,
+                                   students_count=len(students_list),
+                                   tid=teacher.id)
+        else:
+            return render_template('class.html', logged_in=True, username=teacher.username,
+                                   usersurname=teacher.usersurname, userclass=teacher.userclass,
+                                   userbalance=teacher.userbalance, userotchestvo=teacher.userotchestvo,
+                                   role=teacher.role, class_name=class_name, students=students_list,
+                                   students_count=len(students_list), tid=teacher.id, adminid=current_user.id)
     return redirect(url_for('login'))
 
 
@@ -308,7 +316,7 @@ def userprof(userid):
         session_db = db_session.create_session()
         user = session_db.query(User).filter_by(id=userid).first()
         session_db.close()
-        return render_template('user.html', user=user, role=current_user.role)
+        return render_template('user.html', user=user, role=current_user.role, userbalance=current_user.userbalance)
 
 
 @app.route('/itemsshop')
@@ -347,13 +355,13 @@ def edituser(userid):
         return render_template('edituser.html', user=user)
 
 
-@app.route('/student/<iduser>', methods=['GET', 'POST'])
-def student_page(iduser):
+@app.route('/student/<iduser>/<teacherid>', methods=['GET', 'POST'])
+def student_page(iduser, teacherid):
     if current_user.is_authenticated and (current_user.role == 'Teacher' or current_user.role == 'Admin'):
         if iduser:
             session_db = db_session.create_session()
             user = session_db.query(User).filter_by(id=iduser).first()
-            teacher = session_db.query(User).filter_by(id=current_user.id).first()
+            teacher = session_db.query(User).filter_by(id=teacherid).first()
             if not user or not teacher:
                 session_db.close()
                 return redirect(url_for('main_page'))
@@ -388,7 +396,7 @@ def student_page(iduser):
                                    userclass=userclass,
                                    userbalance=teacher_balance,
                                    studbalance=userbalance,
-                                   iduser=iduser)
+                                   iduser=iduser, teacherid=teacherid)
 
         return redirect(url_for('main_page'))
 
@@ -447,7 +455,7 @@ def enteracc(userid):
         teacher = session_db.query(User).filter_by(id=userid).first()
         session_db.close()
         adminid = current_user.id
-        return render_template('main.html', adminid=adminid, teachername=teacher.username,
+        return render_template('classes/classes_list.html', adminid=adminid, teachername=teacher.username,
                                teacersurname=teacher.usersurname, teacherotchestvo=teacher.userotchestvo,
                                role=teacher.role, userbalance=teacher.userbalance, teacherid=teacher.id,
                                teacher_classes=teacher.userclass.split())

@@ -12,7 +12,7 @@
     {% if teacher_classes %}
       {% for class_name in teacher_classes %}
         <div class="class-card">
-          <a href="/{{ class_name }}">
+          <a href="/{{ class_name }}/{{ teacherid }}">
             <div class="class-content">
               <div>{{ class_name }}</div>
             </div>

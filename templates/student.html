@@ -8,7 +8,7 @@
 
 {% block content %}
   <div class="sign-div">
-    <form class="inputs" method="POST" action="/student/{{ iduser }}">
+    <form class="inputs" method="POST" action="/student/{{ iduser }}/{{ teacherid }}">
       <h2>{{ username }} {{ usersurname }}</h2>
       <p class="class-info">Класс: {{ userclass }}</p>
       <p class="balance-info">Баланс: <strong>{{ studbalance }} монет</strong></p>
