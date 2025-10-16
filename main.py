@@ -30,7 +30,7 @@ def main_page():
     if current_user.is_authenticated:
         session = db_session.create_session()
         if current_user.role == 'Student':
-            return render_template('main.html', logged_in=True, username=current_user.username,
+            return render_template('shop/shop.html', logged_in=True, username=current_user.username,
                                    usersurname=current_user.usersurname, userclass=current_user.userclass,
                                    userbalance=current_user.userbalance, userotchestvo=current_user.userotchestvo,
                                    role=current_user.role)
@@ -71,18 +71,18 @@ def main_page():
                         all_users = session_db.query(User).filter_by(role=bysort).all()
                     session_db.close()
                 finally:
-                    return render_template('main.html', logged_in=True, username=current_user.username,
+                    return render_template('admin/users_search.html', logged_in=True, username=current_user.username,
                                            usersurname=current_user.usersurname, userclass=current_user.userclass,
                                            userbalance=current_user.userbalance,
                                            userotchestvo=current_user.userotchestvo,
                                            all_users=all_users, colvousers=len(all_users), role=current_user.role)
-            return render_template('main.html', logged_in=True, username=current_user.username,
+            return render_template('admin/users_search.html', logged_in=True, username=current_user.username,
                                    usersurname=current_user.usersurname, userclass=current_user.userclass,
                                    userbalance=current_user.userbalance, userotchestvo=current_user.userotchestvo,
                                    all_users=all_users, colvousers=len(all_users), role=current_user.role)
         elif current_user.role == 'Teacher':
             teacher_classes = current_user.userclass.split(' ')
-            return render_template('main.html', logged_in=True, username=current_user.username,
+            return render_template('classes/classes_list.html', logged_in=True, username=current_user.username,
                                    usersurname=current_user.usersurname, userclass=current_user.userclass,
                                    userbalance=current_user.userbalance, userotchestvo=current_user.userotchestvo,
                                    role=current_user.role, teacher_classes=teacher_classes)

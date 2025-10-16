@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}Список классов{% endblock %}
+
+{% block links %}
+  <link rel="stylesheet" href="/static/css/classes.css">
+{% endblock %}
+
+{% block content %}
+  <h1 class="classes-header">Мои классы:</h1>
+  <div class="classes-grid">
+    {% if teacher_classes %}
+      {% for class_name in teacher_classes %}
+        <div class="class-card">
+          <a href="/{{ class_name }}">
+            <div class="class-content">
+              <div>{{ class_name }}</div>
+            </div>
+          </a>
+        </div>
+      {% endfor %}
+    {% endif %}
+  </div>
+{% endblock %}
