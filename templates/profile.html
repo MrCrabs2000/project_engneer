@@ -1,32 +1,27 @@
-<!DOCTYPE html>
-<html lang="en-US">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width" />
-    <title>Профиль</title>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="static/css/style.css">
-    <link rel="stylesheet" href="static/css/profile.css">
-  </head>
-  <body>
-    {% include 'header.html' %}
-    <div class="profile">
-      <div class="userdata-list">
-        <div class="userdata">
-          <label>Имя:</label>
-          <input type="text" value="{{username}}" readonly>
-        </div>
-        <div class="userdata">
-          <label>Фамилия:</label>
-          <input type="text" value="{{usersurname}}" readonly>
-        </div>
-        <div class="userdata">
-          <label>Класс:</label>
-          <input text="text" value="{{userclass}}" readonly>
-        </div>
+{% extends "base.html" %}
+ 
+{% block title %}Профиль{% endblock %}
+
+{% block links %}
+<link rel="stylesheet" href="static/css/profile.css">
+{% endblock %}
+
+{% block content %}
+  <div class="profile">
+    <div class="userdata-list">
+      <div class="userdata">
+        <label>Имя:</label>
+        <input type="text" value="{{username}}" readonly>
       </div>
-      <button class="edit-button" onclick="document.location='/profile_edit'">Редактировать</button>
+      <div class="userdata">
+        <label>Фамилия:</label>
+        <input type="text" value="{{usersurname}}" readonly>
+      </div>
+      <div class="userdata">
+        <label>Класс:</label>
+        <input text="text" value="{{userclass}}" readonly>
+      </div>
     </div>
-      <!-- <a>{{phonenumber}}</a> -->
-  </body>
-</html>
+    <button class="edit-button" onclick="document.location='/profile_edit'">Редактировать</button>
+  </div>
+{% endblock  %}

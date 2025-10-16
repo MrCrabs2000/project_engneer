@@ -1,113 +1,76 @@
-<!DOCTYPE html>
-<html lang="en-US">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width" />
-    <title>Главная</title>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/static/css/style.css">
-    <link rel="stylesheet" href="/static/css/shop.css">
-    <link rel="stylesheet" href="/static/css/classes.css">
-    <link rel="stylesheet" href="/static/css/users-list.css">
-  </head>
-    {% include 'header.html' %}
-    {% if role == 'Admin' %}
-        <button onclick="document.location='/adduser'">Добавить пользователя</button>
+{% extends "base.html" %}
+
+{% block title %}Главная{% endblock %}
+
+{% block links %}
+  <link rel="stylesheet" href="/static/css/shop.css">
+  <link rel="stylesheet" href="/static/css/classes.css">
+  <link rel="stylesheet" href="/static/css/users-list.css">
+  <link rel="stylesheet" href="/static/css/admin.css">
+{% endblock %}
+
+{% block content %}
+
+  {% if role == 'Admin' %}
+    <button onclick="document.location='/adduser'">Добавить пользователя</button>
+    <form class="distribute" enctype="multipart/form-data" method="post">
+      <input type="number" name="razdbalance">
+      <input type="submit" value="Раздать">
+    </form>
+    <div class="search-container">
+      <input type="text" name="bysort">
+      <div class="filters">
         <form enctype="multipart/form-data" method="post">
-            <input type="number" name="razdbalance">
-            <input type="submit" value="Раздать">
-        </form>
-        <form enctype="multipart/form-data" method="post">
+          <div>Искать по:</div>
           <div>
-            <input type="text" name="bysort">
-            <p>Искать по:</p>
-            <div>
-                <input type="radio" value="Фамилия" name="sort" checked/>
-                <label for="Фамилия">Фамилии</label>
-                <input type="radio" value="Класс" name="sort" />
-                <label for="Класс">Классу</label>
-                <input type="radio" value="Роль" name="sort" />
-                <label for="Роль">Роли</label>
-            </div>
-            <input type="submit" value="Искать">
+            <input type="radio" value="Фамилия" name="sort" checked/>
+            <label for="Фамилия">Фамилии</label>
+            <input type="radio" value="Класс" name="sort" />
+            <label for="Класс">Классу</label>
+            <input type="radio" value="Роль" name="sort" />
+            <label for="Роль">Роли</label>
           </div>
-        </form><br>
+          <input type="submit" value="Искать">
+        </form>
         <button onclick="document.location='/'">Отменить все фильтры</button>
-      <div class="users-grid">
-        {% for i in range(colvousers) %}
-          <div class="user-card">
-            <a href="/userprofile/{{ all_users[i]['id'] }}">
-              <div class="user-info">{{all_users[i]['usersurname']}} {{all_users[i]['username'][0]}}. {{all_users[i]['userotchestvo'][0]}}.</div>
+      </div>
+    </div>
+    <div class="users-grid">
+      {% for i in range(colvousers) %}
+        <div class="user-card">
+          <a href="/userprofile/{{ all_users[i]['id'] }}">
+            <div class="user-info">{{all_users[i]['usersurname']}} {{all_users[i]['username'][0]}}. {{all_users[i]['userotchestvo'][0]}}.</div>
+          </a>
+        </div>
+      {% endfor %}
+    </div>
+  {% elif role == 'Student' %}
+    <div class="products-grid">
+      <div class="product-card">
+        <a>
+          <div class="content">
+            <img src="static/images/test.jpg"/>
+            <p>Картошка</p>
+          </div>
+        </a>
+      </div>
+    </div>
+  {% elif role == 'Teacher' %}
+    <h1 class="classes-header">Мои классы:</h1>
+    <div class="classes-grid">
+      {% if teacher_classes %}
+        {% for class_name in teacher_classes %}
+          <div class="class-card">
+            <a href="/{{ class_name }}">
+              <div class="class-content">
+                <div>{{ class_name }}</div>
+              </div>
             </a>
           </div>
         {% endfor %}
-      </div>
+      {% endif %}
+    </div>
+  {% endif %}
 
-    {% elif role == 'Student' %}
-      <div class="products-grid">
-        <div class="product-card">
-          <a>
-            <div class="content">
-              <img src="static/images/test.jpg"/>
-              <p>Картошка</p>
-            </div>
-          </a>
-        </div>
+{% endblock  %}
 
-        <div class="product-card">
-          <a>
-            <div class="content">
-              <img src="static/images/test.jpg"/>
-              <p>Картошка</p>
-            </div>
-          </a>
-        </div>
-
-        <div class="product-card">
-          <a>
-            <div class="content">
-              <img src="static/images/test.jpg"/>
-              <p>Картошка</p>
-            </div>
-          </a>
-        </div>
-
-        <div class="product-card">
-          <a>
-            <div class="content">
-              <img src="static/images/test.jpg"/>
-              <p>Картошка</p>
-            </div>
-          </a>
-        </div>
-
-        <div class="product-card">
-          <a>
-            <div class="content">
-              <img src="static/images/test.jpg"/>
-              <p>Картошка</p>
-            </div>
-          </a>
-        </div>
-      </div>
-
-    {% elif role == 'Teacher' %}
-      <h1 class="classes-header">Мои классы:</h1>
-      <div class="classes-grid">
-        {% if teacher_classes %}
-          {% for class_name in teacher_classes %}
-            <div class="class-card">
-              <a href="/{{ class_name }}">
-                <div class="class-content">
-                  <div>{{ class_name }}</div>
-                </div>
-              </a>
-            </div>
-          {% endfor %}
-        {% endif %}
-      </div>
-    {% endif %}
-
-
-  </body>
-</html>

@@ -1,37 +1,37 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    <link rel="stylesheet" href="/static/css/style.css">
-</head>
-<body>
-    {% include 'header.html' %}
-    <form method="POST" enctype="multipart/form-data">
-        <input value="{{ user['username'] }}" name="name">
-        <input value="{{ user['usersurname'] }}" name="surname">
-        <input value="{{ user['userotchestvo'] }}" name="otchestvo">
-        <input value="{{ user['userclass'] }}" name="class">
-        <select name="role">
-            {% if user['role'] == 'Student' %}
-                <option>Student</option>
-                <option>Teacher</option>
-                <option>Admin</option>
-            {% elif user['role'] == 'Teacher' %}
-                <option>Teacher</option>
-                <option>Student</option>
-                <option>Admin</option>
-            {% else %}
-                <option>Admin</option>
-                <option>Student</option>
-                <option>Teacher</option>
-            {% endif %}
-        </select>
-        <input placeholder="Введите новый пароль" name="password">
-        <input value="{{ user['userbalance'] }}" type="number" name="balance">
-        <input type="submit" value="Подтвердить изменения">
-    </form>
-    <button onclick="document.location='/deluser/{{ user['id'] }}'">удалить пользователя</button><br>
-    <button onclick="document.location='/userprofile/{{ user['id'] }}'">Назад</button>
-</body>
-</html>
+{% extends "base.html" %}
+
+{% block title %}Title{% endblock %}
+
+{% block links %}
+
+{% endblock  %}
+
+{% block content %}
+  <form method="POST" enctype="multipart/form-data">
+    <input value="{{ user['username'] }}" name="name">
+    <input value="{{ user['usersurname'] }}" name="surname">
+    <input value="{{ user['userotchestvo'] }}" name="otchestvo">
+    <input value="{{ user['userclass'] }}" name="class">
+    <select name="role">
+      {% if user['role'] == 'Student' %}
+        <option>Student</option>
+        <option>Teacher</option>
+        <option>Admin</option>
+      {% elif user['role'] == 'Teacher' %}
+        <option>Teacher</option>
+        <option>Student</option>
+        <option>Admin</option>
+      {% else %}
+        <option>Admin</option>
+        <option>Student</option>
+        <option>Teacher</option>
+      {% endif %}
+    </select>
+    <input placeholder="Введите новый пароль" name="password">
+    <input value="{{ user['userbalance'] }}" type="number" name="balance">
+    <input type="submit" value="Подтвердить изменения">
+  </form>
+  <button onclick="document.location='/deluser/{{ user['id'] }}'">удалить пользователя</button><br>
+  <button onclick="document.location='/userprofile/{{ user['id'] }}'">Назад</button>
+
+{% endblock %}
