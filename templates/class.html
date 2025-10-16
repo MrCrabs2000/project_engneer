@@ -1,36 +1,42 @@
-{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Класс {{ class_name }}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/static/css/class.css">
+  </head>
+  <body>
+    {% include 'header.html' %} 
+    <h1 class="class-header">Класс: {{ class_name }}</h1>
+    <div class="students-count">Учеников: {{ students_count }}</div>  
+    
+      {% if students %}
+        <div class="students-grid">
+          {% for student in students %}
+            <div class="student-card">
+              <a href="/student/{{ student.id }}">
+                <div class="student-info">
+                  <div class="student-name">{{ student.usersurname }} {{ student.username[0] }}. {{ student.userotchestvo[0] }}.</div>
 
-{% block title %}Класс {{ class_name }}{% endblock %}
+                  <div class="student-balance">
+                    <img class="student-balance-ico" src="static/images/coin.png">
+                    <div>{{student.userbalance}}</div>
+                  </div>
 
-{% block links %}
-  <link rel="stylesheet" href="/static/css/class.css">
-{% endblock  %}
-
-{% block content %}
-  <h1 class="class-header">Класс: {{ class_name }}</h1>
-  <div class="students-count">Учеников: {{ students_count }}</div>  
-  
-    {% if students %}
-      <div class="students-grid">
-        {% for student in students %}
-          <div class="student-card">
-            <a href="/student/{{ student.id }}">
-              <div class="student-info">
-                <div class="student-name">{{ student.usersurname }} {{ student.username[0] }}. {{ student.userotchestvo[0] }}.</div>
-                <div class="student-balance">
-                  <img class="student-balance-ico" src="static/images/coin.png">
-                  <div>{{userbalance}}</div>
                 </div>
-              </div>
-            </a>
-          </div>
-        {% endfor %}
-      </div>
-    {% else %}
-      <div class="no-students">
-        <p>В этом классе пока нет учеников</p>
-      </div>
-    {% endif %}
-  <br><button onclick="document.location='/'">Назад</button>
-  </div>
-{% endblock  %}
+              </a>
+            </div>
+          {% endfor %}
+        </div>
+      {% else %}
+        <div class="no-students">
+          <p>В этом классе пока нет учеников</p>
+        </div>
+      {% endif %}
+    <br><button onclick="document.location='/'">Назад</button>
+    </div>
+  </body>
+</html>
