@@ -27,3 +27,21 @@ html, body {
 button:hover, input[type="submit"]:hover, input[type="button"]:hover {
     cursor: pointer;
 }
+
+input[type="radio"] {
+   display: none;
+}
+
+input[type="radio"] + label {
+    display: flex;
+    cursor: pointer;
+}
+
+input[type="radio"] + label::before {
+    content: '';
+    position: relative;
+    width: 1em;
+    height: 1em;
+    border: 2px solid var(--color);
+    border-radius: 8px;
+}
