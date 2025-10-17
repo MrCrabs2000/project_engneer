@@ -34,7 +34,7 @@
           <p>В этом классе пока нет учеников</p>
         </div>
       {% endif %}
-    {% if adminid %}
+    {% if adminid != 'nul' %}
         <br><button onclick="document.location='/enterteach/{{ tid }}'">Назад</button>
     {% else %}
         <br><button onclick="document.location='/'">Назад</button>

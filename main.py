@@ -301,7 +301,8 @@ def class_page(class_name, teacherid):
                                    class_name=class_name,
                                    students=students_list,
                                    students_count=len(students_list),
-                                   tid=teacher.id)
+                                   tid=teacher.id,
+                                   adminid='nul')
         else:
             return render_template('class.html', logged_in=True, username=teacher.username,
                                    usersurname=teacher.usersurname, userclass=teacher.userclass,
