@@ -6,8 +6,7 @@
     <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body>
-    {% for user in all_users %}
-        <p>{{user['username']}}</p>
-    {% endfor %}
+    {% include 'header.html' %}
+    <p>{{ item.id }} {{ item.name }} {{ item.description }} {{ item.price }} {{ item.count }} {{ item.photo }}</p>
 </body>
 </html>

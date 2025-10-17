@@ -1,0 +1,30 @@
+.search-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px auto;
+    max-width: 1400px;
+}
+
+.search-bar {
+    box-sizing: border-box;
+    height: 48px;
+    width: 20%;
+    max-width: 400px;
+    align-items: center;
+    padding: 0 12px;
+    color: var(--text-color);
+    font-size: 34px;
+    background-color: var(--color);
+    border: 0;
+    border-radius: 24px;
+}
+
+.filters-container {
+    display: flex;
+
+}
+
+.filters {
+    display: flex;
+}

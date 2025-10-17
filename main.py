@@ -349,7 +349,7 @@ def edituser(userid):
 
 @app.route('/student/<iduser>', methods=['GET', 'POST'])
 def student_page(iduser):
-    if current_user.is_authenticated and (current_user.role == 'Teacher' or current_user.role == 'Admin'):
+    if current_user.is_authenticated and current_user.role == 'Teacher':
         if iduser:
             session_db = db_session.create_session()
             user = session_db.query(User).filter_by(id=iduser).first()
