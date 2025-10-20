@@ -5,6 +5,7 @@ from Classes import Item_user, User, Item_shop
 from tgbotiha import check_response
 from werkzeug.security import generate_password_hash, check_password_hash
 import os
+from exel import import_users
 
 
 app = Flask(__name__)
@@ -39,6 +40,11 @@ def main_page():
         elif current_user.role == 'Admin':
             users = session.query(User).all()
             all_users = []
+            for user in users:
+                if user.adedusers == 'False':
+                    user.adedusers = False
+                    session.commit()
+            print(str(current_user.adedusers))
             for user in users:
                 userr = {}
                 userr['id'] = user.id
@@ -76,7 +82,7 @@ def main_page():
                     return render_template('admin/users_search.html', logged_in=True, username=current_user.username,
                                            usersurname=current_user.usersurname, userclass=current_user.userclass,
                                            userbalance=current_user.userbalance,
-                                           userotchestvo=current_user.userotchestvo,
+                                           userotchestvo=current_user.userotchestvo, adedusers=str(current_user.adedusers),
                                            all_users=all_users, colvousers=len(all_users), role=current_user.role)
             return render_template('admin/users_search.html', logged_in=True, username=current_user.username,
                                    usersurname=current_user.usersurname, userclass=current_user.userclass,
@@ -465,6 +471,18 @@ def enteracc(userid):
                                role=teacher.role, userbalance=teacher.userbalance, teacherid=teacher.id,
                                teacher_classes=teacher.userclass.split())
 
+
+@app.route('/addingusers')
+def addusers():
+    if current_user.is_authenticated and current_user.role == 'Admin':
+        session_db = db_session.create_session()
+        import_users()
+        users = session_db.query(User).all()
+        for user in users:
+            user.adedusers = True
+            session_db.commit()
+        session_db.close()
+        return redirect(url_for('main_page'))
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=8000, debug=True)

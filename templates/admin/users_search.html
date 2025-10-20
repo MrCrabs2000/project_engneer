@@ -13,6 +13,9 @@
     <input type="number" name="razdbalance">
     <input type="submit" value="Раздать">
   </form> #}
+  {% if adedusers == '0' %}
+    <button onclick="document.location='/addingusers'">Создать пользователей</button>
+  {% endif %}
  
   <form class="search-container" enctype="multipart/form-data" method="post">
     <div class="search">
