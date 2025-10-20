@@ -13,24 +13,32 @@
     <input type="number" name="razdbalance">
     <input type="submit" value="Раздать">
   </form> #}
-  <div class="search-container">
-    <div class="filters-container">
-      <form class="filters" enctype="multipart/form-data" method="post">
-        <input class="search-bar" type="text" name="bysort" placeholder="Поиск">
-        <div>Искать по:</div>
-        <div>
-          <input type="radio" value="Фамилия" name="sort" checked/>
-          <label for="Фамилия">Фамилии</label>
-          <input type="radio" value="Класс" name="sort" />
-          <label for="Класс">Классу</label>
-          <input type="radio" value="Роль" name="sort" />
-          <label for="Роль">Роли</label>
-        </div>
-        <input type="submit" value="Искать">
-      </form>
-      <button onclick="document.location='/'">Отменить все фильтры</button>
+ 
+  <form class="search-container" enctype="multipart/form-data" method="post">
+    <div class="search">
+      <input class="search-bar" type="text" name="bysort" placeholder="Поиск пользователя" value="{{ search_text }}">
+      <input class="search-btn" type="submit" value="Искать">
     </div>
-  </div>
+    <div class="filters">
+      <div class="filters-header">Искать по:</div>
+      <div class="radio-btn">
+        <input type="radio" value="Фамилия" id="surname" name="sort" checked/>
+        <label for="surname">Фамилии</label>
+      </div>
+
+      <div class="radio-btn">
+        <input type="radio" value="Класс" id="class" name="sort" />
+        <label for="class">Классу</label>
+      </div>
+
+      <div class="radio-btn">
+        <input type="radio" value="Роль" id="role" name="sort" />
+        <label for="role">Роли</label>
+      </div>
+      {# <button onclick="document.location='/'">Отменить все фильтры</button> #}
+    </div>
+  </form>
+  
   <div class="users-flex">
     {% for i in range(colvousers) %}
       <div class="user-card">

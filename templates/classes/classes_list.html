@@ -8,7 +8,10 @@
 
 {% block content %}
   <h1 class="classes-header">Мои классы:</h1>
-  <div class="classes-grid">
+    {% if adminid %}
+        <button onclick="document.location='/userprofile/{{ teacherid }}'">Назад</button>
+    {% endif %}
+    <div class="classes-grid">
     {% if teacher_classes %}
       {% for class_name in teacher_classes %}
         <div class="class-card">

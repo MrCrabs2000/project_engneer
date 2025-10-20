@@ -24,7 +24,6 @@
                     <img class="student-balance-ico" src="/static/images/coin.png">
                     <div>{{student.userbalance}}</div>
                   </div>
-
                 </div>
               </a>
             </div>
@@ -35,7 +34,11 @@
           <p>В этом классе пока нет учеников</p>
         </div>
       {% endif %}
-    <br><button onclick="document.location='/'">Назад</button>
+    {% if adminid != 'nul' %}
+        <br><button onclick="document.location='/enterteach/{{ tid }}'">Назад</button>
+    {% else %}
+        <br><button onclick="document.location='/'">Назад</button>
+    {% endif %}
     </div>
   </body>
 </html>
