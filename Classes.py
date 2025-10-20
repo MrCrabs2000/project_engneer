@@ -1,3 +1,5 @@
+from collections import Counter
+
 from sqlalchemy import Column, Integer, String
 from db_session import SqlAlchemyBase
 from flask_login import UserMixin
@@ -31,6 +33,8 @@ class Item_user(SqlAlchemyBase):
     __tablename__ = 'items_users'
 
     id = Column(Integer, primary_key=True, autoincrement=True)
+    userid = Column(Integer, primary_key=True)
+    status = Column(String(20), nullable=False)
     name = Column(String(100), nullable=False)
     description = Column(String(300), nullable=False)
     photo = Column(String(1000), nullable=False)
