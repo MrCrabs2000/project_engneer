@@ -36,14 +36,17 @@
     
 }
 
+.filters {
+    display: flex;
+    justify-content: center;
+    width: fit-content;
+    gap: 10px;
+}
+
 .filters-header {
     font-size: 30px;
 }
 
-.filters {
-    display: flex;
-}
-
-.radio-btn {
-
+.radio-button-label {
+    font-size: 20px;
 }
