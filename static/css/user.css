@@ -1,0 +1,33 @@
+.user-container {
+    box-sizing: content-box;
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    gap: 20px;
+    width: fit-content;
+    margin: 80px auto;
+    padding: 30px;
+    font-size: 32px;
+}
+
+.user-info {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.user-info input {
+    width: 350px;
+}
+
+.user-info input[readonly] {
+    caret-color: transparent;
+    cursor: text;
+}
+
+.edit-btn {
+    width: 350px;
+    height: 1.625em;
+    border: 0;
+    border-radius: 0.6em;
+}
