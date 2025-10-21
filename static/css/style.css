@@ -24,6 +24,22 @@ html, body {
     display: flex;
 }
 
+input {
+    box-sizing: border-box;
+    height: 32px;
+    width: 192px;
+    align-items: center;
+    padding: 0 0.55em;
+    color: var(--text-color);
+    font-size: inherit;
+    font-family: inherit;
+    font-weight: inherit;
+    background-color: #ebf3fa;
+    border: 3px solid var(--color);
+    border-radius: 0.6em;
+    outline: none;
+}
+
 button:hover, input[type="submit"]:hover, input[type="button"]:hover {
     cursor: pointer;
 }

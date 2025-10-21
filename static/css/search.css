@@ -13,25 +13,19 @@
     gap: 8px;
     width: 40%;
     max-width: 300px;
+    font-size: 34px;
 }
 
 .search-bar {
     flex-grow: 1;
-    box-sizing: border-box;
     height: 48px;
-    align-items: center;
-    padding: 0 16px;
-    color: var(--text-color);
-    font-size: 34px;
-    border: 3px solid var(--color);
-    border-radius: 16px;
+    width: auto;
 }
 
 .search-btn {
-    width: 48px;
+    height: 48px;
     aspect-ratio: 1/1;
     border: 0;
-    border-radius: 16px;
     background-color: var(--color);
     
 }
