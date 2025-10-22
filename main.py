@@ -94,12 +94,23 @@ def main_page():
 @app.route('/history')
 def history():
     if current_user.is_authenticated:
-        session = db_session.create_session()
         if current_user.role == 'Student' or current_user.role == 'Teacher':
-            return render_template('history.html', logged_in=True, username=current_user.username,
-                                   usersurname=current_user.usersurname, userclass=current_user.userclass,
-                                   userbalance=current_user.userbalance, userotchestvo=current_user.userotchestvo,
-                                   role=current_user.role)
+            session_db = db_session.create_session()
+            user_id = current_user.id
+            items_user = session_db.query(Item_user).filter_by(userid=user_id).all()
+            items_list = []
+            for item in items_user:
+                item_data = {
+                    'id': item.id,
+                    'status': item.status,
+                    'name': item.name,
+                    'count': item.count,
+                    'photo': item.photo,
+                    'description': item.description
+                }
+                items_list.append(item_data)
+            print(items_list)
+            return render_template('history.html', items_list=items_list)
         else:
             users = session.query(User).all()
             all_users = []
@@ -289,7 +300,7 @@ def class_page(class_name, teacherid):
             }
             students_list.append(student_data)
         session_db.close()
-        if teacherid == current_user.id:
+        if int(teacherid) == int(current_user.id):
             return render_template('class.html',
                                    logged_in=True,
                                    username=teacher.username,
@@ -324,34 +335,47 @@ def userprof(userid):
 @app.route('/itemshop/<itemid>', methods=['POST', 'GET'])
 def itemshop(itemid):
     if current_user.is_authenticated:
+
         session_db = db_session.create_session()
-        item = session_db.query(Item_shop).filter_by(id=itemid).first()
+        item_shop = session_db.query(Item_shop).filter_by(id=itemid).first()
         user = session_db.query(User).filter_by(id=current_user.id).first()
+        item_user = session_db.query(Item_user).filter_by(id=item_shop.id).first()
+
         if request.method == 'POST':
             count = request.form['item_count']
-            if int(user.userbalance) >= (int(item.price) * int(count)):
-                user.userbalance = int(user.userbalance) - (int(item.price) * int(count))
 
-                new_item = Item_user(
+            if int(user.userbalance) >= (int(item_shop.price) * int(count)) and session_db.query(Item_user).filter_by(id=item_shop.id).first() is None and item_shop.count - int(count) >= 0:
+                user.userbalance = int(user.userbalance) - (int(item_shop.price) * int(count))
+                item_shop.count -= int(count)
+
+                for i in range(int(item_shop.count)):
+                    new_item = Item_user(
                     userid=current_user.id,
                     status='На рассмотрении',
-                    name=item.name,
-                    description=item.description,
-                    photo=item.photo
+                    name=item_shop.name,
+                    count=int(count),
+                    description=item_shop.description,
+                    photo=item_shop.photo
                 )
 
-                session['userid'] = new_item.id
-                session['status'] = new_item.status
-                session['name'] = new_item.name
-                session['description'] = new_item.description
-                session['photo'] = new_item.photo
+                    session['userid'] = new_item.id
+                    session['status'] = new_item.status
+                    session['name'] = new_item.name
+                    session['count'] = new_item.count
+                    session['description'] = new_item.description
+                    session['photo'] = new_item.photo
 
-                session_db.add(new_item)
-                session_db.commit()
-                session_db.close()
+                    session_db.add(new_item)
+                    session_db.commit()
+            else:
+                if item_shop.count - int(count) >= 0:
+                    user.userbalance = int(user.userbalance) - (int(item_shop.price) * int(count))
+                    item_shop.count -= int(count)
+                    item_user.count += int(count)
+                    session_db.commit()
 
-        return render_template('items.html', userbalance=current_user.userbalance, role=current_user.role,
-                                   item=item)
+        return render_template('items.html', userbalance=user.userbalance, role=current_user.role,
+                                   item=item_shop)
 
 
 @app.route('/edituser/<userid>', methods=['GET', 'POST'])

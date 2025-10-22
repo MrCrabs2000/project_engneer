@@ -1,4 +1,5 @@
 from collections import Counter
+from email.policy import default
 
 from sqlalchemy import Column, Integer, String
 from db_session import SqlAlchemyBase
@@ -33,9 +34,10 @@ class Item_user(SqlAlchemyBase):
     __tablename__ = 'items_users'
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    userid = Column(Integer, primary_key=True)
+    userid = Column(Integer)
     status = Column(String(20), nullable=False)
     name = Column(String(100), nullable=False)
+    count = Column(Integer, default=0)
     description = Column(String(300), nullable=False)
     photo = Column(String(1000), nullable=False)
 
