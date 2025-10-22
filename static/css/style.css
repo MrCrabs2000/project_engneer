@@ -30,6 +30,7 @@ button {
     font-weight: 700;
     background-color: var(--color);
     color: var(--text-color);
+    border: 0;
 }
 
 input {
