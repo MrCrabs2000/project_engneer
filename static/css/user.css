@@ -16,6 +16,17 @@
     gap: 10px;
 }
 
+.input-label {
+    display: flex;
+    flex-direction: column;
+}
+
+.input-label span {
+    color: #494949;
+    font-size: 24px;
+    margin-left: 0.55em;
+}
+
 .user-info input, .user-info select {
     width: 400px;
 }
