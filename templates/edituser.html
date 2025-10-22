@@ -12,28 +12,30 @@
       <input value="{{ user['usersurname'] }}" name="name" placeholder="Имя">
       <input value="{{ user['username'] }}" name="surname" placeholder="Фамилия">
       <input value="{{ user['userotchestvo'] }}" name="otchestvo" placeholder="Отчество">
-      <select name="role">
-      {% if user['role'] == 'Student' %}
-        <option selected>Student</option>
-        <option>Teacher</option>
-        <option>Admin</option>
-      {% elif user['role'] == 'Teacher' %}
-        <option>Student</option>
-        <option selected>Teacher</option>
-        <option>Admin</option>
-      {% else %}
-        <option>Student</option>
-        <option>Teacher</option>
-        <option selected>Admin</option>
-      {% endif %}
-      </select>
+      <div class="select">
+        <select name="role">
+        {% if user['role'] == 'Student' %}
+          <option selected>Student</option>
+          <option>Teacher</option>
+          <option>Admin</option>
+        {% elif user['role'] == 'Teacher' %}
+          <option>Student</option>
+          <option selected>Teacher</option>
+          <option>Admin</option>
+        {% else %}
+          <option>Student</option>
+          <option>Teacher</option>
+          <option selected>Admin</option>
+        {% endif %}
+        </select>
+      </div>
       <input value="{{ user['userclass'] }}" name="class" placeholder="Класс">
-      <input type="number" value="{{ user['userbalance'] }}" name="balance" placeholder="Баланс">
+      <input type="text" min="0" oninput="this.value = Math.abs(this.value)" value="{{ user['userbalance'] }}" name="balance" placeholder="Баланс">
       <input type="password" name="password" placeholder="Новый пароль">
     </div>
     <div class="btns-container">
       <input type="submit" value="Подтвердить">
-      <button onclick="document.location='/deluser/{{ user['id'] }}'">Удалить пользователя</button><br>
+      
     </div>
   </form>
 {% endblock %}

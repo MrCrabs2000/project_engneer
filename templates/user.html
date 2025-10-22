@@ -29,7 +29,10 @@
       <input value="{{ user['userclass'] }}" readonly>
       <input value="{{ user['userbalance'] }}" readonly>
     </div>
-    <button onclick="document.location='/edituser/{{ user['id'] }}'">Редактировать</button>
+    <div class="btns-container">
+      <button onclick="document.location='/edituser/{{ user['id'] }}'">Редактировать</button>
+      <button onclick="document.location='/deluser/{{ user['id'] }}'">Удалить пользователя</button>
+    </div>
   </div>
   {% if user['role'] == 'Teacher' %}
       <button onclick="document.location='/enterteach/{{ user['id'] }}'">Войти в пользователя</button>
