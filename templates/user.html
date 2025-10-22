@@ -12,11 +12,24 @@
       <input value="{{ user['usersurname'] }}" readonly>
       <input value="{{ user['username'] }}" readonly>
       <input value="{{ user['userotchestvo'] }}" readonly>
-      <input value="{{ user['role'] }}" readonly>
+      <select name="role" disabled>
+      {% if user['role'] == 'Student' %}
+        <option selected>Student</option>
+        <option>Teacher</option>
+        <option>Admin</option>
+      {% elif user['role'] == 'Teacher' %}
+        <option>Student</option>
+        <option selected>Teacher</option>
+        <option>Admin</option>
+      {% else %}
+        <option>Student</option>
+        <option>Teacher</option>
+        <option selected>Admin</option>
+      {% endif %}
       <input value="{{ user['userclass'] }}" readonly>
       <input value="{{ user['userbalance'] }}" readonly>
     </div>
-    <button class="edit-btn" onclick="document.location='/edituser/{{ user['id'] }}'">Редактировать</button>
+    <button onclick="document.location='/edituser/{{ user['id'] }}'">Редактировать</button>
   </div>
   {% if user['role'] == 'Teacher' %}
       <button onclick="document.location='/enterteach/{{ user['id'] }}'">Войти в пользователя</button>

@@ -33,7 +33,7 @@ button {
     border: 0;
 }
 
-input {
+input, select {
     box-sizing: border-box;
     height: 1.625em;
     width: 192px;

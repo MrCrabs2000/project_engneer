@@ -16,8 +16,8 @@
     gap: 10px;
 }
 
-.user-info input {
-    width: 350px;
+.user-info input, .user-info select {
+    width: 400px;
 }
 
 .user-info input[readonly] {
@@ -25,9 +25,17 @@
     cursor: text;
 }
 
-.edit-btn {
-    width: 350px;
+.btns-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+button, input[type="submit"] {
+    width: 400px;
     height: 1.625em;
     border: 0;
     border-radius: 0.6em;
+    font-weight: 700;
+    background-color: var(--color);
 }
