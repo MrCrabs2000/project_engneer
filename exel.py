@@ -1,6 +1,6 @@
 from openpyxl import load_workbook
 from werkzeug.security import generate_password_hash
-
+from transliterate import translit
 from db_session import create_session, global_init
 from Classes import User
 import os
@@ -10,7 +10,7 @@ def import_users():
     db_path = os.path.join('db', 'users.db')
     global_init(True, db_path)
 
-    workbook = load_workbook('Students.xlsx')
+    workbook = load_workbook('exel/users.xlsx')
     sheet = workbook.active
 
     session = create_session()
@@ -23,10 +23,10 @@ def import_users():
                sheet[f'C{row}'].value is not None and
                sheet[f'D{row}'].value is not None):
 
-            name = sheet[f'A{row}'].value
-            surname = sheet[f'B{row}'].value
-            otchestvo = sheet[f'C{row}'].value
-            user_class = sheet[f'D{row}'].value
+            name = translit(sheet[f'A{row}'].value, 'ru', True)
+            surname = translit(sheet[f'B{row}'].value, 'ru', True)
+            otchestvo = translit(sheet[f'C{row}'].value, 'ru', True)
+            user_class = translit(sheet[f'D{row}'].value, 'ru', True)
 
             existing_user = session.query(User).filter(
                 User.username == name,
@@ -38,14 +38,13 @@ def import_users():
                 print(f"Пользователь уже существует: {name} {surname} - {user_class}")
                 row += 1
                 continue
-
+            password = name[:3] + surname[:3] + otchestvo[:3] + user_class
             user = User(
                 username=name,
                 usersurname=surname,
-                phonenumber='',
-                userpassword=generate_password_hash('123456'),
+                userpassword=generate_password_hash(password),
                 userclass=user_class,
-                role='student',
+                role='Student',
                 userbalance='0'
             )
 
@@ -62,6 +61,3 @@ def import_users():
 
     finally:
         session.close()
-
-
-print(import_users())

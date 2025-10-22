@@ -13,28 +13,34 @@
     <input type="number" name="razdbalance">
     <input type="submit" value="Раздать">
   </form> #}
+  {% if adedusers == '0' %}
+    <button onclick="document.location='/addingusers'">Создать пользователей</button>
+  {% endif %}
  
   <form class="search-container" enctype="multipart/form-data" method="post">
     <div class="search">
       <input class="search-bar" type="text" name="bysort" placeholder="Поиск пользователя" value="{{ search_text }}">
-      <input class="search-btn" type="submit" value="Искать">
+      <input class="search-btn" type="submit" value="Найти">
     </div>
     <div class="filters">
       <div class="filters-header">Искать по:</div>
-      <div class="radio-btn">
+      <label class="radio-button-label" for="surname">
         <input type="radio" value="Фамилия" id="surname" name="sort" checked/>
-        <label for="surname">Фамилии</label>
-      </div>
+        <span class="custom-radio-btn"></span>
+        Фамилии
+      </label>
 
-      <div class="radio-btn">
+      <label class="radio-button-label" for="class">
         <input type="radio" value="Класс" id="class" name="sort" />
-        <label for="class">Классу</label>
-      </div>
+        <span class="custom-radio-btn"></span>
+        Классу
+      </label>
 
-      <div class="radio-btn">
+      <label class="radio-button-label" for="role">
         <input type="radio" value="Роль" id="role" name="sort" />
-        <label for="role">Роли</label>
-      </div>
+        <span class="custom-radio-btn"></span>
+        Роли
+      </label>
       {# <button onclick="document.location='/'">Отменить все фильтры</button> #}
     </div>
   </form>

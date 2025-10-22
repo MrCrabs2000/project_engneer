@@ -18,6 +18,7 @@ class User(SqlAlchemyBase, UserMixin):
     userclass = Column(String(100), nullable=False)
     role = Column(String(10), nullable=False, default='user')
     userbalance = Column(String(5), nullable=False, default='0')
+    adedusers = Column(String(10), nullable=True, default='False')
 
 class Item_shop(SqlAlchemyBase):
     __tablename__ = 'items_shop'

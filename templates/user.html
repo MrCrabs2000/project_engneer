@@ -1,23 +1,24 @@
-<!DOCTYPE html>
-<html lang="en-US">
-  <head>
-      <meta charset="UTF-8">
-      <title>Title</title>
-      <meta name="viewport" content="width=device-width"/>
-      <link rel="stylesheet" href="/static/css/style.css">
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width"/>
-    <title>Title</title>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/static/css/style.css">
-  </head>
-  <body>
-    {% include 'header.html' %}
-    <p>{{ user['username'] }}<br>{{ user['usersurname'] }}<br>{{ user['userotchestvo'] }}<br>{{ user['role'] }}<br>{{ user['userclass'] }}<br>{{ user['userbalance'] }}</p>
-    <br><button onclick="document.location='/edituser/{{ user['id'] }}'">Редактировать пользователя</button>
-    <br><br><button onclick="document.location='/'">Назад</button><br><br>
-    {% if user['role'] == 'Teacher' %}
-        <button onclick="document.location='/enterteach/{{ user['id'] }}'">Войти в пользователя</button>
-    {% endif %}
-  </body>
-</html>
+{% extends "base.html" %}
+
+{% block title %}Пользователь{% endblock %}
+
+{% block links %}
+  <link rel="stylesheet" href="/static/css/user.css">
+{% endblock %}
+
+{% block content %}
+  <div class="user-container">
+    <div class="user-info">
+      <input value="{{ user['usersurname'] }}" readonly>
+      <input value="{{ user['username'] }}" readonly>
+      <input value="{{ user['userotchestvo'] }}" readonly>
+      <input value="{{ user['role'] }}" readonly>
+      <input value="{{ user['userclass'] }}" readonly>
+      <input value="{{ user['userbalance'] }}" readonly>
+    </div>
+    <button class="edit-btn" onclick="document.location='/edituser/{{ user['id'] }}'">Редактировать</button>
+  </div>
+  {% if user['role'] == 'Teacher' %}
+      <button onclick="document.location='/enterteach/{{ user['id'] }}'">Войти в пользователя</button>
+  {% endif %}
+{% endblock %}
