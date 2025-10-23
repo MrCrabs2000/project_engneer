@@ -53,7 +53,7 @@
 
       <label for="balance" class="input-label">
         <span>Баланс</span>
-        <input id="balance" type="text" min="0" oninput="this.value = Math.abs(this.value)" value="{{ user['userbalance'] }}" name="balance" placeholder="Баланс">
+        <input id="balance" type="text" min="0" oninput="this.value = this.value.replace(/[^0-9+]/g, '')" value="{{ user['userbalance'] }}" name="balance" placeholder="Баланс">
       </label>
 
       <label for="password" class="input-label">
