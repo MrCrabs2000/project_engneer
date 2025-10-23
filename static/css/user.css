@@ -21,13 +21,18 @@
     flex-direction: column;
 }
 
+
 .input-label span {
     color: #494949;
     font-size: 24px;
     margin-left: 0.55em;
 }
 
-.user-info input, .user-info select {
+.input-label > input {
+    width: auto;
+}
+
+.user-info .input-label, .user-info select {
     width: 400px;
 }
 
@@ -36,13 +41,57 @@
     cursor: text;
 }
 
+.change-balance-container {
+    display: flex;
+    width: 400px;
+    height: fit-content;
+    gap: 5px;
+}
+
+.change-balance-container input[type="text"] {
+    flex-grow: 1;
+}
+
+.change-balance-container button {
+    display: block;
+    width: 50px;
+    height: 50px;
+}
+
+.change-balance-container div {
+    position: relative;
+    height: fit-content;
+}
+
+.change-balance-container div::after {
+    content: "";
+    position: absolute;
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: solid var(--text-color);
+    border-width: 3px 0 0 3px;
+    left: 50%;
+    pointer-events: none;
+}
+
+.add-btn-container::after {
+    transform: translate(-50%, -50%) rotate(45deg);
+    top: 62.5%;
+}
+
+.deduct-btn-container::after {
+    transform: translate(-50%, -50%) rotate(-135deg);
+    top: 37.5%;
+}
+
 .btns-container {
     display: flex;
     flex-direction: column;
     gap: 10px;
 }
 
-button, input[type="submit"] {
+.btns-container button, .btns-container input[type="submit"] {
     width: 400px;
     height: 1.625em;
     border: 0;

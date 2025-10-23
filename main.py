@@ -384,13 +384,13 @@ def student_page(iduser, teacherid):
                     if balance_change <= 0:
                         flash("Сумма должна быть положительной", "error")
                     else:
-                        if action == 'Добавить':
+                        if action == '+':
                             if int(teacher.userbalance) >= balance_change:
                                 user.userbalance = str(int(user.userbalance) + balance_change)
                                 teacher.userbalance = str(int(teacher.userbalance) - balance_change)
                                 session_db.commit()
 
-                        elif action == 'Отнять':
+                        elif action == '-':
                             if int(user.userbalance) >= balance_change:
                                 user.userbalance = str(int(user.userbalance) - balance_change)
                                 teacher.userbalance = str(int(teacher.userbalance) + balance_change)
