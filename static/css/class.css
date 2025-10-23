@@ -1,19 +1,15 @@
-.class-header {
+.headers-container {
+    display: flex;
+    justify-content: space-between;
     max-width: 1400px;
-    margin: 20px auto 0 auto;
+    margin: 30px auto 0 auto;
+}
+
+.headers-container span {
     text-align: left;
     color: var(--text-color);
     font-size: 40px;
-    font-weight: 800;
-}
-
-.students-count {
-    max-width: 1400px;
-    margin: 20px auto 0 auto;
-    text-align: left;
-    color: var(--text-color);
-    font-size: 32px;
-    font-weight: 600;
+    font-weight: 700;
 }
 
 .students-grid {
@@ -80,4 +76,12 @@
     margin-left: 12px;
     color: var(--text-color);
     font-size: 40px;
+}
+
+.no-students {
+    max-width: 1400px;
+    margin: 100px auto 0 auto;
+    text-align: center;
+    font-size: 30px;
+    font-weight: 500;
 }
