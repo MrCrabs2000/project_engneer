@@ -9,14 +9,58 @@
 {% block content %}
   <div class="user-container">
     <div class="user-info">
-      <input value="{{ user['usersurname'] }}" readonly>
-      <input value="{{ user['username'] }}" readonly>
-      <input value="{{ user['userotchestvo'] }}" readonly>
-      <input value="{{ user['role'] }}" readonly>
-      <input value="{{ user['userclass'] }}" readonly>
-      <input value="{{ user['userbalance'] }}" readonly>
+
+      <label for="name" class="input-label">
+        <span>Имя</span>
+        <input id="name" value="{{ user['username'] }}" name="name" placeholder="Имя" readonly>
+      </label>
+
+      <label for="surname" class="input-label">
+        <span>Фамилия</span>
+        <input id="surname" value="{{ user['usersurname'] }}" name="surname" placeholder="Фамилия" readonly>
+      </label>
+
+      <label for="otchestvo" class="input-label">
+        <span>Отчество</span>
+        <input id="surname" value="{{ user['userotchestvo'] }}" name="otchestvo" placeholder="Отчество" readonly>
+      </label>
+
+      <label for="role" class="input-label">
+        <span>Роль</span>
+        <div id="role" class="select">
+          <select name="role" disabled>
+          {% if user['role'] == 'Student' %}
+            <option selected>Student</option>
+            <option>Teacher</option>
+            <option>Admin</option>
+          {% elif user['role'] == 'Teacher' %}
+            <option>Student</option>
+            <option selected>Teacher</option>
+            <option>Admin</option>
+          {% else %}
+            <option>Student</option>
+            <option>Teacher</option>
+            <option selected>Admin</option>
+          {% endif %}
+          </select>
+        </div>
+      </label>
+
+      <label for="class" class="input-label">
+        <span>Класс</span>
+        <input id="class" value="{{ user['userclass'] }}" name="class" placeholder="Класс" readonly>
+      </label>
+
+      <label for="balance" class="input-label">
+        <span>Баланс</span>
+        <input id="balance" type="text" min="0" oninput="this.value = this.value.replace(/[^0-9+]/g, '')" value="{{ user['userbalance'] }}" name="balance" placeholder="Баланс" readonly>
+      </label>
+
     </div>
-    <button class="edit-btn" onclick="document.location='/edituser/{{ user['id'] }}'">Редактировать</button>
+    <div class="btns-container">
+      <button onclick="document.location='/edituser/{{ user['id'] }}'">Редактировать</button>
+      <button onclick="document.location='/deluser/{{ user['id'] }}'">Удалить пользователя</button>
+    </div>
   </div>
   {% if user['role'] == 'Teacher' %}
       <button onclick="document.location='/enterteach/{{ user['id'] }}'">Войти в пользователя</button>

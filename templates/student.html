@@ -1,21 +1,51 @@
 {% extends "base.html" %}
 
-{% block title %}Ученик {{ username }}{% endblock  %}
+{% block title %}{{ usersurname }}{% endblock %}
 
 {% block links %}
   <link rel="stylesheet" href="/static/css/sign.css">
+  <link rel="stylesheet" href="/static/css/user.css">
 {% endblock %}
 
 {% block content %}
-  <div class="sign-div">
-    <form class="inputs" method="POST" action="/student/{{ iduser }}/{{ teacherid }}">
-      <h2>{{ username }} {{ usersurname }}</h2>
-      <p class="class-info">Класс: {{ userclass }}</p>
-      <p class="balance-info">Баланс: <strong>{{ studbalance }} монет</strong></p>
-      <input type="number" name="stud_balance" placeholder="Число монет" min="1" required>
-      <input type="submit" name="action" value="Добавить" class="submit-button">
-      <input type="submit" name="action" value="Отнять" class="submit-button">
-      <button type="button" class="back-button" onclick="document.location='/{{ userclass }}/{{ teacherid }}'">Назад</button>
-    </form>
-  </div>
+  <form class="user-container" method="POST" action="/student/{{ iduser }}/{{ teacherid }}">
+    <div class="user-info">
+      <label for="name" class="input-label">
+        <span>Имя</span>
+        <input id="name" value="{{ username }}" placeholder="Имя" readonly>
+      </label>
+
+      <label for="surname" class="input-label">
+        <span>Фамилия</span>
+        <input id="surname" value="{{ usersurname }}" placeholder="Фамилия" readonly>
+      </label>
+
+      <label for="otchestvo" class="input-label">
+        <span>Отчество</span>
+        <input id="surname" value="{{ userotchestvo }}" placeholder="Отчество" readonly>
+      </label>
+
+      <label for="class" class="input-label">
+        <span>Класс</span>
+        <input id="class" value="{{ userclass }}" placeholder="Класс" readonly>
+      </label>
+
+
+      <label for="stud_balance" class="input-label">
+        <span>Начислить/Отнять</span>
+        <div class="change-balance-container">
+          <input id="stud_balance" type="text" name="stud_balance" min="0" oninput="this.value = this.value.replace(/[^0-9+]/g, '')" required>
+          
+          <div class="add-btn-container">
+            <button type="submit" name="action" value="+"></button>
+          </div>
+
+          <div class="deduct-btn-container">
+            <button type="submit" name="action" value="-"></button>
+          </div>
+
+        </div>
+      </label>
+      
+  </form>
 {% endblock %}

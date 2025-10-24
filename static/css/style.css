@@ -30,9 +30,11 @@ button {
     font-weight: 700;
     background-color: var(--color);
     color: var(--text-color);
+    border: 0;
+    border-radius: 0.6em;
 }
 
-input {
+input, select {
     box-sizing: border-box;
     height: 1.625em;
     width: 192px;
@@ -46,6 +48,31 @@ input {
     border: 3px solid #7593c0;
     border-radius: 0.6em;
     outline: none;
+    appearance: none;
+}
+
+select:disabled {
+    opacity: 1;
+}
+
+.select {
+    position: relative;
+    font-size: inherit;
+}
+
+.select::after {
+    content: "";
+    position: absolute;
+    right: 0.55em;
+    top: 50%;
+    display: inline-block;
+    height: 0.4em;
+    aspect-ratio: 1/1;
+    transform: translate(-50%, -75%) rotate(45deg);
+    border: solid #7593c0;
+    border-width: 0 4px 4px 0;
+    border-radius: 2px;
+    pointer-events: none;
 }
 
 button:hover, input[type="submit"]:hover, input[type="button"]:hover {
