@@ -9,9 +9,12 @@
     <link rel="stylesheet" href="/static/css/class.css">
   </head>
   <body>
-    {% include 'header.html' %} 
-    <h1 class="class-header">Класс: {{ class_name }}</h1>
-    <div class="students-count">Учеников: {{ students_count }}</div>  
+    {% include 'header.html' %}
+
+    <div class="headers-container">
+      <span>Класс: {{ class_name }}</span>
+      <span>Учеников: {{ students_count }}</span>  
+    </div> 
     
       {% if students %}
         <div class="students-grid">
@@ -30,15 +33,9 @@
           {% endfor %}
         </div>
       {% else %}
-        <div class="no-students">
-          <p>В этом классе пока нет учеников</p>
-        </div>
+        <p class="no-students">В этом классе пока нет учеников</p>
       {% endif %}
-    {% if adminid != 'nul' %}
-        <br><button onclick="document.location='/enterteach/{{ tid }}'">Назад</button>
-    {% else %}
-        <br><button onclick="document.location='/'">Назад</button>
-    {% endif %}
+
     </div>
   </body>
 </html>
