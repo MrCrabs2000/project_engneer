@@ -491,7 +491,7 @@ def addusers():
             except Exception:
                 print(Exception)
                 return redirect(url_for('addusers'))
-        return render_template('admin/newusersexl.html')
+        return render_template('admin/new_users_exl.html')
 
 
 if __name__ == "__main__":
