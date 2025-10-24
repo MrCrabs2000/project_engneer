@@ -87,7 +87,8 @@ def main_page():
             return render_template('admin/users_search.html', logged_in=True, username=current_user.username,
                                    usersurname=current_user.usersurname, userclass=current_user.userclass,
                                    userbalance=current_user.userbalance, userotchestvo=current_user.userotchestvo,
-                                   all_users=all_users, colvousers=len(all_users), role=current_user.role)
+                                   all_users=all_users, colvousers=len(all_users), role=current_user.role,
+                                   adedusers=str(current_user.adedusers))
         elif current_user.role == 'Teacher':
             teacher_classes = current_user.userclass.split(' ')
             return render_template('classes/classes_list.html', logged_in=True, username=current_user.username,
@@ -472,17 +473,26 @@ def enteracc(userid):
                                teacher_classes=teacher.userclass.split())
 
 
-@app.route('/addingusers')
+@app.route('/addingusers', methods=['GET', 'POST'])
 def addusers():
     if current_user.is_authenticated and current_user.role == 'Admin':
-        session_db = db_session.create_session()
-        import_users()
-        users = session_db.query(User).all()
-        for user in users:
-            user.adedusers = True
-            session_db.commit()
-        session_db.close()
-        return redirect(url_for('main_page'))
+        if request.method == 'POST':
+            file = request.files['inputexel']
+            try:
+                file.save('exel/users.xlsx')
+                session_db = db_session.create_session()
+                import_users()
+                users = session_db.query(User).all()
+                for user in users:
+                    user.adedusers = True
+                    session_db.commit()
+                session_db.close()
+                return redirect(url_for('main_page'))
+            except Exception:
+                print(Exception)
+                return redirect(url_for('addusers'))
+        return render_template('admin/newusersexl.html')
+
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=8000, debug=True)
