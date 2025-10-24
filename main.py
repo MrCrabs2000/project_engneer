@@ -1,5 +1,7 @@
 from flask import Flask, request, render_template, redirect, url_for, session, flash
 from flask_login import logout_user, LoginManager, login_user, current_user
+from sqlalchemy.dialects.oracle.dictionary import all_users
+
 import db_session
 from Classes import Item_user, User, Item_shop
 from tgbotiha import check_response
@@ -531,6 +533,70 @@ def addusers():
             session_db.commit()
         session_db.close()
         return redirect(url_for('main_page'))
+
+
+@app.route('/items_search', methods=['GET', 'POST'])
+def items_search():
+    if current_user.is_authenticated and current_user.role == 'Admin':
+        session_db = db_session.create_session()
+        items = session_db.query(Item_shop).all()
+        all_items = []
+        for item in items:
+            itemm = {}
+            itemm['id'] = item.id
+            itemm['name'] = item.name
+            itemm['description'] = item.description
+            itemm['count'] = item.count
+            itemm['price'] = item.price
+            itemm['photo'] = item.photo
+            all_items.append(itemm)
+
+        if request.method == 'POST':
+            sort = request.form.get('sort')
+            bysort = request.form.get('bysort')
+            if sort == 'Название':
+                all_items = session_db.query(Item_shop).filter(Item_shop.name.like(f"%{bysort}%")).all()
+            elif sort == 'Описание':
+                all_items = session_db.query(Item_shop).filter(Item_shop.description.like(f"%{bysort}%")).all()
+            elif sort == 'Цена':
+                all_items = session_db.query(Item_shop).filter(Item_shop.price == bysort).all()
+            all_items = [{'id': i.id, 'name': i.name, 'description': i.description,
+                          'count': i.count, 'price': i.price, 'photo': i.photo} for i in all_items]
+        session_db.close()
+        return render_template('admin/items_search.html', all_items=all_items, search_text=request.form.get('bysort', ''))
+    return redirect(url_for('login'))
+
+
+@app.route('/additem', methods=['GET', 'POST'])
+def additem():
+    if current_user.is_authenticated and current_user.role == 'Admin':
+        if request.method == 'POST':
+            name = request.form['name']
+            description = request.form['description']
+            count = request.form['count']
+            price = request.form['price']
+            photo = request.form['photo']
+
+            session_db = db_session.create_session()
+            new_item = Item_shop(name=name, description=description, count=count, price=price, photo=photo)
+            session_db.add(new_item)
+            session_db.commit()
+            session_db.close()
+            return redirect(url_for('items_search'))
+        return render_template('admin/additem.html')
+
+
+@app.route('/delitem/<itemid>', methods=['POST'])
+def delitem(itemid):
+    if current_user.is_authenticated and current_user.role == 'Admin':
+        session_db = db_session.create_session()
+        item = session_db.query(Item_shop).filter_by(id=itemid).first()
+        if item:
+            session_db.delete(item)
+            session_db.commit()
+        session_db.close()
+        return render_template('items_search')
+
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=8000, debug=True)
