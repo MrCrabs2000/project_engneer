@@ -1,34 +1,75 @@
-.search-container {
+.top-container {
     display: flex;
     justify-content: space-between;
-    gap: 10px;
     align-items: center;
     margin: 30px auto 0 auto;
     max-width: 1400px;
 }
 
-.search {
+.top-container .left {
     display: flex;
     justify-content: flex-start;
     gap: 8px;
     width: 40%;
     max-width: 300px;
-    font-size: 34px;
+    font-size: 26px;
 }
 
 .search-bar {
     flex-grow: 1;
-    height: 48px;
+    height: 40px;
     width: auto;
 }
 
 .search-btn {
-    height: 48px;
+    height: 40px;
     aspect-ratio: 1/1;
     border: 0;
     background-color: var(--color);
     
 }
+
+.top-container .right {
+    display: flex;
+    justify-content: flex-end;
+    gap: 20px;
+}
+
+.right button {
+    position: relative;
+    display: inline-block;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 1/1;
+    height: 40px;
+    font-size: 30px;
+    border-radius: 0.5em;
+    
+}
+
+.right button:after, .right button:before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    background:var(--text-color);
+    transform: translate(-50%, -50%);
+    border-radius: 100px;
+}
+.right button:before{
+    width: 4px;
+    height: 20px;
+
+}
+.right button:after{
+    width: 20px;
+    height: 4px;
+}
+
+/* .right .btns-container {
+
+} */
+
 
 .filters {
     display: flex;
@@ -38,7 +79,8 @@
 }
 
 .filters-header {
-    font-size: 30px;
+    font-size: 26px;
+    font-weight: 600;
 }
 
 .radio-button-label {
