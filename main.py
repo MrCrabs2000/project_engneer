@@ -35,7 +35,7 @@ def main_page():
         if current_user.role == 'Student':
             session_db = db_session.create_session()
             items = session_db.query(Item_shop).all()
-            return render_template('shop/shop.html', logged_in=True, username=current_user.username,
+            return render_template('student/shop.html', logged_in=True, username=current_user.username,
                                    usersurname=current_user.usersurname, userclass=current_user.userclass,
                                    userbalance=current_user.userbalance, userotchestvo=current_user.userotchestvo,
                                    role=current_user.role, items=items)
@@ -81,23 +81,23 @@ def main_page():
                         all_users = session_db.query(User).filter_by(role=bysort).all()
                     session_db.close()
                 finally:
-                    return render_template('admin/users_search.html', logged_in=True, username=current_user.username,
+                    return render_template('admin/users/users_search.html', logged_in=True, username=current_user.username,
                                            usersurname=current_user.usersurname, userclass=current_user.userclass,
                                            userbalance=current_user.userbalance,
                                            userotchestvo=current_user.userotchestvo, adedusers=str(current_user.adedusers),
                                            all_users=all_users, colvousers=len(all_users), role=current_user.role)
-            return render_template('admin/users_search.html', logged_in=True, username=current_user.username,
+            return render_template('admin/users/users_search.html', logged_in=True, username=current_user.username,
                                    usersurname=current_user.usersurname, userclass=current_user.userclass,
                                    userbalance=current_user.userbalance, userotchestvo=current_user.userotchestvo,
                                    all_users=all_users, colvousers=len(all_users), role=current_user.role,
                                    adedusers=str(current_user.adedusers))
         elif current_user.role == 'Teacher':
             teacher_classes = current_user.userclass.split(' ')
-            return render_template('classes/classes_list.html', logged_in=True, username=current_user.username,
+            return render_template('teacher/classes_list.html', logged_in=True, username=current_user.username,
                                    usersurname=current_user.usersurname, userclass=current_user.userclass,
                                    userbalance=current_user.userbalance, userotchestvo=current_user.userotchestvo,
                                    role=current_user.role, teacher_classes=teacher_classes, teacherid=current_user.id)
-    return render_template('sign/sign.html')
+    return render_template('authorization/sign.html')
 
 
 @app.route('/history')
@@ -119,7 +119,7 @@ def history():
                 }
                 items_list.append(item_data)
             print(items_list)
-            return render_template('history.html', items_list=items_list)
+            return render_template('student/history.html', items_list=items_list)
         else:
             users = session.query(User).all()
             all_users = []
@@ -133,7 +133,7 @@ def history():
                 userr['userbalance'] = user.userbalance
                 all_users.append(userr.copy())
             session.close()
-            return render_template('history.html', logged_in=True, username=current_user.username,
+            return render_template('student/history.html', logged_in=True, username=current_user.username,
                                        usersurname=current_user.usersurname, userclass=current_user.userclass,
                                        userbalance=current_user.userbalance, userotchestvo=current_user.userotchestvo,
                                        all_users=all_users, colvousers=len(all_users))
@@ -150,13 +150,13 @@ def register():
         confirm_password = request.form['confirm_password']
         if not all([username, usersurname, userclass, password, confirm_password]):
             flash('Все поля обязательны для заполнения', 'error')
-            return render_template('sign/register.html')
+            return render_template('authorization/register.html')
         if password != confirm_password:
             flash('Пароли не совпадают', 'error')
-            return render_template('sign/register.html')
+            return render_template('authorization/register.html')
         if len(password) < 6:
             flash('Пароль должен содержать минимум 6 символов', 'error')
-            return render_template('sign/register.html')
+            return render_template('authorization/register.html')
         session_db = db_session.create_session()
         if session_db.query(User).filter(User.username == username).first():
             flash('Пользователь с таким именем уже существует', 'error')
@@ -188,7 +188,7 @@ def register():
         finally:
             session_db.close()
         return redirect(url_for('main_page'))
-    return render_template('sign/register.html')
+    return render_template('authorization/register.html')
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -200,7 +200,7 @@ def login():
         password = request.form['password']
         if not all([username, usersurname, password]):
             flash('Все поля обязательны для заполнения', 'error')
-            return render_template('sign/login.html')
+            return render_template('authorization/login.html')
         session_db = db_session.create_session()
         user = session_db.query(User).filter_by(
             username=username,
@@ -221,7 +221,7 @@ def login():
         else:
             session_db.close()
             flash('Неверные имя, фамилия или пароль', 'error')
-    return render_template('sign/login.html')
+    return render_template('authorization/login.html')
 
 
 @app.route('/login/telegram')
@@ -257,7 +257,7 @@ def logout():
 def profile():
     if current_user.is_authenticated:
         if request.method == 'GET':
-            return render_template('profile.html', username=session['username'],
+            return render_template('common/profile/profile.html', username=session['username'],
                                    usersurname=session['usersurname'],
                                    userclass=session['userclass'],
                                    userotchestvo=session['userotchestvo'],
@@ -284,7 +284,7 @@ def profile_edit():
                 session['userclass'] = new_userclass
                 session_db.close()
                 return redirect(url_for('profile'))
-        return render_template('profile_edit.html',
+        return render_template('common/profile/profile_edit.html',
                                username=session['username'],
                                usersurname=session['usersurname'],
                                userclass=session['userclass'],
@@ -310,7 +310,7 @@ def class_page(class_name, teacherid):
             students_list.append(student_data)
         session_db.close()
         if int(teacherid) == int(current_user.id):
-            return render_template('class.html',
+            return render_template('teacher/class.html',
                                    logged_in=True,
                                    username=teacher.username,
                                    usersurname=teacher.usersurname,
@@ -324,7 +324,7 @@ def class_page(class_name, teacherid):
                                    tid=teacher.id,
                                    adminid='nul')
         else:
-            return render_template('class.html', logged_in=True, username=teacher.username,
+            return render_template('teacher/class.html', logged_in=True, username=teacher.username,
                                    usersurname=teacher.usersurname, userclass=teacher.userclass,
                                    userbalance=teacher.userbalance, userotchestvo=teacher.userotchestvo,
                                    role=teacher.role, class_name=class_name, students=students_list,
@@ -338,7 +338,7 @@ def userprof(userid):
         session_db = db_session.create_session()
         user = session_db.query(User).filter_by(id=userid).first()
         session_db.close()
-        return render_template('user.html', user=user, role=current_user.role, userbalance=current_user.userbalance)
+        return render_template('admin/users/user.html', user=user, role=current_user.role, userbalance=current_user.userbalance)
 
 
 @app.route('/itemshop/<itemid>', methods=['POST', 'GET'])
@@ -383,7 +383,7 @@ def itemshop(itemid):
                     item_user.count += int(count)
                     session_db.commit()
 
-        return render_template('items.html', userbalance=user.userbalance, role=current_user.role,
+        return render_template('admin/items/items.html', userbalance=user.userbalance, role=current_user.role,
                                    item=item_shop)
 
 
@@ -414,7 +414,7 @@ def edituser(userid):
             session_db.commit()
             return redirect(url_for('userprof', userid=user.id))
         session_db.close()
-        return render_template('edituser.html', user=user)
+        return render_template('admin/users/edituser.html', user=user)
 
 
 @app.route('/student/<iduser>/<teacherid>', methods=['GET', 'POST'])
@@ -452,7 +452,7 @@ def student_page(iduser, teacherid):
             userbalance = user.userbalance
             teacher_balance = teacher.userbalance
             session_db.close()
-            return render_template('student.html',
+            return render_template('teacher/student.html',
                                    username=username,
                                    usersurname=usersurname,
                                    userclass=userclass,
@@ -507,7 +507,7 @@ def adduser():
                 session_db.add(new_user)
                 session_db.commit()
                 return redirect(url_for('main_page'))
-        return render_template('adduser.html')
+        return render_template('admin/users/adduser.html')
 
 
 @app.route('/enterteach/<userid>')
@@ -517,7 +517,7 @@ def enteracc(userid):
         teacher = session_db.query(User).filter_by(id=userid).first()
         session_db.close()
         adminid = current_user.id
-        return render_template('classes/classes_list.html', adminid=adminid, teachername=teacher.username,
+        return render_template('teacher/classes_list.html', adminid=adminid, teachername=teacher.username,
                                teacersurname=teacher.usersurname, teacherotchestvo=teacher.userotchestvo,
                                role=teacher.role, userbalance=teacher.userbalance, teacherid=teacher.id,
                                teacher_classes=teacher.userclass.split())
@@ -541,7 +541,7 @@ def addusers():
             except Exception:
                 print(Exception)
                 return redirect(url_for('addusers'))
-        return render_template('admin/new_users_exl.html')
+        return render_template('admin/users/new_users_exl.html')
 
 
 
@@ -573,7 +573,7 @@ def items_search():
             all_items = [{'id': i.id, 'name': i.name, 'description': i.description,
                           'count': i.count, 'price': i.price, 'photo': i.photo} for i in all_items]
         session_db.close()
-        return render_template('admin/items_search.html', all_items=all_items, search_text=request.form.get('bysort', ''))
+        return render_template('admin/items/items_search.html', all_items=all_items, search_text=request.form.get('bysort', ''))
     return redirect(url_for('login'))
 
 
@@ -593,7 +593,7 @@ def additem():
             session_db.commit()
             session_db.close()
             return redirect(url_for('items_search'))
-        return render_template('admin/additem.html')
+        return render_template('admin/items/additem.html')
 
 
 @app.route('/delitem/<itemid>', methods=['POST'])
@@ -605,7 +605,7 @@ def delitem(itemid):
             session_db.delete(item)
             session_db.commit()
         session_db.close()
-        return render_template('items_search')
+        return render_template('admin/items/items_search')
 
 
 if __name__ == "__main__":
