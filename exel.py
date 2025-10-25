@@ -43,11 +43,11 @@ def import_users():
                 username=name,
                 usersurname=surname,
                 userpassword=generate_password_hash(password),
+                userotchestvo=otchestvo,
                 userclass=user_class,
                 role='Student',
                 userbalance='0'
             )
-
             session.add(user)
             print(f"Добавлен пользователь: {name} {surname} {otchestvo} - {user_class}")
 

@@ -1,5 +1,7 @@
 from flask import Flask, request, render_template, redirect, url_for, session, flash
 from flask_login import logout_user, LoginManager, login_user, current_user
+from sqlalchemy.dialects.oracle.dictionary import all_users
+
 import db_session
 from Classes import Item_user, User, Item_shop
 from tgbotiha import check_response
@@ -21,7 +23,7 @@ db_session.global_init(True, 'db/users.db')
 @login_manager.user_loader
 def load_user(user_id):
     session = db_session.create_session()
-    user = session.query(User).get(user_id)
+    user = session.get(User, user_id)
     session.close()
     return user
 
@@ -87,7 +89,8 @@ def main_page():
             return render_template('admin/users_search.html', logged_in=True, username=current_user.username,
                                    usersurname=current_user.usersurname, userclass=current_user.userclass,
                                    userbalance=current_user.userbalance, userotchestvo=current_user.userotchestvo,
-                                   all_users=all_users, colvousers=len(all_users), role=current_user.role)
+                                   all_users=all_users, colvousers=len(all_users), role=current_user.role,
+                                   adedusers=str(current_user.adedusers))
         elif current_user.role == 'Teacher':
             teacher_classes = current_user.userclass.split(' ')
             return render_template('classes/classes_list.html', logged_in=True, username=current_user.username,
@@ -100,12 +103,23 @@ def main_page():
 @app.route('/history')
 def history():
     if current_user.is_authenticated:
-        session = db_session.create_session()
         if current_user.role == 'Student' or current_user.role == 'Teacher':
-            return render_template('history.html', logged_in=True, username=current_user.username,
-                                   usersurname=current_user.usersurname, userclass=current_user.userclass,
-                                   userbalance=current_user.userbalance, userotchestvo=current_user.userotchestvo,
-                                   role=current_user.role)
+            session_db = db_session.create_session()
+            user_id = current_user.id
+            items_user = session_db.query(Item_user).filter_by(userid=user_id).all()
+            items_list = []
+            for item in items_user:
+                item_data = {
+                    'id': item.id,
+                    'status': item.status,
+                    'name': item.name,
+                    'count': item.count,
+                    'photo': item.photo,
+                    'description': item.description
+                }
+                items_list.append(item_data)
+            print(items_list)
+            return render_template('history.html', items_list=items_list)
         else:
             users = session.query(User).all()
             all_users = []
@@ -295,7 +309,7 @@ def class_page(class_name, teacherid):
             }
             students_list.append(student_data)
         session_db.close()
-        if teacherid == current_user.id:
+        if int(teacherid) == int(current_user.id):
             return render_template('class.html',
                                    logged_in=True,
                                    username=teacher.username,
@@ -327,13 +341,50 @@ def userprof(userid):
         return render_template('user.html', user=user, role=current_user.role, userbalance=current_user.userbalance)
 
 
-@app.route('/itemshop/<itemid>')
+@app.route('/itemshop/<itemid>', methods=['POST', 'GET'])
 def itemshop(itemid):
     if current_user.is_authenticated:
+
         session_db = db_session.create_session()
-        item = session_db.query(Item_shop).filter_by(id=itemid).first()
-        return render_template('items.html', userbalance=current_user.userbalance, role=current_user.role,
-                               item=item)
+        item_shop = session_db.query(Item_shop).filter_by(id=itemid).first()
+        user = session_db.query(User).filter_by(id=current_user.id).first()
+        item_user = session_db.query(Item_user).filter_by(id=item_shop.id).first()
+
+        if request.method == 'POST':
+            count = request.form['item_count']
+
+            if int(user.userbalance) >= (int(item_shop.price) * int(count)) and session_db.query(Item_user).filter_by(id=item_shop.id).first() is None and item_shop.count - int(count) >= 0:
+                user.userbalance = int(user.userbalance) - (int(item_shop.price) * int(count))
+                item_shop.count -= int(count)
+
+                for i in range(int(item_shop.count)):
+                    new_item = Item_user(
+                    userid=current_user.id,
+                    status='На рассмотрении',
+                    name=item_shop.name,
+                    count=int(count),
+                    description=item_shop.description,
+                    photo=item_shop.photo
+                )
+
+                    session['userid'] = new_item.id
+                    session['status'] = new_item.status
+                    session['name'] = new_item.name
+                    session['count'] = new_item.count
+                    session['description'] = new_item.description
+                    session['photo'] = new_item.photo
+
+                    session_db.add(new_item)
+                    session_db.commit()
+            else:
+                if item_shop.count - int(count) >= 0:
+                    user.userbalance = int(user.userbalance) - (int(item_shop.price) * int(count))
+                    item_shop.count -= int(count)
+                    item_user.count += int(count)
+                    session_db.commit()
+
+        return render_template('items.html', userbalance=user.userbalance, role=current_user.role,
+                                   item=item_shop)
 
 
 @app.route('/edituser/<userid>', methods=['GET', 'POST'])
@@ -472,17 +523,90 @@ def enteracc(userid):
                                teacher_classes=teacher.userclass.split())
 
 
-@app.route('/addingusers')
+@app.route('/addingusers', methods=['GET', 'POST'])
 def addusers():
     if current_user.is_authenticated and current_user.role == 'Admin':
+        if request.method == 'POST':
+            file = request.files['inputexel']
+            try:
+                file.save('exel/users.xlsx')
+                session_db = db_session.create_session()
+                import_users()
+                users = session_db.query(User).all()
+                for user in users:
+                    user.adedusers = True
+                    session_db.commit()
+                session_db.close()
+                return redirect(url_for('main_page'))
+            except Exception:
+                print(Exception)
+                return redirect(url_for('addusers'))
+        return render_template('admin/new_users_exl.html')
+
+
+
+@app.route('/items_search', methods=['GET', 'POST'])
+def items_search():
+    if current_user.is_authenticated and current_user.role == 'Admin':
         session_db = db_session.create_session()
-        import_users()
-        users = session_db.query(User).all()
-        for user in users:
-            user.adedusers = True
+        items = session_db.query(Item_shop).all()
+        all_items = []
+        for item in items:
+            itemm = {}
+            itemm['id'] = item.id
+            itemm['name'] = item.name
+            itemm['description'] = item.description
+            itemm['count'] = item.count
+            itemm['price'] = item.price
+            itemm['photo'] = item.photo
+            all_items.append(itemm)
+
+        if request.method == 'POST':
+            sort = request.form.get('sort')
+            bysort = request.form.get('bysort')
+            if sort == 'Название':
+                all_items = session_db.query(Item_shop).filter(Item_shop.name.like(f"%{bysort}%")).all()
+            elif sort == 'Описание':
+                all_items = session_db.query(Item_shop).filter(Item_shop.description.like(f"%{bysort}%")).all()
+            elif sort == 'Цена':
+                all_items = session_db.query(Item_shop).filter(Item_shop.price == bysort).all()
+            all_items = [{'id': i.id, 'name': i.name, 'description': i.description,
+                          'count': i.count, 'price': i.price, 'photo': i.photo} for i in all_items]
+        session_db.close()
+        return render_template('admin/items_search.html', all_items=all_items, search_text=request.form.get('bysort', ''))
+    return redirect(url_for('login'))
+
+
+@app.route('/additem', methods=['GET', 'POST'])
+def additem():
+    if current_user.is_authenticated and current_user.role == 'Admin':
+        if request.method == 'POST':
+            name = request.form['name']
+            description = request.form['description']
+            count = request.form['count']
+            price = request.form['price']
+            photo = request.form['photo']
+
+            session_db = db_session.create_session()
+            new_item = Item_shop(name=name, description=description, count=count, price=price, photo=photo)
+            session_db.add(new_item)
+            session_db.commit()
+            session_db.close()
+            return redirect(url_for('items_search'))
+        return render_template('admin/additem.html')
+
+
+@app.route('/delitem/<itemid>', methods=['POST'])
+def delitem(itemid):
+    if current_user.is_authenticated and current_user.role == 'Admin':
+        session_db = db_session.create_session()
+        item = session_db.query(Item_shop).filter_by(id=itemid).first()
+        if item:
+            session_db.delete(item)
             session_db.commit()
         session_db.close()
-        return redirect(url_for('main_page'))
+        return render_template('items_search')
+
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=8000, debug=True)
