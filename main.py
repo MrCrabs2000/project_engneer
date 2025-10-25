@@ -507,7 +507,7 @@ def adduser():
                 session_db.add(new_user)
                 session_db.commit()
                 return redirect(url_for('main_page'))
-        return render_template('admin/users/adduser.html')
+        return render_template('admin/users/add_user.html')
 
 
 @app.route('/enterteach/<userid>')
@@ -538,10 +538,10 @@ def addusers():
                     session_db.commit()
                 session_db.close()
                 return redirect(url_for('main_page'))
-            except Exception:
-                print(Exception)
+            except Exception as e:
+                print(e)
                 return redirect(url_for('addusers'))
-        return render_template('admin/users/new_users_exl.html')
+        return render_template('admin/users/upload_excel.html')
 
 
 

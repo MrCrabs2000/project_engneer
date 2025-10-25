@@ -1,0 +1,35 @@
+{% extends 'common/base.html' %}
+
+
+{% block title %}Загрузить таблицу{% endblock %}
+
+
+{% block links %}
+  <link rel="stylesheet" href="/static/css/users/upload-excel.css">
+{% endblock %}
+
+
+{% block content %}
+  <div class="centered-div form-container">
+    <form enctype="multipart/form-data" method="post">
+      <input class="add-table" type="file" name="inputexel" id="table_input" accept=".xlsx, .xls">
+      <label class="add-table-label" for="table_input">
+        <div class="choice">Не выбрано</div>
+        <div class="choose-btn">Выбрать</div>
+      </label>
+      <button class="upload-btn" type="submit">Добавить</button>
+    </form>
+  </div>
+
+  <script>
+    const input = document.getElementById('table_input');
+    const choice = document.getElementsByClassName('choice');
+    
+    input.addEventListener('change', function (e) {
+      const selectedFile = event.target.files[0];
+      if (selectedFile) {
+        choice[0].textContent = selectedFile.name;
+      }
+    });
+  </script>
+{% endblock %}

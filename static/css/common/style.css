@@ -16,12 +16,10 @@ html, body {
 }
 
 .centered-div, .sign-div, .profile {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
+    margin: auto;
     align-content: center;
     display: flex;
+    margin-top: 25vh;
 }
 
 button {
@@ -32,6 +30,7 @@ button {
     color: var(--text-color);
     border: 0;
     border-radius: 0.6em;
+    padding: 0 0.55em;
 }
 
 input, select {

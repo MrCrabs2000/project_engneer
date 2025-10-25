@@ -1,0 +1,30 @@
+{% extends 'common/base.html' %}
+
+
+{% block title %}Добавить пользователя{% endblock %}
+
+
+{% block links %}
+
+{% endblock %}
+
+
+{% block content %}
+
+  <form method="POST" enctype="multipart/form-data">
+    <input placeholder="Имя" name="name">
+    <input placeholder="Фамилия" name="surname">
+    <input placeholder="Отчество" name="otchestvo">
+    <input placeholder="Класс" name="class">
+    <select name="role">
+      <option>Student</option>
+      <option>Teacher</option>
+      <option>Admin</option>
+    </select>
+    <input placeholder="Пароль" name="password">
+    <input placeholder="Повторите пароль" name="secondpassword">
+    <input placeholder="Баланс" type="number" name="balance">
+    <input type="submit" value="Добавить пользователя">
+  </form>
+
+{% endblock %}
