@@ -126,7 +126,7 @@ def main_page():
                                    usersurname=current_user.usersurname, userclass=current_user.userclass,
                                    userbalance=current_user.userbalance, userotchestvo=current_user.userotchestvo,
                                    role=current_user.role, teacher_classes=teacher_classes, teacherid=current_user.id)
-    return render_template('authorization/sign.html')
+    return redirect('/login')
 
 
 @app.route('/history')
