@@ -7,19 +7,28 @@
 }
 
 html, body {
+    position: absolute;
     height: 100%;
     width: 100%;
-    min-width: 1000px;
     margin: 0;
     font-family: 'Nunito', sans-serif;
     font-weight: 500;
+    border: 0 solid transparent;
+}
+
+main {
+    position: relative;
+    height: calc(100% - 80px);
+    width: 100%;
 }
 
 .centered-div, .sign-div, .profile {
+    position: absolute;
     box-sizing: border-box;
     width: fit-content;
-    margin: auto;
-    margin-top: 25vh;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     align-content: center;
     display: flex;
 }

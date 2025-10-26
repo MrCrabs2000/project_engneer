@@ -10,16 +10,18 @@
 
 
 {% block content %}
-  <div class="centered-div form-container">
-    <form enctype="multipart/form-data" method="post">
-      <input class="add-table" type="file" name="inputexel" id="table_input" accept=".xlsx, .xls">
-      <label class="add-table-label" for="table_input">
-        <div class="choice">Не выбрано</div>
-        <div class="choose-btn">Выбрать</div>
-      </label>
-      <button class="upload-btn" type="submit">Добавить</button>
-    </form>
-  </div>
+  <main>
+    <div class="centered-div form-container">
+      <form enctype="multipart/form-data" method="post">
+        <input class="add-table" type="file" name="inputexel" id="table_input" accept=".xlsx, .xls">
+        <label class="add-table-label" for="table_input">
+          <div class="choice">Не выбрано</div>
+          <div class="choose-btn">Выбрать</div>
+        </label>
+        <button class="upload-btn" type="submit">Добавить</button>
+      </form>
+    </div>
+  </main>
 
   <script>
     const input = document.getElementById('table_input');
