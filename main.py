@@ -9,6 +9,35 @@ from werkzeug.security import generate_password_hash, check_password_hash
 import os
 from exel import import_users
 
+# Педелайте роуты, как они ниже расписаны, пожалуйста. Это не только мне надо, но и пользователям.
+# @app.route('/') - магазин
+# @app.route('/history')
+
+# @app.route('authorize')
+# @app.route('authorize/register')
+# @app.route('authorize/login')
+# @app.route('authorize/telegram')
+# @app.route('logout')
+
+# @app.route('/profile')
+# @app.route('/profile/edit')
+
+# @app.route('/users')
+# @app.route('/users/<user>')
+# @app.route('/users/<user>/edit')
+# @app.route('/users/<user>/delete')
+# @app.route('/users/add')
+# @app.toute('/users/distribute')
+
+# @app.route('/items')
+# @app.route('/items/<item>)
+# @app.route('/items/<item>/edit)
+# @app.route('/items/<item>/delete')
+# @app.route('/items/add')
+
+# @app.route('/classes')
+# @app.route('/classes/<class>')
+# @app.route('/classes/<class>/<student>')
 
 app = Flask(__name__)
 app.secret_key = '25112008'
@@ -138,6 +167,7 @@ def history():
                                        userbalance=current_user.userbalance, userotchestvo=current_user.userotchestvo,
                                        all_users=all_users, colvousers=len(all_users))
 
+# ^^^ КОММЕНТАРИЯ В САМОМ ВЕРХУ ^^^
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -291,6 +321,7 @@ def profile_edit():
                                userbalance=session['userbalance'],
                                role=session['role'])
 
+# ^^^ КОММЕНТАРИЯ В САМОМ ВЕРХУ ^^^
 
 @app.route('/<class_name>/<teacherid>', methods=['GET'])
 def class_page(class_name, teacherid):
@@ -473,6 +504,7 @@ def deluser_page(iduser):
         session_db.close()
         return redirect(url_for('main_page'))
 
+# ^^^ КОММЕНТАРИЯ В САМОМ ВЕРХУ ^^^
 
 @app.route('/adduser', methods=['GET', 'POST'])
 def adduser():
@@ -606,7 +638,7 @@ def delitem(itemid):
             session_db.commit()
         session_db.close()
         return render_template('admin/items/items_search')
-
+# ^^^ КОММЕНТАРИЯ В САМОМ ВЕРХУ ^^^
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=8000, debug=True)
