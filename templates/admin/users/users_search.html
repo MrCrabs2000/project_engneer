@@ -3,7 +3,7 @@
 {% block title %}Поиск{% endblock %}
 
 {% block links %}
-  <link rel="stylesheet" href="/static/css/users/users-list.css">
+  <link rel="stylesheet" href="/static/css/users/found-elements.css">
   <link rel="stylesheet" href="/static/css/search.css">
 {% endblock %}
 
@@ -42,7 +42,7 @@
         </label>
       </div>
         <!-- <button class="filter-btn">Фильтр</button> -->
-      <button class="add-user-btn" type="button" onclick="document.location='/adduser'"></button>
+      <button type="button" onclick="document.location='/adduser'"></button>
       {# {% if adedusers == '0' %} #}
       
 
@@ -50,11 +50,11 @@
     </div>
   </form>
   
-  <div class="users-flex">
+  <div class="found-elements-flex">
     {% for i in range(colvousers) %}
-      <div class="user-card">
+      <div class="found-element-card">
         <a href="/userprofile/{{ all_users[i]['id'] }}">
-          <div class="user-info">{{all_users[i]['usersurname']}} {{all_users[i]['username'][0]}}. {{all_users[i]['userotchestvo'][0]}}.</div>
+          <div class="found-element-info">{{all_users[i]['usersurname']}} {{all_users[i]['username'][0]}}. {{all_users[i]['userotchestvo'][0]}}.</div>
         </a>
       </div>
     {% endfor %}
