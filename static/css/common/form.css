@@ -1,0 +1,57 @@
+.form {
+    box-sizing: content-box;
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    gap: 20px;
+    width: fit-content;
+    margin: 0px auto;
+    padding: 20px;
+    font-size: 32px;
+}
+
+.form .fields-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.fields-container > label {
+    display: flex;
+    flex-direction: column;
+}
+
+
+.fields-container > label > span {
+    color: #494949;
+    font-size: 24px;
+    margin-left: 0.55em;
+}
+
+.fields-container > label > input {
+    width: auto;
+}
+
+.fields-container > label, .fields-container select {
+    width: 400px;
+}
+
+.fields-container input[readonly] {
+    caret-color: transparent;
+    cursor: text;
+}
+
+.btns-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.btns-container button, .btns-container input[type="submit"] {
+    width: 400px;
+    height: 1.625em;
+    border: 0;
+    border-radius: 0.6em;
+    font-weight: 700;
+    background-color: var(--color);
+}

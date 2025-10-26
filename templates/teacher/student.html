@@ -3,34 +3,35 @@
 {% block title %}{{ usersurname }}{% endblock %}
 
 {% block links %}
-  <link rel="stylesheet" href="/static/css/users/user.css">
+  <link rel="stylesheet" href="/static/css/common/form.css">
+  <link rel="stylesheet" href="/static/css/change-balance.css">
 {% endblock %}
 
 {% block content %}
-  <form class="user-container" method="POST" action="/student/{{ iduser }}/{{ teacherid }}">
-    <div class="user-info">
-      <label for="name" class="input-label">
+  <form class="form" method="POST" action="/student/{{ iduser }}/{{ teacherid }}">
+    <div class="fields-container">
+      <label for="name">
         <span>Имя</span>
         <input id="name" value="{{ username }}" placeholder="Имя" readonly>
       </label>
 
-      <label for="surname" class="input-label">
+      <label for="surname">
         <span>Фамилия</span>
         <input id="surname" value="{{ usersurname }}" placeholder="Фамилия" readonly>
       </label>
 
-      <label for="otchestvo" class="input-label">
+      <label for="otchestvo">
         <span>Отчество</span>
         <input id="surname" value="{{ userotchestvo }}" placeholder="Отчество" readonly>
       </label>
 
-      <label for="class" class="input-label">
+      <label for="class">
         <span>Класс</span>
         <input id="class" value="{{ userclass }}" placeholder="Класс" readonly>
       </label>
 
 
-      <label for="stud_balance" class="input-label">
+      <label for="stud_balance">
         <span>Начислить/Отнять</span>
         <div class="change-balance-container">
           <input id="stud_balance" type="text" name="stud_balance" min="0" oninput="this.value = this.value.replace(/[^0-9+]/g, '')" required>

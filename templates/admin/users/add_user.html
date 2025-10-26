@@ -5,31 +5,31 @@
 
 
 {% block links %}
-  <link rel="stylesheet" href="/static/css/users/user.css">
+  <link rel="stylesheet" href="/static/css/common/form.css">
 {% endblock %}
 
 
 {% block content %}
 
-  <form class="user-container" method="POST" enctype="multipart/form-data">
-    <div class="user-info">
+  <form class="form" method="POST" enctype="multipart/form-data">
+    <div class="fields-container">
 
-      <label for="name" class="input-label">
+      <label for="name">
         <span>Имя</span>
         <input id="name" name="name" placeholder="Имя">
       </label>
 
-      <label for="surname" class="input-label">
+      <label for="surname">
         <span>Фамилия</span>
         <input id="surname" name="surname" placeholder="Фамилия">
       </label>
 
-      <label for="otchestvo" class="input-label">
+      <label for="otchestvo">
         <span>Отчество</span>
         <input id="surname" name="otchestvo" placeholder="Отчество">
       </label>
 
-      <label for="role" class="input-label">
+      <label for="role">
         <span>Роль</span>
         <div id="role" class="select">
           <select name="role">
@@ -40,22 +40,22 @@
         </div>
       </label>
 
-      <label for="class" class="input-label">
+      <label for="class">
         <span>Класс</span>
         <input id="class" name="class" placeholder="Класс">
       </label>
 
-      <label for="balance" class="input-label">
+      <label for="balance">
         <span>Баланс</span>
         <input id="balance" type="text" min="0" oninput="this.value = this.value.replace(/[^0-9+]/g, '')" name="balance" placeholder="Баланс">
       </label>
 
-      <label for="password" class="input-label">
+      <label for="password">
         <span>Пароль</span>
         <input id="password" type="password" name="password" placeholder="Пароль">
       </label>
 
-      <label for="repeat_password" class="input-label">
+      <label for="repeat_password">
         <span>Повторите пароль</span>
         <input id="repeat_password" type="password" name="secondpassword" placeholder="Повторите пароль">
       </label>
