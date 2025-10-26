@@ -16,10 +16,12 @@ html, body {
 }
 
 .centered-div, .sign-div, .profile {
+    box-sizing: border-box;
+    width: fit-content;
     margin: auto;
+    margin-top: 25vh;
     align-content: center;
     display: flex;
-    margin-top: 25vh;
 }
 
 button {

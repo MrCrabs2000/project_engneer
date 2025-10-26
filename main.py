@@ -509,50 +509,63 @@ def deluser_page(iduser):
 @app.route('/adduser', methods=['GET', 'POST'])
 def adduser():
     if current_user.is_authenticated and current_user.role == 'Admin':
+
         if request.method == 'POST':
-            name = request.form['name']
-            surname = request.form['surname']
-            otchestvo = request.form['otchestvo']
-            userclass = request.form['class']
-            userbalance = request.form['balance']
-            role = request.form['role']
-            password = request.form['password']
-            secondpassword = request.form['secondpassword']
-            if password == secondpassword:
-                new_user = User(
-                    username=name,
-                    usersurname=surname,
-                    userpassword=generate_password_hash(password),
-                    userotchestvo=otchestvo,
-                    userclass=userclass,
-                    role=role,
-                    userbalance=userbalance,
-                )
-                session_db = db_session.create_session()
-                session['user_id'] = new_user.id
-                session['username'] = new_user.username
-                session['usersurname'] = new_user.usersurname
-                session['userclass'] = new_user.userclass
-                session['role'] = new_user.role
-                session['userotchestvo'] = new_user.userotchestvo
-                session['userbalance'] = new_user.userbalance
-                session_db.add(new_user)
-                session_db.commit()
-                return redirect(url_for('main_page'))
-        return render_template('admin/users/add_user.html')
+            
+            if len(request.files) > 0:
+                file = request.files['inputexel']
 
+                try:
+                    file.save('exel/users.xlsx')
+                    session_db = db_session.create_session()
+                    import_users()
+                    users = session_db.query(User).all()
+                    for user in users:
+                        user.adedusers = True
+                        session_db.commit()
+                    session_db.close()
+                    return redirect(url_for('main_page'))
+                except Exception as e:
+                    print(e)
+                    return redirect(url_for('addusers'))
 
-@app.route('/enterteach/<userid>')
-def enteracc(userid):
-    if current_user.is_authenticated and current_user.role == 'Admin':
-        session_db = db_session.create_session()
-        teacher = session_db.query(User).filter_by(id=userid).first()
-        session_db.close()
-        adminid = current_user.id
-        return render_template('teacher/classes_list.html', adminid=adminid, teachername=teacher.username,
-                               teacersurname=teacher.usersurname, teacherotchestvo=teacher.userotchestvo,
-                               role=teacher.role, userbalance=teacher.userbalance, teacherid=teacher.id,
-                               teacher_classes=teacher.userclass.split())
+            else:
+                name = request.form['name']
+                surname = request.form['surname']
+                otchestvo = request.form['otchestvo']
+                userclass = request.form['class']
+                userbalance = request.form['balance']
+                role = request.form['role']
+                password = request.form['password']
+                secondpassword = request.form['secondpassword']
+                if password == secondpassword:
+                    new_user = User(
+                        username=name,
+                        usersurname=surname,
+                        userpassword=generate_password_hash(password),
+                        userotchestvo=otchestvo,
+                        userclass=userclass,
+                        role=role,
+                        userbalance=userbalance,
+                    )
+                    session_db = db_session.create_session()
+                    session['user_id'] = new_user.id
+                    session['username'] = new_user.username
+                    session['usersurname'] = new_user.usersurname
+                    session['userclass'] = new_user.userclass
+                    session['role'] = new_user.role
+                    session['userotchestvo'] = new_user.userotchestvo
+                    session['userbalance'] = new_user.userbalance
+                    session_db.add(new_user)
+                    session_db.commit()
+
+                    return redirect(url_for('main_page'))
+            
+        elif request.method == 'GET' and int(current_user.adedusers) == 0:
+            return render_template('admin/users/upload_excel.html')
+        
+        elif request.method == 'GET' and int(current_user.adedusers) > 0:
+            return render_template('admin/users/add_user.html')
 
 
 @app.route('/addingusers', methods=['GET', 'POST'])
@@ -575,6 +588,19 @@ def addusers():
                 return redirect(url_for('addusers'))
         return render_template('admin/users/upload_excel.html')
 
+
+@app.route('/enterteach/<userid>')
+def enteracc(userid):
+
+    if current_user.is_authenticated and current_user.role == 'Admin':
+        session_db = db_session.create_session()
+        teacher = session_db.query(User).filter_by(id=userid).first()
+        session_db.close()
+        adminid = current_user.id
+        return render_template('teacher/classes_list.html', adminid=adminid, teachername=teacher.username,
+                               teacersurname=teacher.usersurname, teacherotchestvo=teacher.userotchestvo,
+                               role=teacher.role, userbalance=teacher.userbalance, teacherid=teacher.id,
+                               teacher_classes=teacher.userclass.split())
 
 
 @app.route('/items_search', methods=['GET', 'POST'])
