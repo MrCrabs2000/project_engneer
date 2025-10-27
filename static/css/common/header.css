@@ -58,29 +58,41 @@ header {
     display: flex;
     gap: 5px;
     align-items: center;
+    font-size: 30px;
 }
 
-.menu-btn {
-    width: 70px;
-    height: 70px;
-    padding: 0;
+.menu button {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    border: 0;
-    border-radius: 16px;
+    transition: color 0.2s ease;
+}
+
+.menu button::after {
+    content: '';
+    width: 0px;
+    height: 4px;
     background-color: var(--accent-color);
+    transition: width 0.3s ease-out; 
 }
 
-.menu-btn:hover {
-    background-color: #ca4828;
+.menu button:hover::after {
+    content: '';
+    width: calc(100% + 0px);
+    border-radius: 100px;
 }
 
-.menu-btn img {
-    height: 58px;
-    width: auto;
+.menu button:hover {
+    color: var(--accent-color);
 }
 
+.menu button.active::after {
+    content: '';
+    width: calc(100% + 0px);
+    border-radius: 100px;
+    transition: none;
+}
 
 @media (max-width: 1440px) {
     header {

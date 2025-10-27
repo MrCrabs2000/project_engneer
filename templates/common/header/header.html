@@ -12,21 +12,54 @@
     <nav class="menu">
 
       {% if role == 'Student' %}
-        <button class="menu-btn" onclick="document.location='/'"><img src="/static/images/shop_icon.png"></button>
-        <button class="menu-btn" onclick="document.location='/history'"><img src="/static/images/history_icon.png"></button>
-        <button class="menu-btn" onclick="popupToggle()"><img src="/static/images/profile_icon.png"></button>
+        <button data-target="/"><img src="/static/images/shop_icon.png"></button>
+        <button data-target="/history"><img src="/static/images/history_icon.png"></button>
+        <button onclick="popupToggle()"><img src="/static/images/profile_icon.png"></button>
       {% elif role == 'Admin'%}
-        <a href="/" class="userbutton">Пользователи</a>
-        <a href="/items_search" class="itembutton">Предметы</a>
-        <button class="menu-btn" onclick="popupToggle()"><img src="/static/images/profile_icon.png"></button>
+        <button data-target="/">Пользователи</button>
+        <button data-target="/items_search">Предметы</button>
+        <button class="profile-btn" data-target="/profile /profile_edit" onclick="popupToggle()">Профиль</button>
       {% elif role == 'Teacher'%}
         <button class="menu-btn" onclick="popupToggle()"><img src="/static/images/profile_icon.png"></button>
       {% else %}
-        <a href="/login">Войти</a>
-        <a href="/register">Зарегистрироваться</a>
+        <button data-target="/login">Войти</button>
+        <button data-target="/register">Зарегистрироваться</button>
       {% endif %}
     </nav>
     
   </div>
   {% include 'common/header/profile_popup.html' %}
 </header>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+  const navButtons = document.querySelectorAll(".menu button");
+
+    console.log(navButtons)
+
+    navButtons.forEach(button => {
+      if (button.classList.contains('profile-btn')) {
+        /*button.addEventListener('click', function() {
+          popupToggle();
+        }); */
+
+        /* button.addEventListener('mouseout', function() {
+          popupToggle();
+        }); */
+      }
+      else {
+        button.addEventListener('click', function() {
+            window.location.pathname = this.dataset.target;
+        });
+      }
+    });
+
+    navButtons.forEach(button => {
+      const currentPath = window.location.pathname;
+      if (button.dataset.target.split(" ").includes(currentPath)) {
+        button.classList.add('active');
+      }
+    });
+
+  });
+
+</script>
