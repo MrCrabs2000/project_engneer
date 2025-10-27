@@ -12,15 +12,15 @@
     <nav class="menu">
 
       {% if role == 'Student' %}
-        <button data-target="/"><img src="/static/images/shop_icon.png"></button>
-        <button data-target="/history"><img src="/static/images/history_icon.png"></button>
-        <button onclick="popupToggle()"><img src="/static/images/profile_icon.png"></button>
+        <button data-target="/">Магазин</button>
+        <button data-target="/history">История</button>
+        <button class="profile-btn" data-target="/profile /profile_edit">Профиль</button>
       {% elif role == 'Admin'%}
         <button data-target="/">Пользователи</button>
         <button data-target="/items_search">Предметы</button>
-        <button class="profile-btn" data-target="/profile /profile_edit" onclick="popupToggle()">Профиль</button>
+        <button class="profile-btn" data-target="/profile /profile_edit">Профиль</button>
       {% elif role == 'Teacher'%}
-        <button class="menu-btn" onclick="popupToggle()"><img src="/static/images/profile_icon.png"></button>
+        <button class="profile-btn" data-target="/profile /profile_edit">Профиль</button>
       {% else %}
         <button data-target="/login">Войти</button>
         <button data-target="/register">Зарегистрироваться</button>
@@ -38,13 +38,9 @@
 
     navButtons.forEach(button => {
       if (button.classList.contains('profile-btn')) {
-        /*button.addEventListener('click', function() {
+        button.addEventListener('click', function() {
           popupToggle();
-        }); */
-
-        /* button.addEventListener('mouseout', function() {
-          popupToggle();
-        }); */
+        });
       }
       else {
         button.addEventListener('click', function() {
