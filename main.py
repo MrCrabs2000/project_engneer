@@ -13,11 +13,10 @@ from exel import import_users
 # @app.route('/') - магазин
 # @app.route('/history')
 
-# @app.route('authorize')
-# @app.route('authorize/register')
-# @app.route('authorize/login')
-# @app.route('authorize/telegram')
-# @app.route('logout')
+# @app.route('/register')
+# @app.route('/login')
+# @app.route('/login/telegram')
+# @app.route('/logout')
 
 # @app.route('/profile')
 # @app.route('/profile/edit')
