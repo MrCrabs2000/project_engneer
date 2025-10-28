@@ -8,6 +8,34 @@ from werkzeug.security import generate_password_hash, check_password_hash
 import os
 from exel import import_users
 
+# Педелайте роуты, как они ниже расписаны, пожалуйста. Это не только мне надо, но и пользователям.
+# @app.route('/') - магазин
+# @app.route('/history')
+
+# @app.route('/register')
+# @app.route('/login')
+# @app.route('/login/telegram')
+# @app.route('/logout')
+
+# @app.route('/profile')
+# @app.route('/profile/edit')
+
+# @app.route('/users')
+# @app.route('/users/<user>')
+# @app.route('/users/<user>/edit')
+# @app.route('/users/<user>/delete')
+# @app.route('/users/add')
+# @app.toute('/users/distribute')
+
+# @app.route('/items')
+# @app.route('/items/<item>)
+# @app.route('/items/<item>/edit)
+# @app.route('/items/<item>/delete')
+# @app.route('/items/add')
+
+# @app.route('/classes')
+# @app.route('/classes/<class>')
+# @app.route('/classes/<class>/<student>')
 
 app = Flask(__name__)
 app.secret_key = '25112008'
@@ -34,7 +62,7 @@ def main_page():
         if current_user.role == 'Student':
             session_db = db_session.create_session()
             items = session_db.query(Item_shop).all()
-            return render_template('shop/shop.html', logged_in=True, username=current_user.username,
+            return render_template('student/shop.html', logged_in=True, username=current_user.username,
                                    usersurname=current_user.usersurname, userclass=current_user.userclass,
                                    userbalance=current_user.userbalance, userotchestvo=current_user.userotchestvo,
                                    role=current_user.role, items=items)
@@ -80,23 +108,23 @@ def main_page():
                         all_users = session_db.query(User).filter_by(role=bysort).all()
                     session_db.close()
                 finally:
-                    return render_template('admin/users_search.html', logged_in=True, username=current_user.username,
+                    return render_template('admin/users/users_search.html', logged_in=True, username=current_user.username,
                                            usersurname=current_user.usersurname, userclass=current_user.userclass,
                                            userbalance=current_user.userbalance,
                                            userotchestvo=current_user.userotchestvo, adedusers=str(current_user.adedusers),
                                            all_users=all_users, colvousers=len(all_users), role=current_user.role)
-            return render_template('admin/users_search.html', logged_in=True, username=current_user.username,
+            return render_template('admin/users/users_search.html', logged_in=True, username=current_user.username,
                                    usersurname=current_user.usersurname, userclass=current_user.userclass,
                                    userbalance=current_user.userbalance, userotchestvo=current_user.userotchestvo,
                                    all_users=all_users, colvousers=len(all_users), role=current_user.role,
                                    adedusers=str(current_user.adedusers))
         elif current_user.role == 'Teacher':
             teacher_classes = current_user.userclass.split(' ')
-            return render_template('classes/classes_list.html', logged_in=True, username=current_user.username,
+            return render_template('teacher/classes_list.html', logged_in=True, username=current_user.username,
                                    usersurname=current_user.usersurname, userclass=current_user.userclass,
                                    userbalance=current_user.userbalance, userotchestvo=current_user.userotchestvo,
                                    role=current_user.role, teacher_classes=teacher_classes, teacherid=current_user.id)
-    return render_template('sign/sign.html')
+    return redirect('/login')
 
 
 @app.route('/history')
@@ -118,7 +146,7 @@ def history():
                 }
                 items_list.append(item_data)
             print(items_list)
-            return render_template('history.html', items_list=items_list)
+            return render_template('student/history.html', items_list=items_list)
         else:
             users = session.query(User).all()
             all_users = []
@@ -132,11 +160,12 @@ def history():
                 userr['userbalance'] = user.userbalance
                 all_users.append(userr.copy())
             session.close()
-            return render_template('history.html', logged_in=True, username=current_user.username,
+            return render_template('student/history.html', logged_in=True, username=current_user.username,
                                        usersurname=current_user.usersurname, userclass=current_user.userclass,
                                        userbalance=current_user.userbalance, userotchestvo=current_user.userotchestvo,
                                        all_users=all_users, colvousers=len(all_users))
 
+# ^^^ КОММЕНТАРИЯ В САМОМ ВЕРХУ ^^^
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -149,13 +178,13 @@ def register():
         confirm_password = request.form['confirm_password']
         if not all([username, usersurname, userclass, password, confirm_password]):
             flash('Все поля обязательны для заполнения', 'error')
-            return render_template('sign/register.html')
+            return render_template('authorization/register.html')
         if password != confirm_password:
             flash('Пароли не совпадают', 'error')
-            return render_template('sign/register.html')
+            return render_template('authorization/register.html')
         if len(password) < 6:
             flash('Пароль должен содержать минимум 6 символов', 'error')
-            return render_template('sign/register.html')
+            return render_template('authorization/register.html')
         session_db = db_session.create_session()
         if session_db.query(User).filter(User.username == username).first():
             flash('Пользователь с таким именем уже существует', 'error')
@@ -187,7 +216,7 @@ def register():
         finally:
             session_db.close()
         return redirect(url_for('main_page'))
-    return render_template('sign/register.html')
+    return render_template('authorization/register.html')
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -199,7 +228,7 @@ def login():
         password = request.form['password']
         if not all([username, usersurname, password]):
             flash('Все поля обязательны для заполнения', 'error')
-            return render_template('sign/login.html')
+            return render_template('authorization/login.html')
         session_db = db_session.create_session()
         user = session_db.query(User).filter_by(
             username=username,
@@ -220,7 +249,7 @@ def login():
         else:
             session_db.close()
             flash('Неверные имя, фамилия или пароль', 'error')
-    return render_template('sign/login.html')
+    return render_template('authorization/login.html')
 
 
 @app.route('/login/telegram')
@@ -256,7 +285,7 @@ def logout():
 def profile():
     if current_user.is_authenticated:
         if request.method == 'GET':
-            return render_template('profile.html', username=session['username'],
+            return render_template('common/profile/profile.html', username=session['username'],
                                    usersurname=session['usersurname'],
                                    userclass=session['userclass'],
                                    userotchestvo=session['userotchestvo'],
@@ -283,13 +312,14 @@ def profile_edit():
                 session['userclass'] = new_userclass
                 session_db.close()
                 return redirect(url_for('profile'))
-        return render_template('profile_edit.html',
+        return render_template('common/profile/profile_edit.html',
                                username=session['username'],
                                usersurname=session['usersurname'],
                                userclass=session['userclass'],
                                userbalance=session['userbalance'],
                                role=session['role'])
 
+# ^^^ КОММЕНТАРИЯ В САМОМ ВЕРХУ ^^^
 
 @app.route('/<class_name>/<teacherid>', methods=['GET'])
 def class_page(class_name, teacherid):
@@ -309,7 +339,7 @@ def class_page(class_name, teacherid):
             students_list.append(student_data)
         session_db.close()
         if int(teacherid) == int(current_user.id):
-            return render_template('class.html',
+            return render_template('teacher/class.html',
                                    logged_in=True,
                                    username=teacher.username,
                                    usersurname=teacher.usersurname,
@@ -323,7 +353,7 @@ def class_page(class_name, teacherid):
                                    tid=teacher.id,
                                    adminid='nul')
         else:
-            return render_template('class.html', logged_in=True, username=teacher.username,
+            return render_template('teacher/class.html', logged_in=True, username=teacher.username,
                                    usersurname=teacher.usersurname, userclass=teacher.userclass,
                                    userbalance=teacher.userbalance, userotchestvo=teacher.userotchestvo,
                                    role=teacher.role, class_name=class_name, students=students_list,
@@ -337,7 +367,7 @@ def userprof(userid):
         session_db = db_session.create_session()
         user = session_db.query(User).filter_by(id=userid).first()
         session_db.close()
-        return render_template('user.html', user=user, role=current_user.role, userbalance=current_user.userbalance)
+        return render_template('admin/users/user.html', user=user, role=current_user.role, userbalance=current_user.userbalance)
 
 
 @app.route('/itemshop/<itemid>', methods=['POST', 'GET'])
@@ -382,7 +412,7 @@ def itemshop(itemid):
                     item_user.count += int(count)
                     session_db.commit()
 
-        return render_template('items.html', userbalance=user.userbalance, role=current_user.role,
+        return render_template('admin/items/items.html', userbalance=user.userbalance, role=current_user.role,
                                    item=item_shop)
 
 
@@ -413,7 +443,7 @@ def edituser(userid):
             session_db.commit()
             return redirect(url_for('userprof', userid=user.id))
         session_db.close()
-        return render_template('edituser.html', user=user)
+        return render_template('admin/users/edituser.html', user=user)
 
 
 @app.route('/student/<iduser>/<teacherid>', methods=['GET', 'POST'])
@@ -451,7 +481,7 @@ def student_page(iduser, teacherid):
             userbalance = user.userbalance
             teacher_balance = teacher.userbalance
             session_db.close()
-            return render_template('student.html',
+            return render_template('teacher/student.html',
                                    username=username,
                                    usersurname=usersurname,
                                    userclass=userclass,
@@ -472,54 +502,68 @@ def deluser_page(iduser):
         session_db.close()
         return redirect(url_for('main_page'))
 
+# ^^^ КОММЕНТАРИЯ В САМОМ ВЕРХУ ^^^
 
 @app.route('/adduser', methods=['GET', 'POST'])
 def adduser():
     if current_user.is_authenticated and current_user.role == 'Admin':
+
         if request.method == 'POST':
-            name = request.form['name']
-            surname = request.form['surname']
-            otchestvo = request.form['otchestvo']
-            userclass = request.form['class']
-            userbalance = request.form['balance']
-            role = request.form['role']
-            password = request.form['password']
-            secondpassword = request.form['secondpassword']
-            if password == secondpassword:
-                new_user = User(
-                    username=name,
-                    usersurname=surname,
-                    userpassword=generate_password_hash(password),
-                    userotchestvo=otchestvo,
-                    userclass=userclass,
-                    role=role,
-                    userbalance=userbalance,
-                )
-                session_db = db_session.create_session()
-                session['user_id'] = new_user.id
-                session['username'] = new_user.username
-                session['usersurname'] = new_user.usersurname
-                session['userclass'] = new_user.userclass
-                session['role'] = new_user.role
-                session['userotchestvo'] = new_user.userotchestvo
-                session['userbalance'] = new_user.userbalance
-                session_db.add(new_user)
-                session_db.commit()
-                return redirect(url_for('main_page'))
-        return render_template('adduser.html')
+            
+            if len(request.files) > 0:
+                file = request.files['inputexel']
 
+                try:
+                    file.save('exel/users.xlsx')
+                    session_db = db_session.create_session()
+                    import_users()
+                    users = session_db.query(User).all()
+                    for user in users:
+                        user.adedusers = True
+                        session_db.commit()
+                    session_db.close()
+                    return redirect(url_for('main_page'))
+                except Exception as e:
+                    print(e)
+                    return redirect(url_for('addusers'))
 
-@app.route('/enterteach/<userid>')
-def enteracc(userid):
-    if current_user.is_authenticated and current_user.role == 'Admin':
-        session_db = db_session.create_session()
-        teacher = session_db.query(User).filter_by(id=userid).first()
-        session_db.close()
-        adminid = current_user.id
-        return render_template('classes/classes_list.html', adminid=adminid, teachername=teacher.username,
-                               teacersurname=teacher.usersurname, teacherotchestvo=teacher.userotchestvo,
-                               role=teacher.role, userbalance=teacher.userbalance, teacherid=teacher.id,
-                               teacher_classes=teacher.userclass.split())
+            else:
+                name = request.form['name']
+                surname = request.form['surname']
+                otchestvo = request.form['otchestvo']
+                userclass = request.form['class']
+                userbalance = request.form['balance']
+                role = request.form['role']
+                password = request.form['password']
+                secondpassword = request.form['secondpassword']
+                if password == secondpassword:
+                    new_user = User(
+                        username=name,
+                        usersurname=surname,
+                        userpassword=generate_password_hash(password),
+                        userotchestvo=otchestvo,
+                        userclass=userclass,
+                        role=role,
+                        userbalance=userbalance,
+                    )
+                    session_db = db_session.create_session()
+                    session['user_id'] = new_user.id
+                    session['username'] = new_user.username
+                    session['usersurname'] = new_user.usersurname
+                    session['userclass'] = new_user.userclass
+                    session['role'] = new_user.role
+                    session['userotchestvo'] = new_user.userotchestvo
+                    session['userbalance'] = new_user.userbalance
+                    session_db.add(new_user)
+                    session_db.commit()
+
+                    return redirect(url_for('main_page'))
+            
+        elif request.method == 'GET' and int(current_user.adedusers) == 0:
+            return render_template('admin/users/upload_excel.html')
+        
+        elif request.method == 'GET' and int(current_user.adedusers) > 0:
+            return render_template('admin/users/add_user.html')
 
 
 @app.route('/addingusers', methods=['GET', 'POST'])
@@ -537,11 +581,24 @@ def addusers():
                     session_db.commit()
                 session_db.close()
                 return redirect(url_for('main_page'))
-            except Exception:
-                print(Exception)
+            except Exception as e:
+                print(e)
                 return redirect(url_for('addusers'))
-        return render_template('admin/new_users_exl.html')
+        return render_template('admin/users/upload_excel.html')
 
+
+@app.route('/enterteach/<userid>')
+def enteracc(userid):
+
+    if current_user.is_authenticated and current_user.role == 'Admin':
+        session_db = db_session.create_session()
+        teacher = session_db.query(User).filter_by(id=userid).first()
+        session_db.close()
+        adminid = current_user.id
+        return render_template('teacher/classes_list.html', adminid=adminid, teachername=teacher.username,
+                               teacersurname=teacher.usersurname, teacherotchestvo=teacher.userotchestvo,
+                               role=teacher.role, userbalance=teacher.userbalance, teacherid=teacher.id,
+                               teacher_classes=teacher.userclass.split())
 
 
 @app.route('/items_search', methods=['GET', 'POST'])
@@ -572,7 +629,7 @@ def items_search():
             all_items = [{'id': i.id, 'name': i.name, 'description': i.description,
                           'count': i.count, 'price': i.price, 'photo': i.photo} for i in all_items]
         session_db.close()
-        return render_template('admin/items_search.html', all_items=all_items, search_text=request.form.get('bysort', ''))
+        return render_template('admin/items/items_search.html', all_items=all_items, search_text=request.form.get('bysort', ''))
     return redirect(url_for('login'))
 
 
@@ -592,7 +649,7 @@ def additem():
             session_db.commit()
             session_db.close()
             return redirect(url_for('items_search'))
-        return render_template('admin/additem.html')
+        return render_template('admin/items/additem.html')
 
 
 @app.route('/delitem/<itemid>', methods=['POST'])
@@ -604,8 +661,8 @@ def delitem(itemid):
             session_db.delete(item)
             session_db.commit()
         session_db.close()
-        return render_template('items_search')
-
+        return render_template('admin/items/items_search')
+# ^^^ КОММЕНТАРИЯ В САМОМ ВЕРХУ ^^^
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=8000, debug=True)
