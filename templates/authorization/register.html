@@ -1,0 +1,22 @@
+{% extends "common/base.html" %}
+
+
+{% block title %}Регистрация{% endblock %}
+
+{% block links %}
+  <link rel="stylesheet" href="/static/css/authorize.css">
+{% endblock links %}
+
+{% block content %}
+  <div class="sign-div" >
+    <form class="inputs" method="POST" action="/register">
+      <input type="text" name="username" placeholder="Имя">
+      <input type="text" name="usersurname" placeholder="Фамилия">
+      <input type="text" name="userotchestvo" placeholder="Отчество">
+      <input type="text" name="userclass" placeholder="Класс">
+      <input type="password" name="password" placeholder="Пароль">
+      <input type="password" name="confirm_password" placeholder="Повторите пароль">
+      <input type="submit" class="submit-button" value="Зарегистрироваться">
+    </form>
+  </div>
+{% endblock %}

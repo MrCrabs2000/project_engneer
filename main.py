@@ -1,6 +1,5 @@
 from flask import Flask, request, render_template, redirect, url_for, session, flash
 from flask_login import logout_user, LoginManager, login_user, current_user
-from sqlalchemy.dialects.oracle.dictionary import all_users
 
 import db_session
 from Classes import Item_user, User, Item_shop
@@ -574,6 +573,7 @@ def items_search():
                           'count': i.count, 'price': i.price, 'photo': i.photo} for i in all_items]
         session_db.close()
         return render_template('admin/items_search.html', all_items=all_items, search_text=request.form.get('bysort', ''))
+    return redirect(url_for('login'))
 
 
 @app.route('/additem', methods=['GET', 'POST'])
@@ -592,7 +592,7 @@ def additem():
             session_db.commit()
             session_db.close()
             return redirect(url_for('items_search'))
-        return render_template('admin/add_item.html')
+        return render_template('admin/additem.html')
 
 
 @app.route('/delitem/<itemid>', methods=['POST'])
@@ -604,33 +604,7 @@ def delitem(itemid):
             session_db.delete(item)
             session_db.commit()
         session_db.close()
-        return redirect(url_for('items_search'))
-
-
-@app.route('/edititem/<itemid>', methods=['GET', 'POST'])
-def edit_item(itemid):
-    session_db = db_session.create_session()
-    item = session_db.query(User).filter_by(id=itemid).first()
-    if request.method == 'POST':
-        nname = request.form['name']
-        ndescription = request.form['description']
-        nprice = request.form['price']
-        nphoto = request.form['photo']
-        ncount = request.form['count']
-        if nname:
-            item.name = nname
-        if ndescription:
-            item.description = ndescription
-        if nprice:
-            item.price = nprice
-        if nphoto:
-            item.userclass = nphoto
-        if ncount:
-            item.userbalance = ncount
-        session_db.commit()
-        return redirect(url_for('items_search'))
-    session_db.close()
-    return render_template('admin/edit_item.html', item=item)
+        return render_template('items_search')
 
 
 if __name__ == "__main__":

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ваши товары:</title>
+    <link rel="stylesheet" href="/static/css/common/style.css">
+</head>
+<body>
+      {% include 'header.html' %}
+      {% if items_list %}
+        <div class="students-grid">
+          {% for item in items_list %}
+              <a>
+                <div>
+                  <div class="student-name">{{ item.name }} {{ item.status }} {{ item.count }} {{ item.description }} {{ item.photo }}.</div>
+                </div>
+              </a>
+          {% endfor %}
+        </div>
+      {% endif %}
+</body>
+</html>

@@ -1,0 +1,48 @@
+{% extends "common/base.html" %}
+
+{% block title %}Добавить предмет{% endblock %}
+
+{% block links %}
+  <link rel="stylesheet" href="/static/css/common/form.css">
+{% endblock %}
+
+{% block content %}
+  <div class="title">Добавить предмет</div>
+  <form class="form" method="post">
+    <div class="fields-container">
+      <label for="name">
+        <span>Название</span>
+        <input id="name" name="name" placeholder="Название">
+      </label>
+
+      <label for="description">
+        <span>Описание</span>
+        <input id="description" name="description" placeholder="Описание">
+      </label>
+
+      <label for="count">
+        <span>Количество</span>
+        <input id="count" name="count" placeholder="Количество" oninput="this.value = this.value.replace(/[^0-9+]/g, '')">
+      </label>
+
+      <label for="price">
+        <span>Цена</span>
+        <input id="price" name="price" placeholder="Цена" oninput="this.value = this.value.replace(/[^0-9+]/g, '')">
+      </label>
+
+      <label for="photo">
+        <span>Ссылка на фото</span>
+        <input id="photo" name="photo" placeholder="Ссылка на фото">
+      </label>
+
+      {# <input type="text" name="name" placeholder="Название" required>
+      <input type="text" name="description" placeholder="Описание" required>
+      <input type="number" name="count" placeholder="Количество" required>
+      <input type="number" name="price" placeholder="Цена" required>
+      <input type="text" name="photo" placeholder="Ссылка на фото"> #}
+    </div>
+    <div class="btns-container">
+      <input type="submit" value="Добавить">
+    </div>
+  </form>
+{% endblock %}

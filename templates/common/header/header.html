@@ -1,0 +1,61 @@
+<header>
+  <div class="header-container">
+    <div class="header-left">
+      <a class="logo-a" href="/"><img class="logo" src="/static/images/logo.jpg"></a>
+
+      <div class="balance">
+        <img class="balance-ico" src="/static/images/coin.png">
+          <div>{{userbalance}}</div>
+      </div>
+    </div>
+
+    <nav class="menu">
+
+      {% if role == 'Student' %}
+        <button data-target="/">Магазин</button>
+        <button data-target="/history">История</button>
+        <button class="profile-btn" data-target="/profile /profile_edit">Профиль</button>
+      {% elif role == 'Admin'%}
+        <button data-target="/">Пользователи</button>
+        <button data-target="/items_search">Предметы</button>
+        <button class="profile-btn" data-target="/profile /profile_edit">Профиль</button>
+      {% elif role == 'Teacher'%}
+        <button class="profile-btn" data-target="/profile /profile_edit">Профиль</button>
+      {% else %}
+        <button data-target="/login">Войти</button>
+        <button data-target="/register">Зарегистрироваться</button>
+      {% endif %}
+    </nav>
+    
+  </div>
+  {% include 'common/header/profile_popup.html' %}
+</header>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+  const navButtons = document.querySelectorAll(".menu button");
+
+    console.log(navButtons)
+
+    navButtons.forEach(button => {
+      if (button.classList.contains('profile-btn')) {
+        button.addEventListener('click', function() {
+          popupToggle();
+        });
+      }
+      else {
+        button.addEventListener('click', function() {
+            window.location.pathname = this.dataset.target;
+        });
+      }
+    });
+
+    navButtons.forEach(button => {
+      const currentPath = window.location.pathname;
+      if (button.dataset.target.split(" ").includes(currentPath)) {
+        button.classList.add('active');
+      }
+    });
+
+  });
+
+</script>

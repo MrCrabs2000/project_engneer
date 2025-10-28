@@ -1,0 +1,127 @@
+* {
+  --color: #8babda;
+  --accent-color: #dd582c;
+  --sign-hover-color: #779cd4;
+  --text-color: #292929;
+  /* --sign-click-color: #648ece; */
+}
+
+html, body {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 500;
+    border: 0 solid transparent;
+}
+
+main {
+    position: relative;
+    height: calc(100% - 80px);
+    width: 100%;
+}
+
+.centered-div, .sign-div, .profile {
+    position: absolute;
+    box-sizing: border-box;
+    width: fit-content;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    align-content: center;
+    display: flex;
+}
+
+button {
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: 700;
+    background-color: var(--color);
+    color: var(--text-color);
+    border: 0;
+    border-radius: 0.6em;
+    padding: 0 0.55em;
+}
+
+input, select {
+    box-sizing: border-box;
+    height: 1.625em;
+    width: 192px;
+    align-items: center;
+    padding: 0 0.55em;
+    color: var(--text-color);
+    font-size: inherit;
+    font-family: inherit;
+    font-weight: inherit;
+    background-color: #ebf3fa;
+    border: 3px solid #7593c0;
+    border-radius: 0.6em;
+    outline: none;
+    appearance: none;
+}
+
+select:disabled {
+    opacity: 1;
+}
+
+.select {
+    position: relative;
+    font-size: inherit;
+}
+
+.select::after {
+    content: "";
+    position: absolute;
+    right: 0.55em;
+    top: 50%;
+    display: inline-block;
+    height: 0.4em;
+    aspect-ratio: 1/1;
+    transform: translate(-50%, -75%) rotate(45deg);
+    border: solid #7593c0;
+    border-width: 0 4px 4px 0;
+    border-radius: 2px;
+    pointer-events: none;
+}
+
+button:hover, input[type="submit"]:hover, input[type="button"]:hover {
+    cursor: pointer;
+}
+
+.radio-button-label {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+    width: fit-content;
+    cursor: pointer;
+}
+
+input[type="radio"] {
+   display: none;
+}
+
+.custom-radio-btn {
+    position: relative;
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    border: 2px solid var(--color);
+    border-radius: 10px;
+
+}
+
+input[type="radio"]:checked + .custom-radio-btn:before {
+    display: block;
+    content: '';
+    width: 18px;
+    height: 18px;
+    background: var(--color);
+    border-radius: 6px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+}

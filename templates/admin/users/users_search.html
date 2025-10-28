@@ -1,0 +1,57 @@
+{% extends "common/base.html" %}
+
+{% block title %}Поиск{% endblock %}
+
+{% block links %}
+  <link rel="stylesheet" href="/static/css/users/found-elements.css">
+  <link rel="stylesheet" href="/static/css/search.css">
+{% endblock %}
+
+{% block content %}
+ 
+  <form class="top-container" enctype="multipart/form-data" method="post">
+    <div class="left">
+      <input class="search-bar" type="text" name="bysort" placeholder="Поиск пользователя" value="{{ search_text }}">
+      <input class="search-btn" type="submit" value="Найти">
+    </div>
+
+    <div class="right">
+      <div class="filters">
+        <div class="filters-header">Искать по:</div>
+        <label class="radio-button-label" for="surname">
+          <input type="radio" value="Фамилия" id="surname" name="sort" checked/>
+          <span class="custom-radio-btn"></span>
+          Фамилии
+        </label>
+
+        <label class="radio-button-label" for="class">
+          <input type="radio" value="Класс" id="class" name="sort" />
+          <span class="custom-radio-btn"></span>
+          Классу
+        </label>
+
+        <label class="radio-button-label" for="role">
+          <input type="radio" value="Роль" id="role" name="sort" />
+          <span class="custom-radio-btn"></span>
+          Роли
+        </label>
+      </div>
+        <!-- <button class="filter-btn">Фильтр</button> -->
+      <button type="button" onclick="document.location='/adduser'"></button>
+      {# {% if adedusers == '0' %} #}
+      
+
+
+    </div>
+  </form>
+  
+  <div class="found-elements-flex">
+    {% for i in range(colvousers) %}
+      <div class="found-element-card">
+        <a href="/userprofile/{{ all_users[i]['id'] }}">
+          <div class="found-element-info">{{all_users[i]['usersurname']}} {{all_users[i]['username'][0]}}. {{all_users[i]['userotchestvo'][0]}}.</div>
+        </a>
+      </div>
+    {% endfor %}
+  </div>
+{% endblock %}
