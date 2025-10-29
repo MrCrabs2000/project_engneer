@@ -22,7 +22,7 @@
 
       <label for="otchestvo">
         <span>Отчество</span>
-        <input id="surname" value="{{ userotchestvo }}" placeholder="Отчество" readonly>
+        <input id="otchestvo" value="{{ userotchestvo }}" placeholder="Отчество" readonly>
       </label>
 
       <label for="class">
@@ -30,22 +30,24 @@
         <input id="class" value="{{ userclass }}" placeholder="Класс" readonly>
       </label>
 
-
-      <label for="stud_balance">
-        <span>Начислить/Отнять</span>
-        <div class="change-balance-container">
-          <input id="stud_balance" type="text" name="stud_balance" min="0" oninput="this.value = this.value.replace(/[^0-9+]/g, '')" required>
-          
-          <div class="add-btn-container">
-            <button type="submit" name="action" value="+"></button>
-          </div>
-
-          <div class="deduct-btn-container">
-            <button type="submit" name="action" value="-"></button>
-          </div>
-
-        </div>
+      <label for="mark">
+        <span>Оценка</span>
+        <select id="mark" name="mark" required>
+          <option value="">Выберите оценку</option>
+          <option value="5">5 - +200 монет</option>
+          <option value="4">4 - +100 монет</option>
+          <option value="3">3 - 0 монет</option>
+          <option value="2">2 - -100 монет</option>
+        </select>
       </label>
-      
+
+      <div>
+        <p>Баланс ученика: <strong>{{ studbalance }} монет</strong></p>
+        <p >Ваш баланс: <strong>{{ userbalance }} монет</strong></p>
+      </div>
+
+      <button type="submit">Применить оценку</button>
+
+    </div>
   </form>
 {% endblock %}
