@@ -11,15 +11,16 @@
 
     <nav class="menu">
 
-      {% if role == 'Student' %}
+      {% if current_user_role == 'Student' %}
         <button data-target="/">Магазин</button>
         <button data-target="/history">История</button>
         <button class="profile-btn" data-target="/profile /profile_edit">Профиль</button>
-      {% elif role == 'Admin'%}
-        <button data-target="/">Пользователи</button>
-        <button data-target="/items_search">Предметы</button>
+      {% elif current_user_role == 'Admin'%}
+        <button data-target="/users">Пользователи</button>
+        <button data-target="/items">Предметы</button>
         <button class="profile-btn" data-target="/profile /profile_edit">Профиль</button>
-      {% elif role == 'Teacher'%}
+      {% elif current_user_role == 'Teacher'%}
+        <button data-target="/classes">Классы</button>
         <button class="profile-btn" data-target="/profile /profile_edit">Профиль</button>
       {% else %}
         <button data-target="/login">Войти</button>
