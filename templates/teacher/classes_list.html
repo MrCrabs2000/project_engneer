@@ -12,12 +12,12 @@
         <button onclick="document.location='/userprofile/{{ teacherid }}'">Назад</button>
     {% endif %}
     <div class="classes-grid">
-    {% if teacher_classes %}
-      {% for class_name in teacher_classes %}
+    {% if classes %}
+      {% for class in classes %}
         <div class="class-card">
-          <a href="/{{ class_name }}/{{ teacherid }}">
+          <a href="/{{ class }}/{{ teacherid }}">
             <div class="class-content">
-              <div>{{ class_name }}</div>
+              <div>{{ class }}</div>
             </div>
           </a>
         </div>

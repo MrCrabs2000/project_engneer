@@ -12,28 +12,28 @@
 
       <label for="name" class="input-label">
         <span>Имя</span>
-        <input id="name" value="{{ user['username'] }}" name="name" placeholder="Имя">
+        <input id="name" value="{{ name }}" name="name" placeholder="Имя">
       </label>
 
       <label for="surname" class="input-label">
         <span>Фамилия</span>
-        <input id="surname" value="{{ user['usersurname'] }}" name="surname" placeholder="Фамилия">
+        <input id="surname" value="{{ surname }}" name="surname" placeholder="Фамилия">
       </label>
 
       <label for="otchestvo" class="input-label">
         <span>Отчество</span>
-        <input id="surname" value="{{ user['userotchestvo'] }}" name="otchestvo" placeholder="Отчество">
+        <input id="surname" value="{{ otchestvo }}" name="otchestvo" placeholder="Отчество">
       </label>
 
       <label for="role" class="input-label">
         <span>Роль</span>
         <div id="role" class="select">
           <select name="role">
-          {% if user['role'] == 'Student' %}
+          {% if role == 'Student' %}
             <option selected>Student</option>
             <option>Teacher</option>
             <option>Admin</option>
-          {% elif user['role'] == 'Teacher' %}
+          {% elif role == 'Teacher' %}
             <option>Student</option>
             <option selected>Teacher</option>
             <option>Admin</option>
@@ -48,12 +48,12 @@
 
       <label for="class" class="input-label">
         <span>Класс</span>
-        <input id="class" value="{{ user['userclass'] }}" name="class" placeholder="Класс">
+        <input id="class" value="{{ class }}" name="class" placeholder="Класс">
       </label>
 
       <label for="balance" class="input-label">
         <span>Баланс</span>
-        <input id="balance" type="text" min="0" oninput="this.value = this.value.replace(/[^0-9+]/g, '')" value="{{ user['userbalance'] }}" name="balance" placeholder="Баланс">
+        <input id="balance" type="text" min="0" oninput="this.value = this.value.replace(/[^0-9+]/g, '')" value="{{ balance }}" name="balance" placeholder="Баланс">
       </label>
 
       <label for="password" class="input-label">

@@ -10,31 +10,16 @@ import os
 from exel import import_users
 
 # Педелайте роуты, как они ниже расписаны, пожалуйста. Это не только мне надо, но и пользователям.
-# @app.route('/') - магазин
-# @app.route('/history')
 
-# @app.route('/register')
-# @app.route('/login')
 # @app.route('/login/telegram')
-# @app.route('/logout')
 
-# @app.route('/profile')
-# @app.route('/profile/edit')
+# @app.route('/history/<item>')
 
-# @app.route('/users')
-# @app.route('/users/<user>')
-# @app.route('/users/<user>/edit')
-# @app.route('/users/<user>/delete')
-# @app.route('/users/add')
 # @app.toute('/users/distribute')
 
-# @app.route('/items')
 # @app.route('/items/<item>)
 # @app.route('/items/<item>/edit)
-# @app.route('/items/<item>/delete')
-# @app.route('/items/add')
 
-# @app.route('/classes')
 # @app.route('/classes/<class>')
 # @app.route('/classes/<class>/<student>')
 
@@ -56,79 +41,89 @@ def load_user(user_id):
     return user
 
 
-@app.route('/', methods=['GET', 'POST'])
-def main_page():
+@app.route('/', methods=['GET'])
+def index():
     if current_user.is_authenticated:
-        session = db_session.create_session()
         if current_user.role == 'Student':
-            session_db = db_session.create_session()
-            items = session_db.query(Item_shop).all()
-            return render_template('student/shop.html', logged_in=True, username=current_user.username,
-                                   usersurname=current_user.usersurname, userclass=current_user.userclass,
-                                   userbalance=current_user.userbalance, userotchestvo=current_user.userotchestvo,
-                                   role=current_user.role, items=items)
-        elif current_user.role == 'Admin':
-            users = session.query(User).all()
-            all_users = []
-            for user in users:
-                if user.adedusers == 'False':
-                    user.adedusers = False
-                    session.commit()
-            print(str(current_user.adedusers))
-            for user in users:
-                userr = {}
-                userr['id'] = user.id
-                userr['username'] = user.username
-                userr['usersurname'] = user.usersurname
-                userr['userclass'] = user.userclass
-                userr['role'] = user.role
-                userr['userotchestvo'] = user.userotchestvo
-                userr['userbalance'] = user.userbalance
-                all_users.append(userr.copy())
-            session.close()
-            if request.method == 'POST':
-                try:
-                    razdbal = request.form['razdbalance']
-                    for user in all_users:
-                        if user['role'] == 'Teacher':
-                            session_db = db_session.create_session()
-                            userr = session_db.query(User).filter_by(id=user['id']).first()
-                            user['userbalance'] = int(user['userbalance']) + int(razdbal)
-                            userr.userbalance = user['userbalance']
-                            session_db.commit()
-                            session_db.close()
-                except Exception:
-                    sort = request.form['sort']
-                    bysort = request.form['bysort']
-                    session_db = db_session.create_session()
-                    if sort == 'Класс':
-                        all_users = session_db.query(User).filter_by(userclass=bysort).all()
-                    elif sort == 'Фамилия':
-                        all_users = session_db.query(User).filter_by(usersurname=bysort).all()
-                    else:
-                        all_users = session_db.query(User).filter_by(role=bysort).all()
-                    session_db.close()
-                finally:
-                    return render_template('admin/users/users_search.html', logged_in=True, username=current_user.username,
-                                           usersurname=current_user.usersurname, userclass=current_user.userclass,
-                                           userbalance=current_user.userbalance,
-                                           userotchestvo=current_user.userotchestvo, adedusers=str(current_user.adedusers),
-                                           all_users=all_users, colvousers=len(all_users), role=current_user.role)
-            return render_template('admin/users/users_search.html', logged_in=True, username=current_user.username,
-                                   usersurname=current_user.usersurname, userclass=current_user.userclass,
-                                   userbalance=current_user.userbalance, userotchestvo=current_user.userotchestvo,
-                                   all_users=all_users, colvousers=len(all_users), role=current_user.role,
-                                   adedusers=str(current_user.adedusers))
-        elif current_user.role == 'Teacher':
-            teacher_classes = current_user.userclass.split(' ')
-            return render_template('teacher/classes_list.html', logged_in=True, username=current_user.username,
-                                   usersurname=current_user.usersurname, userclass=current_user.userclass,
-                                   userbalance=current_user.userbalance, userotchestvo=current_user.userotchestvo,
-                                   role=current_user.role, teacher_classes=teacher_classes, teacherid=current_user.id)
-    return redirect('/login')
+            return shop()
+        
+        elif current_user.role == "Teacher":
+            return redirect('/classes') 
+         
+        elif current_user.role == "Admin":
+            return redirect('/users')
+
+    elif not(current_user.is_authenticated):
+        return redirect('/login')
 
 
-@app.route('/history')
+#STUDENT ROUTES
+def shop():
+    session_db = db_session.create_session()
+    items = session_db.query(Item_shop).all()
+
+    context = {'current_user_role': current_user.role, 
+               'items': items, 
+               'userbalance': current_user.userbalance}
+
+    session_db.close()
+
+    return render_template('student/shop.html', **context)
+
+
+@app.route('/shop/<item_id>', methods=['GET'])
+def item(item_id):
+    if current_user.is_authenticated and current_user.role == 'Student':
+        session_db = db_session.create_session()
+        item_shop = session_db.query(Item_shop).filter_by(id=item_id).first()
+        user = session_db.query(User).filter_by(id=current_user.id).first()
+        item_user = session_db.query(Item_user).filter_by(id=item_shop.id).first()
+
+        if request.method == 'POST':
+            count = request.form['item_count']
+
+            if int(user.userbalance) >= (int(item_shop.price) * int(count)) and session_db.query(Item_user).filter_by(id=item_shop.id).first() is None and item_shop.count - int(count) >= 0:
+                user.userbalance = int(user.userbalance) - (int(item_shop.price) * int(count))
+                item_shop.count -= int(count)
+
+                for i in range(int(item_shop.count)):
+                    new_item = Item_user(
+                    userid=current_user.id,
+                    status='На рассмотрении',
+                    name=item_shop.name,
+                    count=int(count),
+                    description=item_shop.description,
+                    photo=item_shop.photo
+                )
+
+                    session['userid'] = new_item.id
+                    session['status'] = new_item.status
+                    session['name'] = new_item.name
+                    session['count'] = new_item.count
+                    session['description'] = new_item.description
+                    session['photo'] = new_item.photo
+
+                    session_db.add(new_item)
+                    session_db.commit()
+            else:
+                if item_shop.count - int(count) >= 0:
+                    user.userbalance = int(user.userbalance) - (int(item_shop.price) * int(count))
+                    item_shop.count -= int(count)
+                    item_user.count += int(count)
+                    session_db.commit()
+
+        context = {'userbalance': current_user.userbalance,
+                   'current_user_role': current_user.role,
+                   'item': item_shop}
+
+        return render_template('admin/items/item.html', **context)
+
+    elif not(current_user.is_authenticated):
+        return redirect('/login')
+
+
+# НУЖНО ОБГОВОРИТЬ ЛОГИКУ
+app.route('/history', methods=['GET'])
 def history():
     if current_user.is_authenticated:
         if current_user.role == 'Student' or current_user.role == 'Teacher':
@@ -162,44 +157,390 @@ def history():
                 all_users.append(userr.copy())
             session.close()
             return render_template('student/history.html', logged_in=True, username=current_user.username,
-                                       usersurname=current_user.usersurname, userclass=current_user.userclass,
-                                       userbalance=current_user.userbalance, userotchestvo=current_user.userotchestvo,
-                                       all_users=all_users, colvousers=len(all_users))
+                                    usersurname=current_user.usersurname, userclass=current_user.userclass,
+                                    userbalance=current_user.userbalance, userotchestvo=current_user.userotchestvo,
+                                    all_users=all_users, colvousers=len(all_users))
+        
+    elif not(current_user.is_authenticated):
+        return redirect('/login')
 
-# ^^^ КОММЕНТАРИЯ В САМОМ ВЕРХУ ^^^
+    
+# ADMIN ROUTES
+@app.route('/users', methods=['GET', 'POST'])
+def users():
+    if current_user.is_authenticated and current_user.role == 'Admin':
+        session = db_session.create_session()
+        
+        if request.method == 'GET':
+            users = session.query(User).all()            
+            session.close()
 
+            context = {'current_user_role': current_user.role,
+                       'users': users}
+
+            return render_template('admin/users/users_search.html', **context)
+    
+        elif request.method == 'POST':
+            users = session.query(User).all()
+
+            all_users = []
+
+            for user in users:
+                if user.adedusers == 'False':
+                    user.adedusers = False
+                    session.commit()
+
+            print(str(current_user.adedusers))
+
+            for user in users:
+                userr = {}
+                userr['id'] = user.id
+                userr['username'] = user.username
+                userr['usersurname'] = user.usersurname
+                userr['userclass'] = user.userclass
+                userr['role'] = user.role
+                userr['userotchestvo'] = user.userotchestvo
+                userr['userbalance'] = user.userbalance
+                all_users.append(userr.copy())
+                
+            session.close()
+
+            try:
+                razdbal = request.form['razdbalance']
+                for user in all_users:
+                    if user['role'] == 'Teacher':
+                        session_db = db_session.create_session()
+                        userr = session_db.query(User).filter_by(id=user['id']).first()
+                        user['userbalance'] = int(user['userbalance']) + int(razdbal)
+                        userr.userbalance = user['userbalance']
+                        session_db.commit()
+
+            except Exception:
+                sort = request.form['sort']
+                bysort = request.form['bysort']
+
+                session_db = db_session.create_session()
+
+                if sort == 'Класс':
+                    users = session_db.query(User).filter_by(userclass=bysort).all()
+                elif sort == 'Фамилия':
+                    users = session_db.query(User).filter_by(usersurname=bysort).all()
+                else:
+                    users = session_db.query(User).filter_by(role=bysort).all()
+
+            finally:
+                session_db.close()
+
+                context = {'current_user_role': current_user.role,
+                           'users': users}
+
+                return render_template('admin/users/users_search.html', **context)
+            
+    elif not(current_user.is_authenticated):
+        return redirect('/login')
+
+
+@app.route('/users/<user_id>', methods=['GET'])
+def user(user_id):
+    if current_user.is_authenticated and current_user.role == 'Admin':
+        session_db = db_session.create_session()
+
+        user = session_db.query(User).filter_by(id=user_id).first()
+
+        session_db.close()
+
+        context = {'current_user_role': current_user.role,
+                   'userbalance': current_user.userbalance,
+                   'name': user.username,
+                   'surname': user.usersurname,
+                   'otchestvo': user.userotchestvo,
+                   'role': user.role,
+                   'class': user.userclass,
+                   'balance': user.userbalance,
+                   'id': user_id}
+        
+        return render_template('admin/users/user.html', **context)
+    
+    elif not(current_user.is_authenticated):
+        return redirect('/login')
+    
+
+@app.route('/users/<user_id>/edit', methods=['GET', 'POST'])
+def edit_user(user_id):
+    if current_user.is_authenticated and current_user.role == 'Admin':
+        if request.method == 'GET':
+            session_db = db_session.create_session()
+
+            user = session_db.query(User).filter_by(id=user_id).first()
+
+            session_db.close()
+
+            context = {'current_user_role': current_user.role,
+                       'userbalance': current_user.userbalance,
+                       'name': user.username,
+                       'surname': user.usersurname,
+                       'otchestvo': user.userotchestvo,
+                       'role': user.role,
+                       'class': user.userclass,
+                       'balance': user.userbalance,
+                       'id': user_id}
+
+            return render_template('admin/users/edit_user.html', **context)
+        
+        elif request.method == 'POST':
+            session_db = db_session.create_session()
+            user = session_db.query(User).filter_by(id=user_id).first()
+
+            new_username = request.form['name']
+            new_usersurname = request.form['surname']
+            new_userotchestvo = request.form['otchestvo']
+            new_userclass = request.form['class']
+            new_role = request.form['role']
+            new_userbalance = request.form['balance']
+
+            if new_usersurname:
+                user.usersurname = new_usersurname
+            if new_userotchestvo:
+                user.userotchestvo = new_userotchestvo
+            if new_username:
+                user.username = new_username
+            if new_userclass:
+                user.userclass = new_userclass
+            if new_userbalance:
+                user.userbalance = new_userbalance
+            if new_role:
+                user.role = new_role
+
+            session_db.commit()
+            session_db.close()
+
+            return redirect(f'/users/{user_id}')
+        
+    elif not(current_user.is_authenticated):
+        return redirect('/login')
+
+        
+@app.route('/users/<user_id>/delete', methods=['GET'])
+def delete_user(user_id):
+    if current_user.is_authenticated and current_user.role == 'Admin':
+        session_db = db_session.create_session()
+
+        user = session_db.query(User).filter_by(id=user_id).first()
+        session_db.delete(user)
+        
+        session_db.commit()
+        session_db.close()
+
+        return redirect('/users')
+    
+    elif not(current_user.is_authenticated):
+        return redirect('/login')
+
+
+@app.route('/users/add')
+def add_user():
+    if current_user.is_authenticated and current_user.role == 'Admin':
+
+        if request.method == 'GET' and current_user.adedusers == 'False':
+            context = {'current_user_role': current_user.role}
+            
+            return render_template('admin/users/upload_excel.html', **context)
+        
+        elif request.method == 'GET' and current_user.adedusers != 'False':
+            context = {'current_user_role': current_user.role}
+
+            return render_template('admin/users/add_user.html', **context)
+
+        elif request.method == 'POST':
+            
+            if len(request.files) > 0:
+                file = request.files['inputexel']
+
+                try:
+                    file.save('exel/users.xlsx')
+                    session_db = db_session.create_session()
+                    import_users()
+                    users = session_db.query(User).all()
+                    for user in users:
+                        user.adedusers = True
+                        session_db.commit()
+                    session_db.close()
+                    return redirect('/users')
+                except Exception as e:
+                    print(e)
+                    return redirect('/users/add')
+
+            else:
+                name = request.form['name']
+                surname = request.form['surname']
+                otchestvo = request.form['otchestvo']
+                userclass = request.form['class']
+                userbalance = request.form['balance']
+                role = request.form['role']
+                password = request.form['password']
+                secondpassword = request.form['secondpassword']
+
+                if password == secondpassword:
+                    new_user = User(
+                        username=name,
+                        usersurname=surname,
+                        userpassword=generate_password_hash(password),
+                        userotchestvo=otchestvo,
+                        userclass=userclass,
+                        role=role,
+                        userbalance=userbalance,
+                    )
+
+                    session_db = db_session.create_session()
+
+                    session['user_id'] = new_user.id
+                    session['username'] = new_user.username
+                    session['usersurname'] = new_user.usersurname
+                    session['userclass'] = new_user.userclass
+                    session['role'] = new_user.role
+                    session['userotchestvo'] = new_user.userotchestvo
+                    session['userbalance'] = new_user.userbalance
+
+                    session_db.add(new_user)
+                    session_db.commit()
+
+                    return redirect('/users')
+                
+    elif not(current_user.is_authenticated):
+        return redirect('/login')
+
+
+@app.route('/items', methods=['GET', 'POST'])
+def items():
+    if current_user.is_authenticated and current_user.role == 'Admin':
+        session_db = db_session.create_session()
+        items = session_db.query(Item_shop).all()
+        
+        if request.method == 'POST':
+            sort = request.form.get('sort')
+            bysort = request.form.get('bysort')
+
+            if sort == 'Название':
+                items = session_db.query(Item_shop).filter(Item_shop.name.like(f"%{bysort}%")).all()
+            elif sort == 'Описание':
+                items = session_db.query(Item_shop).filter(Item_shop.description.like(f"%{bysort}%")).all()
+            elif sort == 'Цена':
+                items = session_db.query(Item_shop).filter(Item_shop.price == bysort).all()
+            
+        session_db.close()
+
+        context = {'items': items, 
+                   'current_user_role': current_user.role,
+                   'search_text': request.form.get('search_text', '')}
+        
+        return render_template('admin/items/items_search.html', **context)
+
+    elif not(current_user.is_authenticated):
+        return redirect('/login')
+    
+
+
+@app.route('/items/add', methods=['GET', 'POST'])
+def add_item():
+    if current_user.is_authenticated and current_user.role == 'Admin':
+        if request.method == 'GET':
+            return render_template('admin/items/add_item.html')
+        
+        elif request.method == 'POST':
+            name = request.form['name']
+            description = request.form['description']
+            count = request.form['count']
+            price = request.form['price']
+            photo = request.form['photo']
+
+            session_db = db_session.create_session()
+            new_item = Item_shop(name=name, description=description, count=count, price=price, photo=photo)
+            session_db.add(new_item)
+            session_db.commit()
+            session_db.close()
+
+            return redirect('/items')
+        
+    elif not(current_user.is_authenticated):
+        return redirect('/login')
+
+
+@app.route('/items/<item_id>/delete', methods=['POST'])
+def delete_item(item_id):
+    if current_user.is_authenticated and current_user.role == 'Admin':
+        session_db = db_session.create_session()
+        item = session_db.query(Item_shop).filter_by(id=item_id).first()
+        
+        if item:
+            session_db.delete(item)
+            session_db.commit()
+
+        session_db.close()
+
+        return render_template('admin/items/items_search')
+
+    elif not(current_user.is_authenticated):
+        return redirect('/login')
+
+# TEACHER ROUTES
+@app.route('/classes')
+def classes():
+    if current_user.is_authenticated and current_user.role == 'Teacher':
+        classes = current_user.userclass.split(' ')
+
+        context = {'current_user_role': current_user.role,
+                   'classes': classes,
+                   'userbalance': current_user.userbalance,
+                   'teacherid': current_user.id}
+
+        return render_template('teacher/classes_list.html', **context)
+    
+    elif not(current_user.is_authenticated):
+        return redirect('/login')
+
+
+# AUTHORIZATION ROUTES
 @app.route('/register', methods=['GET', 'POST'])
 def register():
-    if request.method == 'POST':
+    if request.method == 'GET':
+        return render_template('authorization/register.html')
+
+    elif request.method == 'POST':
         username = request.form['username']
         usersurname = request.form['usersurname']
         userotchestvo = request.form['userotchestvo']
         userclass = request.form['userclass']
         password = request.form['password']
         confirm_password = request.form['confirm_password']
+
+        session_db = db_session.create_session()
+
         if not all([username, usersurname, userclass, password, confirm_password]):
             flash('Все поля обязательны для заполнения', 'error')
+            session_db.close()
             return render_template('authorization/register.html')
-        if password != confirm_password:
+        elif password != confirm_password:
             flash('Пароли не совпадают', 'error')
+            session_db.close()
             return render_template('authorization/register.html')
-        if len(password) < 6:
+        elif len(password) < 6:
             flash('Пароль должен содержать минимум 6 символов', 'error')
+            session_db.close()
             return render_template('authorization/register.html')
-        session_db = db_session.create_session()
-        if session_db.query(User).filter(User.username == username).first():
+        elif session_db.query(User).filter(User.username == username).first():
             flash('Пользователь с таким именем уже существует', 'error')
             session_db.close()
-            return redirect(url_for('register'))
+            return render_template('authorization/register.html')
+        
         try:
-            new_user = User(
-                username=username,
-                usersurname=usersurname,
-                userpassword=generate_password_hash(password),
-                userotchestvo=userotchestvo,
-                userclass=userclass,
-                role='Student',
-                userbalance=0,)
+            new_user = User(username=username,
+                            usersurname=usersurname,
+                            userpassword=generate_password_hash(password),
+                            userotchestvo=userotchestvo,
+                            userclass=userclass,
+                            role='Student',
+                            userbalance=0,)
+            
             session['user_id'] = new_user.id
             session['username'] = new_user.username
             session['usersurname'] = new_user.usersurname
@@ -207,34 +548,47 @@ def register():
             session['role'] = new_user.role
             session['userotchestvo'] = new_user.userotchestvo
             session['userbalance'] = new_user.userbalance
+
             session_db.add(new_user)
             session_db.commit()
+
             login_user(new_user)
+
             flash('Вы успешно зарегистрировались!', 'success')
         except Exception:
             session_db.rollback()
             flash('Ошибка при регистрации!', 'error')
         finally:
             session_db.close()
-        return redirect(url_for('main_page'))
-    return render_template('authorization/register.html')
+        
+        if current_user.role == 'Student':
+            return redirect('/')
+        elif current_user.role == 'Teacher':
+            return redirect('/classes')
+        elif current_user.role == 'Admin':
+            return redirect('/users')
+        
+    elif not(current_user.is_authenticated):
+        return redirect('/login')
 
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    if request.method == 'POST':
+    if request.method == 'GET':
+        return render_template('authorization/login.html')
+
+    elif request.method == 'POST':
+        session_db = db_session.create_session()
+
         username = request.form['username']
         usersurname = request.form['usersurname']
         userotchestvo = request.form['userotchestvo']
         password = request.form['password']
-        if not all([username, usersurname, password]):
-            flash('Все поля обязательны для заполнения', 'error')
-            return render_template('authorization/login.html')
-        session_db = db_session.create_session()
-        user = session_db.query(User).filter_by(
-            username=username,
-            usersurname=usersurname,
-            userotchestvo=userotchestvo).first()
+        
+        user = session_db.query(User).filter_by(username=username,
+                                                usersurname=usersurname,
+                                                userotchestvo=userotchestvo).first()
+        
         if user and check_password_hash(user.userpassword, password):
             session['user_id'] = user.id
             session['username'] = user.username
@@ -244,13 +598,97 @@ def login():
             session['userotchestvo'] = user.userotchestvo
             session['userbalance'] = user.userbalance
             session_db.close()
+
             login_user(user)
             flash('Вход выполнен успешно!', 'success')
-            return redirect(url_for('main_page'))
-        else:
+            
+            if current_user.role == 'Student':
+                return redirect('/')
+            elif current_user.role == 'Teacher':
+                return redirect('/classes')
+            elif current_user.role == 'Admin':
+                return redirect('/users')
+        
+        elif not all([username, usersurname, password]):
+            flash('Все поля обязательны для заполнения', 'error')
             session_db.close()
+
+            return render_template('authorization/login.html')
+        
+        else:
             flash('Неверные имя, фамилия или пароль', 'error')
-    return render_template('authorization/login.html')
+            session_db.close()
+
+            return render_template('authorization/login.html')
+        
+    elif not(current_user.is_authenticated):
+        return redirect('/login')
+
+
+@app.route('/logout', methods=['GET'])
+def logout():
+    if current_user.is_authenticated:
+        logout_user()
+        
+        return redirect('/login')
+    
+    elif not(current_user.is_authenticated):
+        return redirect('/login')
+    
+
+
+# PROFILE ROUTES
+@app.route('/profile', methods=['GET'])
+def profile():
+    if current_user.is_authenticated:
+        context = {'username': current_user.username,
+                   'usersurname': current_user.usersurname, 
+                   'userotchestvo': current_user.userotchestvo,
+                   'userclass': current_user.userclass, 
+                   'current_user_role': current_user.role}
+
+        return render_template('common/profile/profile.html', **context)
+    
+    elif not(current_user.is_authenticated):
+        return redirect('/login')
+
+
+@app.route('/profile/edit', methods=['GET', 'POST'])
+def edit_profile():
+    if current_user.is_authenticated:
+        
+        if request.method == 'GET':
+            context = {'username': current_user.username,
+                       'usersurname': current_user.usersurname, 
+                       'userotchestvo': current_user.userotchestvo,
+                       'userclass': current_user.userclass, 
+                       'current_user_role': current_user.role, 
+                       'userbalance': current_user.userbalance}
+            
+            return render_template('common/profile/profile_edit.html', **context)
+            
+        elif request.method == 'POST':
+            session_db = db_session.create_session()
+
+            user = session_db.query(User).filter_by(id=current_user.id).first()
+            new_username = request.form['username']
+            new_usersurname = request.form['usersurname']
+            new_userclass = request.form['userclass']
+
+            if user and all([new_usersurname, new_username, new_userclass]):
+                user.username = new_username
+                user.usersurname = new_usersurname
+                user.userclass = new_userclass
+                session_db.commit()
+                session['username'] = new_username
+                session['usersurname'] = new_usersurname
+                session['userclass'] = new_userclass
+                session_db.close()
+
+                return redirect('/profile')
+            
+    elif not(current_user.is_authenticated):
+        return redirect('/login')
 
 
 @app.route('/login/telegram')
@@ -269,56 +707,6 @@ def login_telegram():
         return 'Ошибка авторизации'
 
 
-@app.route('/edit_profile')
-def edit_profile():
-    if current_user.is_authenticated:
-        return redirect(url_for('main_page'))
-
-
-@app.route('/logout')
-def logout():
-    if current_user.is_authenticated:
-        logout_user()
-        return redirect(url_for('main_page'))
-
-
-@app.route('/profile', methods=['GET'])
-def profile():
-    if current_user.is_authenticated:
-        if request.method == 'GET':
-            return render_template('common/profile/profile.html', username=session['username'],
-                                   usersurname=session['usersurname'],
-                                   userclass=session['userclass'],
-                                   userotchestvo=session['userotchestvo'],
-                                   role=session['role'],
-                                   userbalance=session['userbalance'])
-
-
-@app.route('/profile_edit', methods=['GET', 'POST'])
-def profile_edit():
-    if current_user.is_authenticated:
-        if request.method == 'POST':
-            session_db = db_session.create_session()
-            user = session_db.query(User).filter_by(id=current_user.id).first()
-            new_username = request.form['username']
-            new_usersurname = request.form['usersurname']
-            new_userclass = request.form['userclass']
-            if user and all([new_usersurname, new_username, new_userclass]):
-                user.username = new_username
-                user.usersurname = new_usersurname
-                user.userclass = new_userclass
-                session_db.commit()
-                session['username'] = new_username
-                session['usersurname'] = new_usersurname
-                session['userclass'] = new_userclass
-                session_db.close()
-                return redirect(url_for('profile'))
-        return render_template('common/profile/profile_edit.html',
-                               username=session['username'],
-                               usersurname=session['usersurname'],
-                               userclass=session['userclass'],
-                               userbalance=session['userbalance'],
-                               role=session['role'])
 
 # ^^^ КОММЕНТАРИЯ В САМОМ ВЕРХУ ^^^
 
@@ -360,91 +748,6 @@ def class_page(class_name, teacherid):
                                    role=teacher.role, class_name=class_name, students=students_list,
                                    students_count=len(students_list), tid=teacher.id, adminid=current_user.id)
     return redirect(url_for('login'))
-
-
-@app.route('/userprofile/<userid>')
-def userprof(userid):
-    if current_user.is_authenticated:
-        session_db = db_session.create_session()
-        user = session_db.query(User).filter_by(id=userid).first()
-        session_db.close()
-        return render_template('admin/users/user.html', user=user, role=current_user.role, userbalance=current_user.userbalance)
-
-
-@app.route('/itemshop/<itemid>', methods=['POST', 'GET'])
-def itemshop(itemid):
-    if current_user.is_authenticated:
-
-        session_db = db_session.create_session()
-        item_shop = session_db.query(Item_shop).filter_by(id=itemid).first()
-        user = session_db.query(User).filter_by(id=current_user.id).first()
-        item_user = session_db.query(Item_user).filter_by(id=item_shop.id).first()
-
-        if request.method == 'POST':
-            count = request.form['item_count']
-
-            if int(user.userbalance) >= (int(item_shop.price) * int(count)) and session_db.query(Item_user).filter_by(id=item_shop.id).first() is None and item_shop.count - int(count) >= 0:
-                user.userbalance = int(user.userbalance) - (int(item_shop.price) * int(count))
-                item_shop.count -= int(count)
-
-                for i in range(int(item_shop.count)):
-                    new_item = Item_user(
-                    userid=current_user.id,
-                    status='На рассмотрении',
-                    name=item_shop.name,
-                    count=int(count),
-                    description=item_shop.description,
-                    photo=item_shop.photo
-                )
-
-                    session['userid'] = new_item.id
-                    session['status'] = new_item.status
-                    session['name'] = new_item.name
-                    session['count'] = new_item.count
-                    session['description'] = new_item.description
-                    session['photo'] = new_item.photo
-
-                    session_db.add(new_item)
-                    session_db.commit()
-            else:
-                if item_shop.count - int(count) >= 0:
-                    user.userbalance = int(user.userbalance) - (int(item_shop.price) * int(count))
-                    item_shop.count -= int(count)
-                    item_user.count += int(count)
-                    session_db.commit()
-
-        return render_template('admin/items/items.html', userbalance=user.userbalance, role=current_user.role,
-                                   item=item_shop)
-
-
-@app.route('/edituser/<userid>', methods=['GET', 'POST'])
-def edituser(userid):
-    if current_user.is_authenticated and current_user.role == 'Admin':
-        session_db = db_session.create_session()
-        user = session_db.query(User).filter_by(id=userid).first()
-        if request.method == 'POST':
-            nusername = request.form['name']
-            nusersurname = request.form['surname']
-            nuserotchestvo = request.form['otchestvo']
-            nuserclass = request.form['class']
-            nrole = request.form['role']
-            nuserbalance = request.form['balance']
-            if nusersurname:
-                user.usersurname = nusersurname
-            if nuserotchestvo:
-                user.userotchestvo = nuserotchestvo
-            if nusername:
-                user.username = nusername
-            if nuserclass:
-                user.userclass = nuserclass
-            if nuserbalance:
-                user.userbalance = nuserbalance
-            if nrole:
-                user.role = nrole
-            session_db.commit()
-            return redirect(url_for('userprof', userid=user.id))
-        session_db.close()
-        return render_template('admin/users/edituser.html', user=user)
 
 
 @app.route('/student/<iduser>/<teacherid>', methods=['GET', 'POST'])
@@ -492,100 +795,7 @@ def student_page(iduser, teacherid):
 
         return redirect(url_for('main_page'))
 
-
-@app.route('/deluser/<iduser>')
-def deluser_page(iduser):
-    if current_user.is_authenticated and current_user.role == 'Admin':
-        session_db = db_session.create_session()
-        user = session_db.query(User).filter_by(id=iduser).first()
-        session_db.delete(user)
-        session_db.commit()
-        session_db.close()
-        return redirect(url_for('main_page'))
-
 # ^^^ КОММЕНТАРИЯ В САМОМ ВЕРХУ ^^^
-
-@app.route('/adduser', methods=['GET', 'POST'])
-def adduser():
-    if current_user.is_authenticated and current_user.role == 'Admin':
-
-        if request.method == 'POST':
-            
-            if len(request.files) > 0:
-                file = request.files['inputexel']
-
-                try:
-                    file.save('exel/users.xlsx')
-                    session_db = db_session.create_session()
-                    import_users()
-                    users = session_db.query(User).all()
-                    for user in users:
-                        user.adedusers = True
-                        session_db.commit()
-                    session_db.close()
-                    return redirect(url_for('main_page'))
-                except Exception as e:
-                    print(e)
-                    return redirect(url_for('addusers'))
-
-            else:
-                name = request.form['name']
-                surname = request.form['surname']
-                otchestvo = request.form['otchestvo']
-                userclass = request.form['class']
-                userbalance = request.form['balance']
-                role = request.form['role']
-                password = request.form['password']
-                secondpassword = request.form['secondpassword']
-                if password == secondpassword:
-                    new_user = User(
-                        username=name,
-                        usersurname=surname,
-                        userpassword=generate_password_hash(password),
-                        userotchestvo=otchestvo,
-                        userclass=userclass,
-                        role=role,
-                        userbalance=userbalance,
-                    )
-                    session_db = db_session.create_session()
-                    session['user_id'] = new_user.id
-                    session['username'] = new_user.username
-                    session['usersurname'] = new_user.usersurname
-                    session['userclass'] = new_user.userclass
-                    session['role'] = new_user.role
-                    session['userotchestvo'] = new_user.userotchestvo
-                    session['userbalance'] = new_user.userbalance
-                    session_db.add(new_user)
-                    session_db.commit()
-
-                    return redirect(url_for('main_page'))
-            
-        elif request.method == 'GET' and int(current_user.adedusers) == 0:
-            return render_template('admin/users/upload_excel.html')
-        
-        elif request.method == 'GET' and int(current_user.adedusers) > 0:
-            return render_template('admin/users/add_user.html')
-
-
-@app.route('/addingusers', methods=['GET', 'POST'])
-def addusers():
-    if current_user.is_authenticated and current_user.role == 'Admin':
-        if request.method == 'POST':
-            file = request.files['inputexel']
-            try:
-                file.save('exel/users.xlsx')
-                session_db = db_session.create_session()
-                import_users()
-                users = session_db.query(User).all()
-                for user in users:
-                    user.adedusers = True
-                    session_db.commit()
-                session_db.close()
-                return redirect(url_for('main_page'))
-            except Exception as e:
-                print(e)
-                return redirect(url_for('addusers'))
-        return render_template('admin/users/upload_excel.html')
 
 
 @app.route('/enterteach/<userid>')
@@ -601,69 +811,6 @@ def enteracc(userid):
                                role=teacher.role, userbalance=teacher.userbalance, teacherid=teacher.id,
                                teacher_classes=teacher.userclass.split())
 
-
-@app.route('/items_search', methods=['GET', 'POST'])
-def items_search():
-    if current_user.is_authenticated and current_user.role == 'Admin':
-        session_db = db_session.create_session()
-        items = session_db.query(Item_shop).all()
-        all_items = []
-        for item in items:
-            itemm = {}
-            itemm['id'] = item.id
-            itemm['name'] = item.name
-            itemm['description'] = item.description
-            itemm['count'] = item.count
-            itemm['price'] = item.price
-            itemm['photo'] = item.photo
-            all_items.append(itemm)
-
-        if request.method == 'POST':
-            sort = request.form.get('sort')
-            bysort = request.form.get('bysort')
-            if sort == 'Название':
-                all_items = session_db.query(Item_shop).filter(Item_shop.name.like(f"%{bysort}%")).all()
-            elif sort == 'Описание':
-                all_items = session_db.query(Item_shop).filter(Item_shop.description.like(f"%{bysort}%")).all()
-            elif sort == 'Цена':
-                all_items = session_db.query(Item_shop).filter(Item_shop.price == bysort).all()
-            all_items = [{'id': i.id, 'name': i.name, 'description': i.description,
-                          'count': i.count, 'price': i.price, 'photo': i.photo} for i in all_items]
-        session_db.close()
-        return render_template('admin/items/items_search.html', all_items=all_items, search_text=request.form.get('bysort', ''))
-    return redirect(url_for('login'))
-
-
-@app.route('/additem', methods=['GET', 'POST'])
-def additem():
-    if current_user.is_authenticated and current_user.role == 'Admin':
-        if request.method == 'POST':
-            name = request.form['name']
-            description = request.form['description']
-            count = request.form['count']
-            price = request.form['price']
-            photo = request.form['photo']
-
-            session_db = db_session.create_session()
-            new_item = Item_shop(name=name, description=description, count=count, price=price, photo=photo)
-            session_db.add(new_item)
-            session_db.commit()
-            session_db.close()
-            return redirect(url_for('items_search'))
-        return render_template('admin/items/additem.html')
-
-
-@app.route('/delitem/<itemid>', methods=['POST'])
-def delitem(itemid):
-    if current_user.is_authenticated and current_user.role == 'Admin':
-        session_db = db_session.create_session()
-        item = session_db.query(Item_shop).filter_by(id=itemid).first()
-        if item:
-            session_db.delete(item)
-            session_db.commit()
-        session_db.close()
-        return render_template('admin/items/items_search')
-# ^^^ КОММЕНТАРИЯ В САМОМ ВЕРХУ ^^^
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=8000, debug=True)

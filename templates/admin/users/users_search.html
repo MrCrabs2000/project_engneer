@@ -37,7 +37,7 @@
         </label>
       </div>
         <!-- <button class="filter-btn">Фильтр</button> -->
-      <button type="button" onclick="document.location='/adduser'"></button>
+      <button type="button" onclick="document.location='/users/add'"></button>
       {# {% if adedusers == '0' %} #}
       
 
@@ -46,10 +46,10 @@
   </form>
   
   <div class="found-elements-flex">
-    {% for i in range(colvousers) %}
+    {% for user in users %}
       <div class="found-element-card">
-        <a href="/userprofile/{{ all_users[i]['id'] }}">
-          <div class="found-element-info">{{all_users[i]['usersurname']}} {{all_users[i]['username'][0]}}. {{all_users[i]['userotchestvo'][0]}}.</div>
+        <a href="/users/{{ user.id }}">
+          <div class="found-element-info">{{ user.username }} {{ user.usersurname[0] }}. {{user.userotchestvo[0]}}.</div>
         </a>
       </div>
     {% endfor %}
