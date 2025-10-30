@@ -1,6 +1,3 @@
-from collections import Counter
-from email.policy import default
-
 from sqlalchemy import Column, Integer, String
 from db_session import SqlAlchemyBase
 from flask_login import UserMixin
@@ -17,7 +14,7 @@ class User(SqlAlchemyBase, UserMixin):
     userotchestvo = Column(String(100), nullable=True)
     userclass = Column(String(100), nullable=False)
     role = Column(String(10), nullable=False, default='user')
-    userbalance = Column(String(5), nullable=False, default='0')
+    userbalance = Column(Integer, nullable=False, default='0')
     adedusers = Column(String(10), nullable=True, default='False')
 
 class Item_shop(SqlAlchemyBase):
@@ -41,4 +38,5 @@ class Item_user(SqlAlchemyBase):
     count = Column(Integer, default=0)
     description = Column(String(300), nullable=False)
     photo = Column(String(1000), nullable=False)
+    date = Column(String(), nullable=True)
 

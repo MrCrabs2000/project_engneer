@@ -31,16 +31,28 @@
         <input id="class" value="{{ userclass }}" placeholder="Класс" readonly>
       </div>
 
+      <div>
+        <label for="mark">Оценка</label>
+        <div class="select">
+          <select id="mark" name="mark" required>
+            <option value="">Выберите оценку</option>
+            <option value="5">5 - +200 монет</option>
+            <option value="4">4 - +100 монет</option>
+            <option value="3">3 - 0 монет</option>
+            <option value="2">2 - -100 монет</option>
+          </select>
+        </div>
+      </div>
 
       <div>
-        <label for="stud_balance">Начислить/Отнять</label>
-        <div class="change-balance-container">
-          <input id="stud_balance" type="text" name="stud_balance" oninput="this.value = this.value.replace(/[^0-9+]/g, '')" placeholder="Число" required>
-          <button class="accent add-btn" type="submit" name="action" value="+"></button>
-          <button class="accent deduct-btn" type="submit" name="action" value="-"></button>
-        </div>
-
+        <p>Баланс ученика: <strong>{{ studbalance }} монет</strong></p>
+        <p >Ваш баланс: <strong>{{ userbalance }} монет</strong></p>
       </div>
+
+      <div class="btns-container">
+        <button class="accent" type="submit">Подтвердить</button>
+      </div>
+
     </div>
   </form>
 {% endblock %}
