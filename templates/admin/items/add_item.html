@@ -7,42 +7,41 @@
 {% endblock %}
 
 {% block content %}
-  <div class="title">Добавить предмет</div>
-  <form class="form" method="post">
+  <form class="form" method="POST">
+    <div class="title">Добавить предмет</div>
+
     <div class="fields-container">
-      <label for="name">
-        <span>Название</span>
-        <input id="name" name="name" placeholder="Название">
-      </label>
 
-      <label for="description">
-        <span>Описание</span>
-        <input id="description" name="description" placeholder="Описание">
-      </label>
+      <div>
+        <label for="name">Название</label>
+        <input id="name" name="name" placeholder="Название" required>
+      </div>
 
-      <label for="count">
-        <span>Количество</span>
-        <input id="count" name="count" placeholder="Количество" oninput="this.value = this.value.replace(/[^0-9+]/g, '')">
-      </label>
+      <div>
+        <label for="description">Описание</label>
+        <input id="description" name="description" placeholder="Описание" required>
+      </div>
 
-      <label for="price">
-        <span>Цена</span>
-        <input id="price" name="price" placeholder="Цена" oninput="this.value = this.value.replace(/[^0-9+]/g, '')">
-      </label>
+      <div>
+        <label for="count">Количество</label>
+        <input id="count" name="count" placeholder="Количество" oninput="this.value = this.value.replace(/[^0-9+]/g, '')" required>
+      </div>
+      
+      <div>
+        <label for="price">Цена</label>
+        <input id="price" name="price" placeholder="Цена" oninput="this.value = this.value.replace(/[^0-9+]/g, '')" required>
+      </div>
 
-      <label for="photo">
-        <span>Ссылка на фото</span>
-        <input id="photo" name="photo" placeholder="Ссылка на фото">
-      </label>
+      <div>
+        <label for="photo">Путь к фото</label>
+        <input id="photo" name="photo" placeholder="Путь к фото">
+      </div>
 
-      {# <input type="text" name="name" placeholder="Название" required>
-      <input type="text" name="description" placeholder="Описание" required>
-      <input type="number" name="count" placeholder="Количество" required>
-      <input type="number" name="price" placeholder="Цена" required>
-      <input type="text" name="photo" placeholder="Ссылка на фото"> #}
     </div>
+
     <div class="btns-container">
-      <input type="submit" value="Добавить">
+      <button class="accent" type="submit">Добавить</button>
     </div>
+
   </form>
 {% endblock %}

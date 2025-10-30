@@ -4,19 +4,50 @@
 {% block title %}Регистрация{% endblock %}
 
 {% block links %}
-  <link rel="stylesheet" href="/static/css/authorize.css">
+  <link rel="stylesheet" href="/static/css/common/form.css">
 {% endblock links %}
 
 {% block content %}
-  <div class="sign-div" >
-    <form class="inputs" method="POST" action="/register">
-      <input type="text" name="username" placeholder="Имя">
-      <input type="text" name="usersurname" placeholder="Фамилия">
-      <input type="text" name="userotchestvo" placeholder="Отчество">
-      <input type="text" name="userclass" placeholder="Класс">
-      <input type="password" name="password" placeholder="Пароль">
-      <input type="password" name="confirm_password" placeholder="Повторите пароль">
-      <input type="submit" class="submit-button" value="Зарегистрироваться">
-    </form>
-  </div>
+  <form class="form" method="POST" action="/register">
+    <title class="title">Регистрация</title>
+    <div class="fields-container" >
+
+      <div>
+        <label for="name">Имя</label>
+        <input id="name" name="username" placeholder="Имя">
+      </div>
+
+      <div>
+        <label for="surname">Фамилия</label>
+        <input id="surname" name="usersurname" placeholder="Фамилия">
+      </div>
+
+      <div>
+        <label for="otchestvo">Отчество</label>
+        <input id="otchestvo" name="userotchestvo" placeholder="Отчество">
+      </div>
+
+      <div>
+        <label for="class">Класс</label>
+        <input id="class" name="userclass" placeholder="Класс">
+      </div>
+      
+      <div>
+        <label for="password">Пароль</label>
+        <input id="password" name="password" type="password" placeholder="Пароль">
+      </div>
+
+      <div>
+        <label for="repeat-password">Повторите пароль</label>
+        <input id="repeat-password" name="confirm_password" type="password" placeholder="Повторите пароль">
+      </div>
+
+    </div>
+
+    <div class="btns-container">
+      <button class="accent" type="submit">Продолжить</button>
+    </div>
+
+  </form>
+
 {% endblock %}

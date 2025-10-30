@@ -9,44 +9,49 @@
 
 {% block content %}
   <form class="form" method="POST" action="/student/{{ iduser }}/{{ teacherid }}">
+    <title class="title">{{ usersurname }} {{ username[0] }}.</title>
     <div class="fields-container">
-      <label for="name">
-        <span>Имя</span>
+      <div>
+        <label for="name">Имя</label>
         <input id="name" value="{{ username }}" placeholder="Имя" readonly>
-      </label>
+      </div>
 
-      <label for="surname">
-        <span>Фамилия</span>
+      <div>
+        <label for="surname">Фамилия</label>
         <input id="surname" value="{{ usersurname }}" placeholder="Фамилия" readonly>
-      </label>
+      </div>
 
-      <label for="otchestvo">
-        <span>Отчество</span>
+      <div>
+        <label for="otchestvo">Отчество</label>
         <input id="otchestvo" value="{{ userotchestvo }}" placeholder="Отчество" readonly>
-      </label>
+      </div>
 
-      <label for="class">
-        <span>Класс</span>
+      <div>
+        <label for="class">Класс</label>
         <input id="class" value="{{ userclass }}" placeholder="Класс" readonly>
-      </label>
+      </div>
 
-      <label for="mark">
-        <span>Оценка</span>
-        <select id="mark" name="mark" required>
-          <option value="">Выберите оценку</option>
-          <option value="5">5 - +200 монет</option>
-          <option value="4">4 - +100 монет</option>
-          <option value="3">3 - 0 монет</option>
-          <option value="2">2 - -100 монет</option>
-        </select>
-      </label>
+      <div>
+        <label for="mark">Оценка</label>
+        <div class="select">
+          <select id="mark" name="mark" required>
+            <option value="">Выберите оценку</option>
+            <option value="5">5 - +200 монет</option>
+            <option value="4">4 - +100 монет</option>
+            <option value="3">3 - 0 монет</option>
+            <option value="2">2 - -100 монет</option>
+          </select>
+        </div>
+      </div>
 
       <div>
         <p>Баланс ученика: <strong>{{ studbalance }} монет</strong></p>
         <p >Ваш баланс: <strong>{{ userbalance }} монет</strong></p>
       </div>
 
-      <button type="submit">Применить оценку</button>
+      <div class="btns-container">
+        <button class="accent" type="submit">Подтвердить</button>
+      </div>
 
     </div>
   </form>

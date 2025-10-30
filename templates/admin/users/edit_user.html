@@ -3,32 +3,33 @@
 {% block title %}Title{% endblock %}
 
 {% block links %}
-  <link rel="stylesheet" href="/static/css/users/user.css">
+  <link rel="stylesheet" href="/static/css/common/form.css">
 {% endblock %}
 
 {% block content %}
-  <form class="user-container" method="POST" enctype="multipart/form-data">
-    <div class="user-info">
+  <form class="form" method="POST" enctype="multipart/form-data">
+    <title class="title">{{ surname }} {{ name[0] }}. {{ otchestvo[0] }}.</title>
+    <div class="fields-container">
 
-      <label for="name" class="input-label">
-        <span>Имя</span>
+      <div>
+        <label for="name">Имя</label>
         <input id="name" value="{{ name }}" name="name" placeholder="Имя">
-      </label>
+      </div>
 
-      <label for="surname" class="input-label">
-        <span>Фамилия</span>
+      <div>
+        <label for="surname">Фамилия</label>
         <input id="surname" value="{{ surname }}" name="surname" placeholder="Фамилия">
-      </label>
+      </div>
 
-      <label for="otchestvo" class="input-label">
-        <span>Отчество</span>
-        <input id="surname" value="{{ otchestvo }}" name="otchestvo" placeholder="Отчество">
-      </label>
+      <div>
+        <label for="otchestvo">Отчество</label>
+        <input id="otchestvo" value="{{ otchestvo }}" name="otchestvo" placeholder="Отчество">
+      </div>
 
-      <label for="role" class="input-label">
-        <span>Роль</span>
-        <div id="role" class="select">
-          <select name="role">
+      <div>
+        <label for="role">Роль</label>
+        <div class="select">
+          <select id="role" name="role">
           {% if role == 'Student' %}
             <option selected>Student</option>
             <option>Teacher</option>
@@ -44,26 +45,24 @@
           {% endif %}
           </select>
         </div>
-      </label>
+      </div>
 
-      <label for="class" class="input-label">
-        <span>Класс</span>
+      <div>
+        <label for="class">Класс</label>
         <input id="class" value="{{ class }}" name="class" placeholder="Класс">
-      </label>
+      </div>
 
-      <label for="balance" class="input-label">
-        <span>Баланс</span>
-        <input id="balance" type="text" min="0" oninput="this.value = this.value.replace(/[^0-9+]/g, '')" value="{{ balance }}" name="balance" placeholder="Баланс">
-      </label>
-
-      <label for="password" class="input-label">
-        <span>Новый пароль</span>
-        <input id="password" type="password" name="password" placeholder="Новый пароль">
-      </label>
+      <div>
+        <label for="balance">Баланс</label>
+        <input id="balance" name="balance" oninput="this.value = this.value.replace(/[^0-9+]/g, '')" value="{{ balance }}" placeholder="Баланс">
+      </div>
 
     </div>
+
     <div class="btns-container">
-      <input type="submit" value="Подтвердить">
+      <button class="accent" type="submit">Подтвердить</button>
+      <button type="button" onclick="document.location = '/users/{{ id }}'">Отмена</button>
     </div>
+
   </form>
 {% endblock %}

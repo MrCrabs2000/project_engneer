@@ -23,10 +23,7 @@
 
 .search-btn {
     height: 40px;
-    aspect-ratio: 1/1;
-    border: 0;
-    background-color: var(--color);
-    
+    width: fit-content;
 }
 
 .top-container .right {
@@ -52,7 +49,7 @@
     position: absolute;
     top: 50%;
     left: 50%;
-    background:var(--text-color);
+    background-color: var(--text-color);
     transform: translate(-50%, -50%);
     border-radius: 100px;
 }
