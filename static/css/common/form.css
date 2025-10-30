@@ -3,37 +3,43 @@
     display: flex;
     flex-direction: column;
     align-content: center;
-    gap: 20px;
+    gap: 30px;
     width: fit-content;
     margin: 0px auto;
+    margin-top: 40px;
     padding: 20px;
-    font-size: 32px;
+    font-size: 28px;
+    background-color: var(--bg);
+    border-radius: 0.6em;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-big);
 }
 
 .form .fields-container {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 16px;
 }
 
-.fields-container > label {
+.fields-container > div {
     display: flex;
     flex-direction: column;
+    width: 400px;
+}
+
+.fields-container > div .select {
+    width: 100%;
 }
 
 
-.fields-container > label > span {
+.fields-container > div > label {
     color: #494949;
-    font-size: 24px;
+    font-size: 20px;
     margin-left: 0.55em;
 }
 
-.fields-container > label > input {
+.fields-container > div > input {
     width: auto;
-}
-
-.fields-container > label, .fields-container select {
-    width: 400px;
 }
 
 .fields-container input[readonly] {
@@ -47,11 +53,8 @@
     gap: 10px;
 }
 
-.btns-container button, .btns-container input[type="submit"] {
+.btns-container button, .btns-container input {
     width: 400px;
-    height: 1.625em;
-    border: 0;
-    border-radius: 0.6em;
-    font-weight: 700;
-    background-color: var(--color);
+    padding-bottom: 0.15em;
+    padding-top: 0.15em;
 }

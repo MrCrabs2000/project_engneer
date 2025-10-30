@@ -9,43 +9,38 @@
 
 {% block content %}
   <form class="form" method="POST" action="/student/{{ iduser }}/{{ teacherid }}">
+    <title class="title">{{ usersurname }} {{ username[0] }}.</title>
     <div class="fields-container">
-      <label for="name">
-        <span>Имя</span>
+      <div>
+        <label for="name">Имя</label>
         <input id="name" value="{{ username }}" placeholder="Имя" readonly>
-      </label>
+      </div>
 
-      <label for="surname">
-        <span>Фамилия</span>
+      <div>
+        <label for="surname">Фамилия</label>
         <input id="surname" value="{{ usersurname }}" placeholder="Фамилия" readonly>
-      </label>
+      </div>
 
-      <label for="otchestvo">
-        <span>Отчество</span>
-        <input id="surname" value="{{ userotchestvo }}" placeholder="Отчество" readonly>
-      </label>
+      <div>
+        <label for="otchestvo">Отчество</label>
+        <input id="otchestvo" value="{{ userotchestvo }}" placeholder="Отчество" readonly>
+      </div>
 
-      <label for="class">
-        <span>Класс</span>
+      <div>
+        <label for="class">Класс</label>
         <input id="class" value="{{ userclass }}" placeholder="Класс" readonly>
-      </label>
+      </div>
 
 
-      <label for="stud_balance">
-        <span>Начислить/Отнять</span>
+      <div>
+        <label for="stud_balance">Начислить/Отнять</label>
         <div class="change-balance-container">
-          <input id="stud_balance" type="text" name="stud_balance" min="0" oninput="this.value = this.value.replace(/[^0-9+]/g, '')" required>
-          
-          <div class="add-btn-container">
-            <button type="submit" name="action" value="+"></button>
-          </div>
-
-          <div class="deduct-btn-container">
-            <button type="submit" name="action" value="-"></button>
-          </div>
-
+          <input id="stud_balance" type="text" name="stud_balance" oninput="this.value = this.value.replace(/[^0-9+]/g, '')" placeholder="Число" required>
+          <button class="accent add-btn" type="submit" name="action" value="+"></button>
+          <button class="accent deduct-btn" type="submit" name="action" value="-"></button>
         </div>
-      </label>
-      
+
+      </div>
+    </div>
   </form>
 {% endblock %}

@@ -12,58 +12,60 @@
 {% block content %}
 
   <form class="form" method="POST" enctype="multipart/form-data">
+    <title class="title">Добавить</title>
     <div class="fields-container">
-
-      <label for="name">
-        <span>Имя</span>
+      <div>
+        <label for="name">Имя</label>
         <input id="name" name="name" placeholder="Имя">
-      </label>
+      </div>
 
-      <label for="surname">
-        <span>Фамилия</span>
+      <div>
+        <label for="surname">Фамилия</label>
         <input id="surname" name="surname" placeholder="Фамилия">
-      </label>
+      </div>
 
-      <label for="otchestvo">
-        <span>Отчество</span>
-        <input id="surname" name="otchestvo" placeholder="Отчество">
-      </label>
+      <div>
+        <label for="otchestvo">Отчество</label>
+        <input id="otchestvo" name="otchestvo" placeholder="Отчество">
+      </div>
 
-      <label for="role">
-        <span>Роль</span>
-        <div id="role" class="select">
-          <select name="role">
+      <div>
+        <label for="role">Роль</label>
+        <div class="select">
+          <select id="role" name="role">
             <option>Student</option>
             <option>Teacher</option>
             <option>Admin</option>
           </select>
         </div>
-      </label>
+      </div>
 
-      <label for="class">
-        <span>Класс</span>
+      <div>
+        <label for="class">Класс</label>
         <input id="class" name="class" placeholder="Класс">
-      </label>
+      </div>
 
-      <label for="balance">
-        <span>Баланс</span>
-        <input id="balance" type="text" min="0" oninput="this.value = this.value.replace(/[^0-9+]/g, '')" name="balance" placeholder="Баланс">
-      </label>
+      <div>
+        <label for="balance">Баланс</label>
+        <input id="balance" name="balance" oninput="this.value = this.value.replace(/[^0-9+]/g, '')" placeholder="Баланс">
+      </div>
 
-      <label for="password">
-        <span>Пароль</span>
-        <input id="password" type="password" name="password" placeholder="Пароль">
-      </label>
+      <div>
+        <label for="password">Пароль</label>
+        <input id="password" name="password" placeholder="Пароль">
+      </div>
 
-      <label for="repeat_password">
-        <span>Повторите пароль</span>
+      <div>
+        <label for="repeat_password">Повторите пароль</label>
         <input id="repeat_password" type="password" name="secondpassword" placeholder="Повторите пароль">
-      </label>
+      </div>
 
     </div>
+
     <div class="btns-container">
-      <input type="submit" value="Добавить">
+      <button class="accent" type="submit">Добавить</button>
     </div>
+      
   </form>
 
 {% endblock %}

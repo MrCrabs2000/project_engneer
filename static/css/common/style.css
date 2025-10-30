@@ -1,18 +1,27 @@
-* {
-  --color: #8babda;
-  --accent-color: #dd582c;
-  --sign-hover-color: #779cd4;
-  --text-color: #292929;
-  /* --sign-click-color: #648ece; */
+:root {
+    --bg-dark: hsl(0, 0%, 90%);
+    --bg: hsl(0, 0%, 95%);
+    --bg-light: hsl(216, 0%, 100%);
+    --primary: hsl(216, 50%, 70%);
+    --primary-hover: hsl(216, 50%, 65%);
+    --secondary: hsl(15, 72%, 52%);
+    --text-color: hsl(0, 0%, 16%);
+    --warning: hsl(0, 75%, 55%);
+    --warning-hover: hsl(0, 75%, 45%);
+    --border: hsl(0, 0%, 85%);
+    --shadow-big: 0px 0px 12px 0px hsla(0, 0%, 0%, 0.2);
+    --shadow: 0px 0px 4px 0px hsla(0, 0%, 0%, 0.2);
 }
 
 html, body {
-    position: absolute;
+    position: static;
     height: 100%;
     width: 100%;
     margin: 0;
     font-family: 'Nunito', sans-serif;
     font-weight: 500;
+    color: var(--text-color);
+    background-color: var(--bg-dark);
     border: 0 solid transparent;
 }
 
@@ -22,43 +31,81 @@ main {
     width: 100%;
 }
 
-.centered-div, .sign-div, .profile {
+.centered-div, .profile {
     position: absolute;
-    box-sizing: border-box;
-    width: fit-content;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    align-content: center;
-    display: flex;
 }
 
 button {
+    padding-left: 0.55em;
+    padding-right: 0.55em;
     font-family: inherit;
     font-size: inherit;
     font-weight: 700;
-    background-color: var(--color);
-    color: var(--text-color);
-    border: 0;
+    color: inherit;
+    background-color: var(--bg-light);
+    border: 2px solid transparent;
     border-radius: 0.6em;
-    padding: 0 0.55em;
+    box-shadow: var(--shadow);
+    transition: background-color 0.2s ease, border 0.2s ease;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: var(--bg-dark);
+    /* border: 2px solid var(--border); */
+}
+
+button.accent {
+    background-color: var(--primary);
+}
+
+button.warning {
+    background-color: var(--warning);
+}
+
+button.accent:hover {
+    background-color: var(--primary-hover);
+    border: 2px solid transparent;
+}
+
+button.warning:hover {
+    background-color: var(--warning-hover);
+    border: 2px solid transparent;
 }
 
 input, select {
     box-sizing: border-box;
-    height: 1.625em;
-    width: 192px;
-    align-items: center;
     padding: 0 0.55em;
     color: var(--text-color);
     font-size: inherit;
     font-family: inherit;
     font-weight: inherit;
-    background-color: #ebf3fa;
-    border: 3px solid #7593c0;
+    background-color: var(--bg-light);
+    border: 2px solid transparent;
     border-radius: 0.6em;
+    box-shadow: var(--shadow);
     outline: none;
     appearance: none;
+    transition: background-color 0.2s ease, border 0.2s ease;
+    /* transition: transform 10s ease-out; */
+}
+
+input:hover, select:hover {
+    background-color: var(--bg-light);
+    border: 2px solid var(--primary);
+    /* transform: rotate(2880deg); */
+}
+
+input:focus {
+    background-color: var(--bg-light);
+    border: 2px solid var(--primary);
+}
+
+input[type="submit"]:hover, input[type="button"]:hover {
+    cursor: pointer;
 }
 
 select:disabled {
@@ -68,6 +115,10 @@ select:disabled {
 .select {
     position: relative;
     font-size: inherit;
+}
+
+.select > select {
+    width: 100%;
 }
 
 .select::after {
@@ -85,9 +136,6 @@ select:disabled {
     pointer-events: none;
 }
 
-button:hover, input[type="submit"]:hover, input[type="button"]:hover {
-    cursor: pointer;
-}
 
 .radio-button-label {
     display: flex;
@@ -107,7 +155,8 @@ input[type="radio"] {
     display: inline-block;
     width: 24px;
     height: 24px;
-    border: 2px solid var(--color);
+    background-color: var(--bg-light);
+    border: 2px solid var(--primary);
     border-radius: 10px;
 
 }
@@ -117,7 +166,7 @@ input[type="radio"]:checked + .custom-radio-btn:before {
     content: '';
     width: 18px;
     height: 18px;
-    background: var(--color);
+    background: var(--primary);
     border-radius: 6px;
     position: absolute;
     top: 50%;

@@ -12,7 +12,7 @@
   <form class="top-container" enctype="multipart/form-data" method="post">
     <div class="left">
       <input class="search-bar" type="text" name="bysort" placeholder="Поиск пользователя" value="{{ search_text }}">
-      <input class="search-btn" type="submit" value="Найти">
+      <button class="accent search-btn" type="submit">Найти</button>
     </div>
 
     <div class="right">
@@ -37,7 +37,7 @@
         </label>
       </div>
         <!-- <button class="filter-btn">Фильтр</button> -->
-      <button type="button" onclick="document.location='/users/add'"></button>
+      <button class="accent" type="button" onclick="document.location='/users/add'"></button>
       {# {% if adedusers == '0' %} #}
       
 

@@ -4,11 +4,10 @@
     align-items: center;
     position: relative;
     margin: auto;
-    margin-top: 30px;
     width: fit-content;
     max-width: 1300px;
     font-weight: 700;
-    font-size: 36px;
+    font-size: 32px;
     text-align: center;
     color: var(--text-color);
 }
@@ -16,6 +15,7 @@
 .title::after {
     content: '';
     width: calc(100% + 0px);
-    border: 3px solid var(--accent-color);
+    height: 6px;
+    background-color: var(--secondary);
     border-radius: 16px;
 }
