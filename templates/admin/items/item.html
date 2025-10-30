@@ -1,0 +1,19 @@
+{% extends "common/base.html" %}
+
+
+{% block title %}{{ item.name }}{% endblock title %}o
+
+
+{% block links %}
+
+{% endblock links %}
+
+
+{% block content %}
+  <p>{{ item.id }} {{ item.name }} {{ item.description }} {{ item.price }} {{ item.count }} {{ item.photo }}</p>
+  <form class="inputs" method="POST">
+    <input type="number" name="item_count" placeholder="Колличество товара" min="1" required>
+    <input type="submit" value="Заказать" class="submit-button">
+    <button type="button" class="back-button" onclick="document.location='/'">Назад</button>
+  </form>
+{% endblock content %}

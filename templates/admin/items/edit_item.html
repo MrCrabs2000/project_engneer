@@ -1,0 +1,45 @@
+{% extends "common/base.html" %}
+
+{% block title %}Редактировать предмет{% endblock %}
+
+{% block content %}
+<h2>Редактирование предмета</h2>
+
+<form method="POST">
+    <p>
+        <label>Название:</label><br>
+        <input type="text" name="name" value="{{ name }}">
+    </p>
+
+    <p>
+        <label>Описание:</label><br>
+        <textarea name="description" rows="4" cols="50">{{ description }}</textarea>
+    </p>
+
+    <p>
+        <label>Количество:</label><br>
+        <input type="number" name="count" value="{{ count }}">
+    </p>
+
+    <p>
+        <label>Цена:</label><br>
+        <input type="number" name="price" value="{{ price }}">
+    </p>
+
+    <p>
+        <label>Фото (URL):</label><br>
+        <input type="text" name="photo" value="{{ photo }}">
+    </p>
+
+    {% if photo %}
+    <p>
+        <img src="{{ photo }}" alt="Фото предмета" width="200">
+    </p>
+    {% endif %}
+
+    <p>
+        <a href="/items">Назад</a>
+        <button type="submit">Сохранить</button>
+    </p>
+</form>
+{% endblock %}

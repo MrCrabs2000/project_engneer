@@ -38,19 +38,19 @@
         </label>
       </div>
           <!-- <button class="filter-btn">Фильтр</button> -->
-      <button type="button" onclick="document.location='/additem'"></button>
+      <button type="button" onclick="document.location='/items/add'"></button>
         {# {% if adedusers == '0' %} #}
 
     </div>
   </form>
 
   <div class="found-elements-flex">
-    {% for item in all_items %}
+    {% for item in items %}
       <div class="found-element-card">
-        <a href="/edititem/{{ item['id'] }}">
-          <div class="found-element-info">{{ item['name'] }} — {{ item['price'] }}</div>
+        <a href="/items/{{ item.id }}/edit">
+          <div class="found-element-info">{{ item.name }} — {{ item.price }}</div>
         </a>
-        {# <form action="/delitem/{{ item['id'] }}" method="post" style="margin-top:10px;">
+        {# <form action="/items/{{ item.id }}/delete" method="post" style="margin-top:10px;">
           <input type="submit" value="Удалить" class="search-btn">
         </form> #}
       </div>

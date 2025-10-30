@@ -12,28 +12,28 @@
 
       <label for="name">
         <span>Имя</span>
-        <input id="name" value="{{ user['username'] }}" name="name" placeholder="Имя" readonly>
+        <input id="name" value="{{ name }}" name="name" placeholder="Имя" readonly>
       </label>
 
       <label for="surname">
         <span>Фамилия</span>
-        <input id="surname" value="{{ user['usersurname'] }}" name="surname" placeholder="Фамилия" readonly>
+        <input id="surname" value="{{ surname }}" name="surname" placeholder="Фамилия" readonly>
       </label>
 
       <label for="otchestvo" class="input-label">
         <span>Отчество</span>
-        <input id="surname" value="{{ user['userotchestvo'] }}" name="otchestvo" placeholder="Отчество" readonly>
+        <input id="surname" value="{{ otchestvo }}" name="otchestvo" placeholder="Отчество" readonly>
       </label>
 
       <label for="role">
         <span>Роль</span>
         <div id="role" class="select">
           <select name="role" disabled>
-          {% if user['role'] == 'Student' %}
+          {% if role == 'Student' %}
             <option selected>Student</option>
             <option>Teacher</option>
             <option>Admin</option>
-          {% elif user['role'] == 'Teacher' %}
+          {% elif role == 'Teacher' %}
             <option>Student</option>
             <option selected>Teacher</option>
             <option>Admin</option>
@@ -48,21 +48,21 @@
 
       <label for="class">
         <span>Класс</span>
-        <input id="class" value="{{ user['userclass'] }}" name="class" placeholder="Класс" readonly>
+        <input id="class" value="{{ class }}" name="class" placeholder="Класс" readonly>
       </label>
 
       <label for="balance">
         <span>Баланс</span>
-        <input id="balance" type="text" min="0" oninput="this.value = this.value.replace(/[^0-9+]/g, '')" value="{{ user['userbalance'] }}" name="balance" placeholder="Баланс" readonly>
+        <input id="balance" type="text" min="0" oninput="this.value = this.value.replace(/[^0-9+]/g, '')" value="{{ balance }}" name="balance" placeholder="Баланс" readonly>
       </label>
 
     </div>
     <div class="btns-container">
-      <button onclick="document.location='/edituser/{{ user['id'] }}'">Редактировать</button>
-      <button onclick="document.location='/deluser/{{ user['id'] }}'">Удалить пользователя</button>
+      <button onclick="document.location='/users/{{ id }}/edit'">Редактировать</button>
+      <button onclick="document.location='/users/{{ id }}/delete'">Удалить пользователя</button>
     </div>
   </div>
-  {% if user['role'] == 'Teacher' %}
-      <button onclick="document.location='/enterteach/{{ user['id'] }}'">Войти в пользователя</button>
+  {% if role == 'Teacher' %}
+      <button onclick="document.location='/enterteach/{{ id }}'">Войти в пользователя</button>
   {% endif %}
 {% endblock %}
