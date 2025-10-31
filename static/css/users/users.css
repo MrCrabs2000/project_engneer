@@ -1,0 +1,31 @@
+.name {
+    word-break: break-all;
+}
+
+.secondary-info {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    width: 100%;
+}
+
+.class, .role, .user-balance {
+    padding: 0 10px;
+    width: fit-content;
+    font-size: 16px;
+    background-color: var(--bg-dark);
+    border-radius: 0.6em;
+    border: 1px solid var(--border);
+}
+
+.user-balance {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+}
+
+.user-balance > img {
+    aspect-ratio: 1 / 1;
+    height: 1em;
+}

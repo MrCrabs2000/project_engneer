@@ -8,7 +8,7 @@
     --text-color: hsl(0, 0%, 16%);
     --warning: hsl(0, 75%, 55%);
     --warning-hover: hsl(0, 75%, 45%);
-    --border: hsl(0, 0%, 85%);
+    --border: hsl(0, 0%, 75%);
     --shadow-big: 0px 0px 12px 0px hsla(0, 0%, 0%, 0.2);
     --shadow: 0px 0px 4px 0px hsla(0, 0%, 0%, 0.2);
 }

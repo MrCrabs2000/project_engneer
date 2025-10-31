@@ -5,11 +5,12 @@
 {% block links %}
   <link rel="stylesheet" href="/static/css/users/found-elements.css">
   <link rel="stylesheet" href="/static/css/search.css">
+  <link rel="stylesheet" href="/static/css/users/users.css">
 {% endblock %}
 
 {% block content %}
  
-  <form class="top-container" enctype="multipart/form-data" method="post">
+  <form class="search-container" enctype="multipart/form-data" method="post">
     <div class="left">
       <input class="search-bar" type="text" name="bysort" placeholder="Поиск пользователя" value="{{ search_text }}">
       <button class="accent search-btn" type="submit">Найти</button>
@@ -49,7 +50,14 @@
     {% for user in users %}
       <div class="found-element-card">
         <a href="/users/{{ user.id }}">
-          <div class="found-element-info">{{ user.username }} {{ user.usersurname[0] }}. {{user.userotchestvo[0]}}.</div>
+          <div class="found-element-info">
+            <div class="name">{{ user.username }} {{ user.usersurname[0] }}. {{user.userotchestvo[0]}}.</div>
+            <div class="secondary-info">
+              <div class="class">{{ user.userclass }}</div>
+              <div class="role">{{user.role}}</div>
+              <div class="user-balance">{{user.userbalance}} <img src="/static/images/coin.png"></div>
+            </div>
+          </div>
         </a>
       </div>
     {% endfor %}
