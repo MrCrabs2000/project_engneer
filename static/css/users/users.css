@@ -2,13 +2,6 @@
     word-break: break-all;
 }
 
-.secondary-info {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 4px;
-    width: 100%;
-}
-
 .class, .role, .user-balance {
     padding: 0 10px;
     width: fit-content;

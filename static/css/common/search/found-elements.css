@@ -1,14 +1,14 @@
-.found-elements-flex {
+.found-elements-grid {
     box-sizing: border-box;
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
     gap: 16px;
     max-width: 1400px;
-    margin: 15px auto;
+    margin: 16px auto;
 }
 
 .found-element-card {
-    padding: 8px 16px;
+    padding: 8px 8px;
     background-color: var(--bg);
     border: 2px solid transparent;
     border-radius: 16px;
@@ -36,8 +36,24 @@
     font-size: 30px;
 }
 
+.secondary-info {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    width: 100%;
+}
+
+.secondary-info > div {
+    padding: 0 10px;
+    width: fit-content;
+    font-size: 16px;
+    background-color: var(--bg-dark);
+    border-radius: 0.6em;
+    border: 1px solid var(--border);
+}
+
 @media (max-width: 1440px) {
-    .found-elements-flex {
-        margin: 2rem 20px;
+    .found-elements-grid {
+        margin: 16px 20px;
     }
 }
