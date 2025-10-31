@@ -1,12 +1,10 @@
 .form {
-    box-sizing: content-box;
     display: flex;
     flex-direction: column;
     align-content: center;
     gap: 30px;
     width: fit-content;
     margin: 0px auto;
-    margin-top: 40px;
     padding: 20px;
     font-size: 28px;
     background-color: var(--bg);

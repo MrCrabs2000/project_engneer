@@ -11,37 +11,38 @@
 
 
 {% block content %}
+  <div class="centering-container">
+    <form class="form" enctype="multipart/form-data" method="post">
+      <div class="title">Загрузить таблицу</div>
 
-  <form class="form" enctype="multipart/form-data" method="post">
-    <div class="title">Загрузить таблицу</div>
+      <div class="fields-container">
+        <div>
+          <div class="file-input">
+            <input id="upload-table" type="file" name="inputexel" accept=".xlsx, .xls" required>
+            <label for="upload-table"><span class="upload-btn" disabled>Выбрать</span></label>
+            <div id="selected-file" class="selected-file">Пусто</div>
 
-    <div class="fields-container">
-      <div>
-        <div class="file-input">
-          <input id="upload-table" type="file" name="inputexel" accept=".xlsx, .xls" required>
-          <label for="upload-table"><span class="upload-btn" disabled>Выбрать</span></label>
-          <div id="selected-file" class="selected-file">Пусто</div>
+            <script>
+              const input = document.getElementById('upload-table');
+              const selectedFileContainer = document.getElementById('selected-file');
+        
+              input.addEventListener('change', function (e) {
+                console.log('play event')
+                const selectedFile = event.target.files[0];
+                if (selectedFile) {
+                  selectedFileContainer.textContent = selectedFile.name;
+                }
+              });
+            </script>
 
-          <script>
-            const input = document.getElementById('upload-table');
-            const selectedFileContainer = document.getElementById('selected-file');
-      
-            input.addEventListener('change', function (e) {
-              console.log('play event')
-              const selectedFile = event.target.files[0];
-              if (selectedFile) {
-                selectedFileContainer.textContent = selectedFile.name;
-              }
-            });
-          </script>
-
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="btns-container">
-      <button class="accent" type="submit">Подтвердить</button>
-    </div>
+      <div class="btns-container">
+        <button class="accent" type="submit">Подтвердить</button>
+      </div>
 
-  </form>
+    </form>
+  </div>
 {% endblock %}

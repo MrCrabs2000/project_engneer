@@ -4,6 +4,7 @@
     align-items: center;
     margin: 30px auto 0 auto;
     max-width: 1400px;
+    width: 100%;
 }
 
 .search-container > .left {
@@ -84,6 +85,7 @@
 
 @media (max-width: 1440px) {
     .search-container {
+        width: auto;
         margin: 30px 20px 0 20px;
     }
 }

@@ -8,35 +8,37 @@
 {% endblock links %}
 
 {% block content %}
-  <form class="form" method="POST" action="/login">
-    <title class="title">Вход</title>
-    <div class="fields-container">
+  <div class="centering-container">
+    <form class="form" method="POST" action="/login">
+      <title class="title">Вход</title>
+      <div class="fields-container">
 
-      <div>
-        <label for="name">Имя</label>
-        <input id="name" name="username" placeholder="Имя">
+        <div>
+          <label for="name">Имя</label>
+          <input id="name" name="username" placeholder="Имя">
+        </div>
+
+        <div>
+          <label for="surname">Фамилия</label>
+          <input id="surname" name="usersurname" placeholder="Фамилия">
+        </div>
+
+        <div>
+          <label for="otchestvo">Отчество</label>
+          <input id="otchestvo" name="userotchestvo" placeholder="Отчество">
+        </div>
+
+        <div>
+          <label for="password">Пароль</label>
+          <input id="password" name="password" type="password" placeholder="Пароль">
+        </div>
+
       </div>
 
-      <div>
-        <label for="surname">Фамилия</label>
-        <input id="surname" name="usersurname" placeholder="Фамилия">
+      <div class="btns-container">
+        <button class="accent" type="submit">Продолжить</button>
       </div>
 
-      <div>
-        <label for="otchestvo">Отчество</label>
-        <input id="otchestvo" name="userotchestvo" placeholder="Отчество">
-      </div>
-
-      <div>
-        <label for="password">Пароль</label>
-        <input id="password" name="password" type="password" placeholder="Пароль">
-      </div>
-
-    </div>
-
-    <div class="btns-container">
-      <button class="accent" type="submit">Продолжить</button>
-    </div>
-
-  </form>
+    </form>
+  </div>
 {% endblock %}

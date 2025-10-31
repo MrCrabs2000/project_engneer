@@ -16,7 +16,8 @@
 }
 
 html, body {
-    position: static;
+    display: flex;
+    flex-direction: column;
     height: 100%;
     width: 100%;
     margin: 0;
@@ -172,4 +173,14 @@ input[type="radio"]:checked + .custom-radio-btn:before {
     left: 50%;
     transform: translate(-50%, -50%);
 
+}
+
+.centering-container {
+    box-sizing: content-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: fit-content;
+    flex-grow: 1;
+    padding: 40px 0;
 }

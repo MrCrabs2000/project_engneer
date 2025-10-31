@@ -4,6 +4,7 @@
     grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
     gap: 16px;
     max-width: 1400px;
+    width: 100%;
     margin: 16px auto;
 }
 
@@ -55,6 +56,7 @@
 
 @media (max-width: 1440px) {
     .found-elements-grid {
+        width: auto;
         margin: 16px 20px;
     }
 }

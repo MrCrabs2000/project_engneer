@@ -5,53 +5,47 @@
 
 
 {% block links %}
-    <link rel="stylesheet" href="/static/css/common/form.css">
+  <link rel="stylesheet" href="/static/css/common/form.css">
 {% endblock links %}
 
 
 {% block content %}
-<form class="form" method="POST">
-    <div class="title">Редактировать</div>
-    <div class="fields-container">
-        
+  <div class="centering-container">
+    <form class="form" method="POST">
+      <div class="title">Редактировать</div>
+      <div class="fields-container">
+          
         <div>
-            <label for="name">Название</label>
-            <input id="name" name="name" value="{{ name }}" required>
-        </div>
-
+          <label for="name">Название</label>
+          <input id="name" name="name" value="{{ name }}" required>
+        </div>  
         <div>
-            <label for="description">Описание</label>
-            <textarea id="description" name="description" rows="4" maxlength="300" required>{{ description }}</textarea>
-        </div>
-
+          <label for="description">Описание</label>
+          <textarea id="description" name="description" rows="4" maxlength="300" required>{{ description }}</textarea>
+        </div>  
         <div>
-            <label for="count">Количество</label>
-            <input id="count" name="count" type="number" min="0" value="{{ count }}" required>
-        </div>
-
+          <label for="count">Количество</label>
+          <input id="count" name="count" type="number" min="0" value="{{ count }}" required>
+        </div>  
         <div>
-            <label for="price">Цена</label>
-            <input id="price" name="price" type="number" min="0" value="{{ price }}" required>
-        </div>
-
+          <label for="price">Цена</label>
+          <input id="price" name="price" type="number" min="0" value="{{ price }}" required>
+        </div>  
         <div>
-            <label for="photo">Путь к фото</label>
-            <input id="photo" name="photo" value="{{ photo }}">
-        </div>
-
-    </div>
-    
-    <div class="btns-container">
+          <label for="photo">Путь к фото</label>
+          <input id="photo" name="photo" value="{{ photo }}">
+        </div>  
+      </div>
+      
+      <div class="btns-container">
         <button class="accent" type="submit">Подтвердить</button>
         <button type="button" onclick="document.location = '/items'">Отмена</button>
-    </div>
-
-
-
-    {# {% if photo %}
-    <p>
+      </div>  
+      {# {% if photo %}
+      <p>
         <img src="{{ photo }}" alt="Фото предмета" width="200">
-    </p>
-    {% endif %} #}
-</form>
+      </p>
+      {% endif %} #}
+    </form>
+  </div>
 {% endblock %}
