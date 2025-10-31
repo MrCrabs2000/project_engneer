@@ -11,7 +11,6 @@
     font-size: 28px;
     background-color: var(--bg);
     border-radius: 0.6em;
-    border: 1px solid var(--border);
     box-shadow: var(--shadow-big);
 }
 

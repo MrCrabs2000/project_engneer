@@ -9,7 +9,7 @@
 
 .found-element-card {
     padding: 8px 8px;
-    background-color: var(--bg);
+    background-color: var(--bg-light);
     border: 2px solid transparent;
     border-radius: 16px;
     box-shadow: var(--shadow);
@@ -47,9 +47,10 @@
     padding: 0 10px;
     width: fit-content;
     font-size: 16px;
-    background-color: var(--bg-dark);
+    background-color: var(--bg);
+    border: none;
     border-radius: 0.6em;
-    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
 }
 
 @media (max-width: 1440px) {
