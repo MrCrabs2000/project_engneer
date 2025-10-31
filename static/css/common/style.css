@@ -75,7 +75,7 @@ button.danger:hover {
     background-color: var(--warning-hover);
 }
 
-input, select {
+input, select, textarea {
     box-sizing: border-box;
     padding: 0 0.55em;
     color: var(--text-color);
@@ -92,7 +92,7 @@ input, select {
     /* transition: transform 10s ease-out; */
 }
 
-input:hover, select:hover {
+input:hover, select:hover, textarea:hover {
     background-color: var(--bg-light);
     border: 2px solid var(--primary);
     /* transform: rotate(2880deg); */

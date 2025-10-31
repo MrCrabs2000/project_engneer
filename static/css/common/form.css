@@ -41,6 +41,12 @@
     width: auto;
 }
 
+.fields-container > div > textarea {
+    width: auto;
+    resize: none;
+    font-size: 20px;
+}
+
 .fields-container input[readonly] {
     caret-color: transparent;
     cursor: text;
