@@ -40,7 +40,7 @@ main {
     transform: translate(-50%, -50%);
 }
 
-button {
+button, .upload-btn {
     padding-left: 0.55em;
     padding-right: 0.55em;
     font-family: inherit;
@@ -49,13 +49,13 @@ button {
     color: inherit;
     background-color: var(--bg-light);
     border: 1px solid transparent;
-    border-radius: 16px;
+    border-radius: 0.6em;
     box-shadow: var(--shadow);
     transition: background-color 0.2s ease, border 0.2s ease;
     cursor: pointer;
 }
 
-button:hover {
+button:hover, .upload-btn:hover {
     background-color: var(--bg-dark);
 }
 

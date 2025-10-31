@@ -30,7 +30,6 @@
     width: 100%;
 }
 
-
 .fields-container > div > label {
     color: #494949;
     font-size: 20px;
@@ -51,6 +50,37 @@
     caret-color: transparent;
     cursor: text;
 }
+
+
+
+
+
+.file-input {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+}
+
+.file-input > input {
+    position: absolute;
+    visibility: hidden;   
+}
+
+.file-input > div {
+    flex: 1 1;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    padding: 0px 16px;
+    text-align: center;
+    border-radius: 0.6em;
+    background-color: var(--bg-light);
+    box-shadow: var(--shadow);
+}
+
+
+
+
 
 .btns-container {
     display: flex;
