@@ -6,15 +6,18 @@
     --primary-hover: hsl(216, 50%, 65%);
     --secondary: hsl(15, 72%, 52%);
     --text-color: hsl(0, 0%, 16%);
-    --warning: hsl(0, 75%, 55%);
-    --warning-hover: hsl(0, 75%, 45%);
-    --border: hsl(0, 0%, 85%);
-    --shadow-big: 0px 0px 12px 0px hsla(0, 0%, 0%, 0.2);
-    --shadow: 0px 0px 4px 0px hsla(0, 0%, 0%, 0.2);
+    --warning: hsl(0, 80%, 55%);
+    --warning-hover: hsl(0, 80%, 45%);
+    --border: hsl(0, 0%, 70%);
+    --shadow-big: 0px 4px 12px 0px hsla(0, 0%, 0%, 0.2);
+    --shadow: 0px 2px 4px 0px hsla(0, 0%, 0%, 0.2);
+    /* --shadow-dark: 0px 2px 4px 0px hsla(0, 0%, 0%, 0.4);
+    --shadow-light: 0px 2px 2px 0px hsla(0, 0%, 0%, 0.2); */
 }
 
 html, body {
-    position: static;
+    display: flex;
+    flex-direction: column;
     height: 100%;
     width: 100%;
     margin: 0;
@@ -38,7 +41,7 @@ main {
     transform: translate(-50%, -50%);
 }
 
-button {
+button, .upload-btn {
     padding-left: 0.55em;
     padding-right: 0.55em;
     font-family: inherit;
@@ -46,37 +49,34 @@ button {
     font-weight: 700;
     color: inherit;
     background-color: var(--bg-light);
-    border: 2px solid transparent;
+    border: 1px solid transparent;
     border-radius: 0.6em;
     box-shadow: var(--shadow);
     transition: background-color 0.2s ease, border 0.2s ease;
     cursor: pointer;
 }
 
-button:hover {
+button:hover, .upload-btn:hover {
     background-color: var(--bg-dark);
-    /* border: 2px solid var(--border); */
 }
 
 button.accent {
     background-color: var(--primary);
 }
 
-button.warning {
+button.danger {
     background-color: var(--warning);
 }
 
 button.accent:hover {
     background-color: var(--primary-hover);
-    border: 2px solid transparent;
 }
 
-button.warning:hover {
+button.danger:hover {
     background-color: var(--warning-hover);
-    border: 2px solid transparent;
 }
 
-input, select {
+input, select, textarea {
     box-sizing: border-box;
     padding: 0 0.55em;
     color: var(--text-color);
@@ -93,7 +93,7 @@ input, select {
     /* transition: transform 10s ease-out; */
 }
 
-input:hover, select:hover {
+input:hover, select:hover, textarea:hover {
     background-color: var(--bg-light);
     border: 2px solid var(--primary);
     /* transform: rotate(2880deg); */
@@ -173,4 +173,14 @@ input[type="radio"]:checked + .custom-radio-btn:before {
     left: 50%;
     transform: translate(-50%, -50%);
 
+}
+
+.centering-container {
+    box-sizing: content-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: fit-content;
+    flex-grow: 1;
+    padding: 40px 0;
 }

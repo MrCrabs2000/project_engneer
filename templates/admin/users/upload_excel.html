@@ -6,32 +6,43 @@
 
 {% block links %}
   <link rel="stylesheet" href="/static/css/users/upload-excel.css">
+  <link rel="stylesheet" href="/static/css/common/form.css">
 {% endblock %}
 
 
 {% block content %}
-  <main>
-    <div class="centered-div form-container">
-      <form enctype="multipart/form-data" method="post">
-        <input class="add-table" type="file" name="inputexel" id="table_input" accept=".xlsx, .xls">
-        <label class="add-table-label" for="table_input">
-          <div class="choice">Не выбрано</div>
-          <div class="choose-btn">Выбрать</div>
-        </label>
-        <button class="accent upload-btn" type="submit">Добавить</button>
-      </form>
-    </div>
-  </main>
+  <div class="centering-container">
+    <form class="form" enctype="multipart/form-data" method="post">
+      <div class="title">Загрузить таблицу</div>
 
-  <script>
-    const input = document.getElementById('table_input');
-    const choice = document.getElementsByClassName('choice');
-    
-    input.addEventListener('change', function (e) {
-      const selectedFile = event.target.files[0];
-      if (selectedFile) {
-        choice[0].textContent = selectedFile.name;
-      }
-    });
-  </script>
+      <div class="fields-container">
+        <div>
+          <div class="file-input">
+            <input id="upload-table" type="file" name="inputexel" accept=".xlsx, .xls" required>
+            <label for="upload-table"><span class="upload-btn" disabled>Выбрать</span></label>
+            <div id="selected-file" class="selected-file">Пусто</div>
+
+            <script>
+              const input = document.getElementById('upload-table');
+              const selectedFileContainer = document.getElementById('selected-file');
+        
+              input.addEventListener('change', function (e) {
+                console.log('play event')
+                const selectedFile = event.target.files[0];
+                if (selectedFile) {
+                  selectedFileContainer.textContent = selectedFile.name;
+                }
+              });
+            </script>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="btns-container">
+        <button class="accent" type="submit">Подтвердить</button>
+      </div>
+
+    </form>
+  </div>
 {% endblock %}

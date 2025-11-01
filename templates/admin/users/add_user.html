@@ -10,62 +10,63 @@
 
 
 {% block content %}
-
-  <form class="form" method="POST" enctype="multipart/form-data">
-    <title class="title">Добавить</title>
-    <div class="fields-container">
-      <div>
-        <label for="name">Имя</label>
-        <input id="name" name="name" placeholder="Имя">
-      </div>
-
-      <div>
-        <label for="surname">Фамилия</label>
-        <input id="surname" name="surname" placeholder="Фамилия">
-      </div>
-
-      <div>
-        <label for="otchestvo">Отчество</label>
-        <input id="otchestvo" name="otchestvo" placeholder="Отчество">
-      </div>
-
-      <div>
-        <label for="role">Роль</label>
-        <div class="select">
-          <select id="role" name="role">
-            <option>Student</option>
-            <option>Teacher</option>
-            <option>Admin</option>
-          </select>
+  <div class="centering-container">
+    <form class="form" method="POST" enctype="multipart/form-data">
+      <title class="title">Добавить</title>
+      <div class="fields-container">
+        <div>
+          <label for="name">Имя</label>
+          <input id="name" name="name" placeholder="Имя">
         </div>
+
+        <div>
+          <label for="surname">Фамилия</label>
+          <input id="surname" name="surname" placeholder="Фамилия">
+        </div>
+
+        <div>
+          <label for="otchestvo">Отчество</label>
+          <input id="otchestvo" name="otchestvo" placeholder="Отчество">
+        </div>
+
+        <div>
+          <label for="role">Роль</label>
+          <div class="select">
+            <select id="role" name="role">
+              <option>Student</option>
+              <option>Teacher</option>
+              <option>Admin</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label for="class">Класс</label>
+          <input id="class" name="class" placeholder="Класс">
+        </div>
+
+        <div>
+          <label for="balance">Баланс</label>
+          <input id="balance" name="balance" oninput="this.value = this.value.replace(/[^0-9+]/g, '')" placeholder="Баланс">
+        </div>
+
+        <div>
+          <label for="password">Пароль</label>
+          <input id="password" name="password" placeholder="Пароль">
+        </div>
+
+        <div>
+          <label for="repeat_password">Повторите пароль</label>
+          <input id="repeat_password" type="password" name="secondpassword" placeholder="Повторите пароль">
+        </div>
+
       </div>
 
-      <div>
-        <label for="class">Класс</label>
-        <input id="class" name="class" placeholder="Класс">
+      <div class="btns-container">
+        <button class="accent" type="submit">Добавить</button>
       </div>
-
-      <div>
-        <label for="balance">Баланс</label>
-        <input id="balance" name="balance" oninput="this.value = this.value.replace(/[^0-9+]/g, '')" placeholder="Баланс">
-      </div>
-
-      <div>
-        <label for="password">Пароль</label>
-        <input id="password" name="password" placeholder="Пароль">
-      </div>
-
-      <div>
-        <label for="repeat_password">Повторите пароль</label>
-        <input id="repeat_password" type="password" name="secondpassword" placeholder="Повторите пароль">
-      </div>
-
-    </div>
-
-    <div class="btns-container">
-      <button class="accent" type="submit">Добавить</button>
-    </div>
-      
-  </form>
+        
+    </form>
+  </div>
 
 {% endblock %}

@@ -11,7 +11,8 @@
     justify-content: center;
     font-size: 32px;
     font-weight: 700;
-    background-color: var(--primary);
+    background-color: var(--bg);
+    border: 1px solid var(--border);
     border-radius: 16px;
     box-shadow: var(--shadow-big);
 }

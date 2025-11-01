@@ -1,17 +1,14 @@
 .form {
-    box-sizing: content-box;
     display: flex;
     flex-direction: column;
     align-content: center;
     gap: 30px;
     width: fit-content;
     margin: 0px auto;
-    margin-top: 40px;
     padding: 20px;
     font-size: 28px;
     background-color: var(--bg);
     border-radius: 0.6em;
-    border: 1px solid var(--border);
     box-shadow: var(--shadow-big);
 }
 
@@ -31,7 +28,6 @@
     width: 100%;
 }
 
-
 .fields-container > div > label {
     color: #494949;
     font-size: 20px;
@@ -42,10 +38,47 @@
     width: auto;
 }
 
+.fields-container > div > textarea {
+    width: auto;
+    resize: none;
+    font-size: 20px;
+}
+
 .fields-container input[readonly] {
     caret-color: transparent;
     cursor: text;
 }
+
+
+
+
+
+.file-input {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+}
+
+.file-input > input {
+    position: absolute;
+    visibility: hidden;   
+}
+
+.file-input > div {
+    flex: 1 1;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    padding: 0px 16px;
+    text-align: center;
+    border-radius: 0.6em;
+    background-color: var(--bg-light);
+    box-shadow: var(--shadow);
+}
+
+
+
+
 
 .btns-container {
     display: flex;

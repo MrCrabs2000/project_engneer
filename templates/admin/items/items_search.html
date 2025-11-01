@@ -3,13 +3,14 @@
 {% block title %}Поиск предметов{% endblock %}
 
 {% block links %}
-  <link rel="stylesheet" href="/static/css/users/found-elements.css">
-  <link rel="stylesheet" href="/static/css/search.css">
+  <link rel="stylesheet" href="/static/css/common/search/found-elements.css">
+  <link rel="stylesheet" href="/static/css/common/search/search.css">
+  <link rel="stylesheet" href="/static/css/items/items.css">
 {% endblock %}
 
 {% block content %}
 
-  <form class="top-container" enctype="multipart/form-data" method="post">
+  <form class="search-container" enctype="multipart/form-data" method="post">
     <div class="left">
       <input class="search-bar" type="text" name="bysort" placeholder="Поиск предмета" value="{{ search_text }}">
       <button class="accent search-btn" type="submit">Найти</button>
@@ -44,11 +45,20 @@
     </div>
   </form>
 
-  <div class="found-elements-flex">
+  <div class="found-elements-grid">
     {% for item in items %}
       <div class="found-element-card">
         <a href="/items/{{ item.id }}/edit">
-          <div class="found-element-info">{{ item.name }} — {{ item.price }}</div>
+          <div class="found-element-info">
+            <img class="item-image" src="/static/images/test.jpg" alt="Фото товара">
+            <div class="name">{{ item.name }}</div>
+            
+            <div class="secondary-info">
+              <div class="amount">{{ item.count }} ед.</div>
+              <div class="price">{{ item.price }} <img src="/static/images/coin.png"></div>
+            </div>
+
+          </div>
         </a>
         {# <form action="/items/{{ item.id }}/delete" method="post" style="margin-top:10px;">
           <input type="submit" value="Удалить" class="search-btn">
