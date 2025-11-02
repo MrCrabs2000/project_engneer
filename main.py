@@ -303,7 +303,7 @@ def delete_user(user_id):
         return redirect('/login')
 
 
-@app.route('/users/add')
+@app.route('/users/add', methods=['GET', 'POST'])
 def add_user():
     if current_user.is_authenticated and current_user.role == 'Admin':
 
