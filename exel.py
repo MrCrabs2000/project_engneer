@@ -96,7 +96,7 @@ def import_users():
             print(f"Добавлен пользователь: {name} {surname} {otchestvo} - {user_class}")
             row += 1
         session.commit()
-        kek.main(students_data)
+        pdf_maker.main(students_data)
 
     except Exception as e:
         session.rollback()
