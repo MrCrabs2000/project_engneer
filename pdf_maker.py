@@ -28,6 +28,7 @@ def setup_fonts():
 
 
 def create_full_page_table_pdf(filename, students_data):
+
     font_name = setup_fonts()
 
     doc = SimpleDocTemplate(
@@ -35,33 +36,35 @@ def create_full_page_table_pdf(filename, students_data):
         pagesize=A4,
         topMargin=15,
         bottomMargin=15,
-        leftMargin=15,
-        rightMargin=15
+        leftMargin=10,
+        rightMargin=10
     )
 
     table_data = []
 
-    headers = ['Фамилия', 'Имя', 'Отчество', 'Класс', 'Пароль']
+    headers = ['Имя', 'Фамилия', 'Отчество', 'Класс', 'Имя при входе', 'Пароль']
     table_data.append(headers)
 
     for student in students_data:
         table_data.append([
-            student['last_name'],
             student['first_name'],
+            student['last_name'],
             student['patronymic'],
             student['class'],
+            student['username'],
             student['password']
         ])
 
     table = Table(table_data, repeatRows=1)
 
-    page_width = A4[0] - 30
+    page_width = A4[0] - 20
     col_widths = [
-        page_width * 0.18,  # Имя
-        page_width * 0.18,  # Фамилия
-        page_width * 0.24,  # Отчество
-        page_width * 0.15,  # Класс
-        page_width * 0.25,  # Пароль
+        page_width * 0.12,  # Имя
+        page_width * 0.12,  # Фамилия
+        page_width * 0.18,  # Отчество
+        page_width * 0.10,  # Класс
+        page_width * 0.20,  # Имя при входе
+        page_width * 0.18,  # Пароль
     ]
 
     table._argW = col_widths
@@ -71,27 +74,29 @@ def create_full_page_table_pdf(filename, students_data):
         ('TEXTCOLOR', (0, 0), (-1, 0), colors.white),
         ('ALIGN', (0, 0), (-1, 0), 'CENTER'),
         ('FONTNAME', (0, 0), (-1, 0), font_name),
-        ('FONTSIZE', (0, 0), (-1, 0), 14),
-        ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
-        ('TOPPADDING', (0, 0), (-1, 0), 8),
+        ('FONTSIZE', (0, 0), (-1, 0), 11),
+        ('BOTTOMPADDING', (0, 0), (-1, 0), 10),
+        ('TOPPADDING', (0, 0), (-1, 0), 6),
 
         ('ALIGN', (0, 1), (-1, -1), 'CENTER'),
         ('FONTNAME', (0, 1), (-1, -1), font_name),
-        ('FONTSIZE', (0, 1), (-1, -1), 10),
+        ('FONTSIZE', (0, 1), (-1, -1), 9),
         ('TEXTCOLOR', (0, 1), (-1, -1), colors.black),
         ('GRID', (0, 0), (-1, -1), 1, colors.HexColor('#bdc3c7')),
 
         ('ROWBACKGROUNDS', (0, 1), (-1, -1), [
             colors.HexColor('#f8f9fa'),
-            colors.white]),
+            colors.white
+        ]),
 
         ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
 
-        ('LEFTPADDING', (0, 0), (-1, -1), 8),
-        ('RIGHTPADDING', (0, 0), (-1, -1), 8),
-        ('TOPPADDING', (0, 1), (-1, -1), 6),
-        ('BOTTOMPADDING', (0, 1), (-1, -1), 6),
+        ('LEFTPADDING', (0, 0), (-1, -1), 4),
+        ('RIGHTPADDING', (0, 0), (-1, -1), 4),
+        ('TOPPADDING', (0, 1), (-1, -1), 4),
+        ('BOTTOMPADDING', (0, 1), (-1, -1), 4),
     ])
+
     table.setStyle(style)
     doc.build([table])
 
@@ -105,25 +110,40 @@ def create_simple_pdf(filename, students_data):
         leftMargin=10,
         rightMargin=10
     )
-    table_data = [['Имя', 'Фамилия', 'Отчество', 'Класс', 'Пароль']]
+
+    table_data = [['Имя', 'Фамилия', 'Отчество', 'Класс', 'Имя при входе', 'Пароль']]
+
     for student in students_data:
         table_data.append([
-            student['last_name'],
             student['first_name'],
+            student['last_name'],
             student['patronymic'],
             student['class'],
+            student['username'],
             student['password']
         ])
     table = Table(table_data, repeatRows=1)
-    table._argW = 'auto'
+
+
+    available_width = A4[0] - 20
+    col_widths = [
+        available_width * 0.12,
+        available_width * 0.12,
+        available_width * 0.18,
+        available_width * 0.10,
+        available_width * 0.20,
+        available_width * 0.18,
+    ]
+    table._argW = col_widths
+
     style = TableStyle([
         ('BACKGROUND', (0, 0), (-1, 0), colors.darkblue),
         ('TEXTCOLOR', (0, 0), (-1, 0), colors.white),
         ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
         ('FONTNAME', (0, 0), (-1, -1), 'Helvetica'),
-        ('FONTSIZE', (0, 0), (-1, 0), 12),
-        ('FONTSIZE', (0, 1), (-1, -1), 10),
-        ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+        ('FONTSIZE', (0, 0), (-1, 0), 10),
+        ('FONTSIZE', (0, 1), (-1, -1), 8),
+        ('BOTTOMPADDING', (0, 0), (-1, 0), 8),
         ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
         ('GRID', (0, 0), (-1, -1), 1, colors.black),
         ('ROWBACKGROUNDS', (0, 1), (-1, -1), [colors.white, colors.lightgrey])
@@ -141,7 +161,3 @@ def main(students_data):
             create_simple_pdf(pdf_filename, students_data)
         except Exception:
             return
-
-
-if __name__ == "__main__":
-    main()

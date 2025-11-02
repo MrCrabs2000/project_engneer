@@ -44,32 +44,29 @@ def import_users():
             otchestvo = translit(otchestvo1, 'ru', True)
             user_class = translit(user_class1, 'ru', True)
 
+            name2 = name1
+
             existing_user = session.query(User).filter(
-                User.username == name,
-                User.usersurname == surname,
-                User.userotchestvo == otchestvo,
+                User.username == name2,
+                User.usersurname == surname1,
+                User.userotchestvo == otchestvo1,
             ).first()
 
             liters = ([el for el in name[:3]] + [el for el in surname[:3]]
                       + [el for el in otchestvo[:3]] + [user_class[-1], user_class[0]])
 
             index = 0
+
             while existing_user:
-                while name[-1].isdigit():
-                    name = name[:-1]
-                    surname = surname[:-1]
-                    otchestvo = otchestvo[:-1]
-
-                name += str(index)
-                surname += str(index)
-                otchestvo += str(index)
-
+                while name2[-1].isdigit():
+                    name2 = name2[:-1]
+                name2 += str(index)
                 index += 1
 
                 existing_user = session.query(User).filter(
-                    User.username == name,
-                    User.usersurname == surname,
-                    User.userotchestvo == otchestvo,
+                    User.username == name2,
+                    User.usersurname == surname1,
+                    User.userotchestvo == otchestvo1,
                 ).first()
 
             password = generate_password_for_user(liters)
@@ -78,29 +75,30 @@ def import_users():
                 'first_name': name1,
                 'patronymic': otchestvo1,
                 'class': user_class1,
+                'username': name2,
                 'password': password
             }
             students_data.append(pupil)
             user = User(
-                username=name,
-                usersurname=surname,
+                username=name2,
+                usersurname=surname1,
                 userpassword=generate_password_hash(password),
-                userotchestvo=otchestvo,
-                userclass=user_class,
+                userotchestvo=otchestvo1,
+                userclass=user_class1,
                 role='Student',
                 userbalance='0'
             )
-            print(user)
             session.add(user)
 
-            print(f"Добавлен пользователь: {name} {surname} {otchestvo} - {user_class}")
             row += 1
         session.commit()
         pdf_maker.main(students_data)
 
-    except Exception as e:
+    except Exception:
         session.rollback()
-        print(f"Ошибка при импорте: {e}")
 
     finally:
         session.close()
+
+
+import_users()

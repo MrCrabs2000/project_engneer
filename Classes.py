@@ -38,5 +38,5 @@ class Item_user(SqlAlchemyBase):
     count = Column(Integer, default=0)
     description = Column(String(300), nullable=False)
     photo = Column(String(1000), nullable=False)
-    date = Column(String(), nullable=True)
+    date = Column(String(40), nullable=True)
 
