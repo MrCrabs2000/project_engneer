@@ -35,8 +35,6 @@
   document.addEventListener("DOMContentLoaded", function() {
   const navButtons = document.querySelectorAll(".menu button");
 
-    console.log(navButtons)
-
     navButtons.forEach(button => {
       if (button.classList.contains('profile-btn')) {
         button.addEventListener('click', function() {
@@ -45,7 +43,7 @@
       }
       else {
         button.addEventListener('click', function() {
-            window.location.pathname = this.dataset.target;
+            window.location.href = this.dataset.target;
         });
       }
     });

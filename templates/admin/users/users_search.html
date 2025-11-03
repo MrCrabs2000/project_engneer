@@ -9,11 +9,11 @@
 {% endblock %}
 
 {% block content %}
- 
-  <form class="search-container" enctype="multipart/form-data" method="post">
+  
+  <div class="search-container" >
     <div class="left">
-      <input class="search-bar" type="text" name="bysort" placeholder="Поиск пользователя" value="{{ search_text }}">
-      <button class="accent search-btn" type="submit">Найти</button>
+      <input id="search-bar" class="search-bar" type="text" name="bysort" placeholder="Поиск пользователя" value="{{ search_text }}">
+      <button id="search-button" class="accent search-btn" type="button">Найти</button>
     </div>
 
     <div class="right">
@@ -44,7 +44,7 @@
 
 
     </div>
-  </form>
+  </div>
   
   <div class="found-elements-grid">
     {% for user in users %}
@@ -62,4 +62,38 @@
       </div>
     {% endfor %}
   </div>
+
+  <script>
+
+    const search_bar = document.getElementById('search-bar');
+    const search_button = document.getElementById('search-button');
+    const radioBtns = document.querySelectorAll('input[name="sort"]');
+
+    search_bar.addEventListener('keydown', function(e) {
+      if (e.key == 'Enter') {
+        search();
+      }
+    });
+
+    search_button.addEventListener('click', function(e) {
+      search();
+    });
+
+    function search() {
+
+      const search_text = search_bar.value;
+      let filter;
+
+      for (const radio of radioBtns) {
+        if (radio.checked) {
+          filter = radio.value;
+          break;
+        }
+      }
+
+      const params = new URLSearchParams(`q=${search_text}&filter=${filter}`)
+      window.location.search = params.toString();
+    }
+    
+  </script>
 {% endblock %}
