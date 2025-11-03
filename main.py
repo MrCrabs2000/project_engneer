@@ -196,7 +196,8 @@ def users():
         context = {
             'users': users,
             'current_user_role': current_user.role,
-            'search_text': search_text
+            'search_text': search_text,
+            'filter': filterr
         }
 
         session_db.close()
@@ -376,34 +377,39 @@ def add_user():
         return redirect('/login')
 
 
-@app.route('/items', methods=['GET', 'POST'])
+@app.route('/items', methods=['GET'])
 def items():
     if current_user.is_authenticated and current_user.role == 'Admin':
         session_db = db_session.create_session()
-        items = session_db.query(Item_shop).all()
 
         search_text = request.args.get('q', '')
         filterr = request.args.get('filter', 'Название')
 
+        query = session_db.query(Item_shop)
+
         if search_text:
             if filterr == 'Название':
-                items = session_db.query(Item_shop).filter(Item_shop.name.like(f"%{search_text}%")).all()
+                items = query.filter(Item_shop.name.like(f"%{search_text}%")).all()
             elif filterr == 'Описание':
-                items = session_db.query(Item_shop).filter(Item_shop.description.like(f"%{search_text}%")).all()
+                items = query.filter(Item_shop.description.like(f"%{search_text}%")).all()
             elif filterr == 'Цена':
-                items = session_db.query(Item_shop).filter(Item_shop.price.like(f"%{search_text}%")).all()
+                items = query.filter(Item_shop.price.like(f"%{search_text}%")).all()
+            else:
+                items = query.all()
+        else:
+            items = query.all()
 
         session_db.close()
 
         context = {'items': items,
                    'current_user_role': current_user.role,
-                   'search_text': search_text}
+                   'search_text': search_text,
+                   'filter': filterr}
 
         return render_template('admin/items/items_search.html', **context)
 
     elif not (current_user.is_authenticated):
         return redirect('/login')
-    
 
 
 @app.route('/items/add', methods=['GET', 'POST'])
