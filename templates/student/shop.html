@@ -4,19 +4,23 @@
 
 {% block links %}
   <link rel="stylesheet" href="/static/css/shop.css">
+  <link rel="stylesheet" href="/static/css/common/search/found-elements.css">
 {% endblock %}
 
 {% block content %}
-  {% for item in items %}
-  <div class="products-grid">
-    <div class="product-card">
-      <a href="/shop/{{ item.id }}">
-       <div class="content">
-          <img src="static/images/test.jpg"/>
-          <p>{{ item.name }} {{ item.count }}</p>
-        </div>
-      </a>
-    </div>
+  <div class="found-elements-grid">
+    {% for item in items %}
+      <div class="found-element-card">
+        <a href="/shop/{{ item.id }}">
+          <div class="found-element-info">
+            <img class="item-image" src="/static/images/test.jpg" alt="Фото товара">
+            <div class="name">{{ item.name }}</div>
+            
+            <div class="price">{{ item.price }} <img src="/static/images/coin.png"></div>
+            
+          </div>
+        </a>
+      </div>
+    {% endfor %}
   </div>
-  {% endfor %}
 {% endblock %}
