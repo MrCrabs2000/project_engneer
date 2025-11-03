@@ -170,11 +170,19 @@ def users():
         session_db = db_session.create_session()
         users = session_db.query(User).all()
 
+        search_text = request.args.get('q', '')
+        filterr = request.args.get('filter', 'Фамилия')
+
+        if search_text:
+            if filterr == 'Класс':
+                users = session_db.query(User).filter(User.userclass.like(f"%{search_text}%")).all()
+            elif filterr == 'Фамилия':
+                users = session_db.query(User).filter(User.usersurname.like(f"%{search_text}%")).all()
+            elif filterr == 'Роль':
+                users = session_db.query(User).filter(User.role.like(f"%{search_text}%")).all()
+
         if request.method == 'POST':
             razdbal = request.form.get('razdbalance')
-            sort = request.form.get('sort')
-            bysort = request.form.get('bysort')
-
             if razdbal:
                 try:
                     for user in users:
@@ -185,22 +193,14 @@ def users():
                     print(f"Галя, у нас ошибка: {e}")
                     session_db.rollback()
 
-            elif sort and bysort:
-                if sort == 'Класс':
-                    users = session_db.query(User).filter(User.userclass.like(f"%{bysort}%")).all()
-                elif sort == 'Фамилия':
-                    users = session_db.query(User).filter(User.usersurname.like(f"%{bysort}%")).all()
-                elif sort == 'Роль':
-                    users = session_db.query(User).filter(User.role.like(f"%{bysort}%")).all()
-
         context = {
             'users': users,
             'current_user_role': current_user.role,
-            'search_text': request.form.get('bysort', '')
+            'search_text': search_text
         }
 
+        session_db.close()
         return render_template('admin/users/users_search.html', **context)
-
 
     elif not(current_user.is_authenticated):
         return redirect('/login')
@@ -333,7 +333,7 @@ def add_user():
                     session_db.close()
                     return redirect('/users')
                 except Exception as e:
-                    print(e)
+                    print(f'Галя. у нас ошибка: {e}')
                     return redirect('/users/add')
 
             else:
@@ -381,27 +381,27 @@ def items():
     if current_user.is_authenticated and current_user.role == 'Admin':
         session_db = db_session.create_session()
         items = session_db.query(Item_shop).all()
-        
-        if request.method == 'POST':
-            sort = request.form.get('sort')
-            bysort = request.form.get('bysort')
 
-            if sort == 'Название':
-                items = session_db.query(Item_shop).filter(Item_shop.name.like(f"%{bysort}%")).all()
-            elif sort == 'Описание':
-                items = session_db.query(Item_shop).filter(Item_shop.description.like(f"%{bysort}%")).all()
-            elif sort == 'Цена':
-                items = session_db.query(Item_shop).filter(Item_shop.price.like(f"%{bysort}%")).all()
-            
+        search_text = request.args.get('q', '')
+        filterr = request.args.get('filter', 'Название')
+
+        if search_text:
+            if filterr == 'Название':
+                items = session_db.query(Item_shop).filter(Item_shop.name.like(f"%{search_text}%")).all()
+            elif filterr == 'Описание':
+                items = session_db.query(Item_shop).filter(Item_shop.description.like(f"%{search_text}%")).all()
+            elif filterr == 'Цена':
+                items = session_db.query(Item_shop).filter(Item_shop.price.like(f"%{search_text}%")).all()
+
         session_db.close()
 
-        context = {'items': items, 
+        context = {'items': items,
                    'current_user_role': current_user.role,
-                   'search_text': request.form.get('search_text', '')}
-        
+                   'search_text': search_text}
+
         return render_template('admin/items/items_search.html', **context)
 
-    elif not(current_user.is_authenticated):
+    elif not (current_user.is_authenticated):
         return redirect('/login')
     
 
