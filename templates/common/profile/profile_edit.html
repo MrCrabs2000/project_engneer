@@ -3,30 +3,47 @@
 {% block title %}Редактирование{% endblock  %}
 
 {% block links %}
-  <link rel="stylesheet" href="static/css/common/profile.css">
+  <link rel="stylesheet" href="/static/css/common/form.css">  
 {% endblock  %}
 
 {% block content %}
-  <div class="profile">
-    <form method="POST" action="/profile_edit">
-        <div class="userdata-list">
-          <div class="userdata">
-            <label>Имя:</label>
-            <input name="username" type="text" value="{{username}}" readonly>
-            </div>
-          <div class="userdata">
-            <label>Фамилия:</label>
-            <input name="usersurname" type="text" value="{{usersurname}}" readonly>
-          </div>
-          <div class="userdata">
-            <label>Класс:</label>
-            <input name="userclass" type="text" value="{{userclass}}" readonly>
-          </div>
+  <div class="centering-container">
+    <form class="form" method="POST" action="/profile/edit">
+      <div class="title">Профиль</div>
+      <div class="fields-container">
+
+        <div>
+          <label for="login">Логин</label>
+          <input id="login" name="login" value="{{login}}" placeholder="Логин" readonly>
         </div>
-        <div class="edit-profile-buttons">
-          <input class="save-button" type="submit" value="Сохранить">
-          <input class="cancel-button" type="button" onclick="document.location='/profile'" value="Отмена">
+
+        <div>
+          <label for="name">Имя</label>
+          <input id="name" name="name" value="{{username}}" placeholder="Имя" readonly>
         </div>
+
+        <div>
+          <label for="surname">Фамилия</label>
+          <input id="surname" name="usersurname" value="{{usersurname}}" placeholder="Фамилия" readonly>
+        </div>
+
+        <div>
+          <label for="otchestvo">Отчество</label>
+          <input id="otchestvo" name="userotchestvo" value="{{userotchestvo}}" placeholder="Отчество" readonly>
+        </div>
+
+        <div>
+          <label for="class">Класс</label>
+          <input id="class" name="userclass" value="{{userclass}}" placeholder="Имя" readonly>
+        </div>
+
+      </div>
+
+      <div class="btns-container">
+        <button class="accent" type="submit">Подтвердить</button>
+        <button class="danger" type="button" onclick="document.location='/profile'">Отмена</button>
+      </div>
     </form>
   </div>
+
 {% endblock  %}
