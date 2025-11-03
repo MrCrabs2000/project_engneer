@@ -100,5 +100,3 @@ def import_users():
     finally:
         session.close()
 
-
-import_users()
