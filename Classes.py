@@ -8,13 +8,14 @@ class User(SqlAlchemyBase, UserMixin):
     __tablename__ = 'users'
 
     id = Column(Integer, primary_key=True, autoincrement=True)
+    userlogin = Column(String(100), nullable=False)
     username = Column(String(100), nullable=False)
     usersurname = Column(String(100), nullable=False)
-    userpassword = Column(String(200), nullable=False)
     userotchestvo = Column(String(100), nullable=True)
+    userpassword = Column(String(200), nullable=False)
+    userbalance = Column(Integer, nullable=False, default='0')
     userclass = Column(String(100), nullable=False)
     role = Column(String(10), nullable=False, default='user')
-    userbalance = Column(Integer, nullable=False, default='0')
     adedusers = Column(String(10), nullable=True, default='False')
 
 class Item_shop(SqlAlchemyBase):

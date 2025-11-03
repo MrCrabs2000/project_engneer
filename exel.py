@@ -56,9 +56,6 @@ def import_users():
 
             existing_user = session.query(User).filter(User.username == name2).first()
 
-            liters = ([el for el in name[:3]] + [el for el in surname[:3]]
-                      + [el for el in otchestvo[:3]] + [user_class[-1], user_class[0]])
-
             index = 0
 
             while existing_user:
@@ -80,7 +77,8 @@ def import_users():
             }
             students_data.append(pupil)
             user = User(
-                username=name2,
+                username=name1,
+                userlogin=name2,
                 usersurname=surname1,
                 userpassword=generate_password_hash(password),
                 userotchestvo=otchestvo1,

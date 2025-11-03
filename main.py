@@ -1,6 +1,6 @@
 from flask import Flask, request, render_template, redirect, url_for, session, flash
 from flask_login import logout_user, LoginManager, login_user, current_user
-
+from transliterate import translit
 import db_session
 from Classes import Item_user, User, Item_shop
 from tgbotiha import check_response
@@ -53,7 +53,7 @@ def index():
         elif current_user.role == "Admin":
             return redirect('/users')
 
-    elif not(current_user.is_authenticated):
+    elif not current_user.is_authenticated:
         return redirect('/login')
 
 
@@ -219,6 +219,7 @@ def user(user_id):
                    'userbalance': current_user.userbalance,
                    'name': user.username,
                    'surname': user.usersurname,
+                   'login': user.userlogin,
                    'otchestvo': user.userotchestvo,
                    'role': user.role,
                    'class': user.userclass,
@@ -244,6 +245,7 @@ def edit_user(user_id):
             context = {'current_user_role': current_user.role,
                        'userbalance': current_user.userbalance,
                        'name': user.username,
+                       'login': user.userlogin,
                        'surname': user.usersurname,
                        'otchestvo': user.userotchestvo,
                        'role': user.role,
@@ -276,6 +278,11 @@ def edit_user(user_id):
                 user.userbalance = new_userbalance
             if new_role:
                 user.role = new_role
+
+            user.userlogin = (translit(new_username[:3], 'ru', True)
+                              + translit(new_usersurname[:3], 'ru', True)
+                              + translit(new_userotchestvo[:3], 'ru', True)
+                              + translit(new_userclass, 'ru', True))
 
             session_db.commit()
             session_db.close()
@@ -346,9 +353,15 @@ def add_user():
                 password = request.form['password']
                 secondpassword = request.form['secondpassword']
 
+                userlogin = (translit(name[:3], 'ru', True)
+                                  + translit(surname[:3], 'ru', True)
+                                  + translit(otchestvo[:3], 'ru', True)
+                                  + translit(userclass, 'ru', True))
+
                 if password == secondpassword:
                     new_user = User(
                         username=name,
+                        userlogin=userlogin,
                         usersurname=surname,
                         userpassword=generate_password_hash(password),
                         userotchestvo=otchestvo,
@@ -528,6 +541,11 @@ def register():
         password = request.form['password']
         confirm_password = request.form['confirm_password']
 
+        userlogin = (translit(username[:3], 'ru', True)
+                     + translit(usersurname[:3], 'ru', True)
+                     + translit(userotchestvo[:3], 'ru', True)
+                     + translit(userclass, 'ru', True))
+
         session_db = db_session.create_session()
 
         if not all([username, usersurname, userclass, password, confirm_password]):
@@ -549,6 +567,7 @@ def register():
         
         try:
             new_user = User(username=username,
+                            userlogin=userlogin,
                             usersurname=usersurname,
                             userpassword=generate_password_hash(password),
                             userotchestvo=userotchestvo,
@@ -595,14 +614,10 @@ def login():
     elif request.method == 'POST':
         session_db = db_session.create_session()
 
-        username = request.form['username']
-        usersurname = request.form['usersurname']
-        userotchestvo = request.form['userotchestvo']
+        login = request.form['login']
         password = request.form['password']
         
-        user = session_db.query(User).filter_by(username=username,
-                                                usersurname=usersurname,
-                                                userotchestvo=userotchestvo).first()
+        user = session_db.query(User).filter_by(userlogin=login).first()
         
         if user and check_password_hash(user.userpassword, password):
             session['user_id'] = user.id
@@ -624,7 +639,7 @@ def login():
             elif current_user.role == 'Admin':
                 return redirect('/users')
         
-        elif not all([username, usersurname, password]):
+        elif not all([login, password]):
             flash('Все поля обязательны для заполнения', 'error')
             session_db.close()
 
@@ -660,7 +675,8 @@ def profile():
                    'usersurname': current_user.usersurname, 
                    'userotchestvo': current_user.userotchestvo,
                    'userclass': current_user.userclass, 
-                   'current_user_role': current_user.role}
+                   'current_user_role': current_user.role,
+                   'login': current_user.userlogin}
 
         return render_template('common/profile/profile.html', **context)
     
