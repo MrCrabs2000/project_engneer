@@ -42,7 +42,7 @@ def create_full_page_table_pdf(filename, students_data):
 
     table_data = []
 
-    headers = ['Имя', 'Фамилия', 'Отчество', 'Класс', 'Имя при входе', 'Пароль']
+    headers = ['Имя', 'Фамилия', 'Отчество', 'Класс', 'Логин', 'Пароль']
     table_data.append(headers)
 
     for student in students_data:
@@ -111,7 +111,7 @@ def create_simple_pdf(filename, students_data):
         rightMargin=10
     )
 
-    table_data = [['Имя', 'Фамилия', 'Отчество', 'Класс', 'Имя при входе', 'Пароль']]
+    table_data = [['Имя', 'Фамилия', 'Отчество', 'Класс', 'Логин', 'Пароль']]
 
     for student in students_data:
         table_data.append([

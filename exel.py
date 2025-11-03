@@ -8,10 +8,18 @@ import pdf_maker
 from random import shuffle
 
 
+liters = ['a', 'b', 'c', 'd', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w',
+          'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T',
+          'U', 'V', 'W', 'X', 'Y', 'Z']
 
-def generate_password_for_user(liters):
+num = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0']
+
+
+
+def generate_password_for_user():
     shuffle(liters)
-    return ''.join(liters)
+    shuffle(num)
+    return ''.join(liters[:3]) + ''.join(num[0]) + ''.join(liters[3:6]) + ''.join(num[1])
 
 
 
@@ -44,13 +52,9 @@ def import_users():
             otchestvo = translit(otchestvo1, 'ru', True)
             user_class = translit(user_class1, 'ru', True)
 
-            name2 = name1
+            name2 = name[:3] + surname[:3] + otchestvo[:3] + user_class
 
-            existing_user = session.query(User).filter(
-                User.username == name2,
-                User.usersurname == surname1,
-                User.userotchestvo == otchestvo1,
-            ).first()
+            existing_user = session.query(User).filter(User.username == name2).first()
 
             liters = ([el for el in name[:3]] + [el for el in surname[:3]]
                       + [el for el in otchestvo[:3]] + [user_class[-1], user_class[0]])
@@ -63,13 +67,9 @@ def import_users():
                 name2 += str(index)
                 index += 1
 
-                existing_user = session.query(User).filter(
-                    User.username == name2,
-                    User.usersurname == surname1,
-                    User.userotchestvo == otchestvo1,
-                ).first()
+                existing_user = session.query(User).filter(User.username == name2).first()
 
-            password = generate_password_for_user(liters)
+            password = generate_password_for_user()
             pupil = {
                 'last_name': surname1,
                 'first_name': name1,
