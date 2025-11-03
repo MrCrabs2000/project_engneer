@@ -6,8 +6,8 @@
     --primary-hover: hsl(216, 50%, 65%);
     --secondary: hsl(15, 72%, 52%);
     --text-color: hsl(0, 0%, 16%);
-    --warning: hsl(0, 80%, 55%);
-    --warning-hover: hsl(0, 80%, 45%);
+    --danger: hsl(0, 80%, 55%);
+    --danger-hover: hsl(0, 80%, 45%);
     --border: hsl(0, 0%, 70%);
     --shadow-big: 0px 4px 12px 0px hsla(0, 0%, 0%, 0.2);
     --shadow: 0px 2px 4px 0px hsla(0, 0%, 0%, 0.2);
@@ -65,7 +65,7 @@ button.accent {
 }
 
 button.danger {
-    background-color: var(--warning);
+    background-color: var(--danger);
 }
 
 button.accent:hover {
@@ -73,7 +73,7 @@ button.accent:hover {
 }
 
 button.danger:hover {
-    background-color: var(--warning-hover);
+    background-color: var(--danger-hover);
 }
 
 input, select, textarea {

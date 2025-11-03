@@ -11,7 +11,12 @@
     <div class="form">
       <title class="title">{{ surname }} {{ name[0] }}. {{ otchestvo[0] }}.</title>
       <div class="fields-container">
-
+        
+        <div>
+          <label for="login">Логин</label>
+          <input id="login" value="{{ login }}" name="login" placeholder="Логин" readonly>
+        </div>
+        
         <div>
           <label for="name">Имя</label>
           <input id="name" value="{{ name }}" name="name" placeholder="Имя" readonly>
