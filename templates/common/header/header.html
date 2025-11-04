@@ -13,7 +13,7 @@
 
       {% if current_user_role == 'Student' %}
         <button data-target="/">Магазин</button>
-        <button data-target="/history">История</button>
+        <button data-target="/purchases">Покупки</button>
         <button class="profile-btn" data-target="/profile /profile_edit">Профиль</button>
       {% elif current_user_role == 'Admin'%}
         <button data-target="/users">Пользователи</button>

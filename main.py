@@ -13,7 +13,7 @@ from datetime import date
 
 # @app.route('/login/telegram')
 
-# @app.route('/history/<item>')
+# @app.route('/purchases/<item>')
 
 # @app.toute('/users/distribute')
 
@@ -119,8 +119,8 @@ def item(item_id):
 
 
 # НУЖНО ОБГОВОРИТЬ ЛОГИКУ
-@app.route('/history', methods=['GET'])
-def history():
+@app.route('/purchases', methods=['GET'])
+def purchases():
     if current_user.is_authenticated:
         if current_user.role == 'Student':
             session_db = db_session.create_session()
@@ -138,7 +138,7 @@ def history():
                 }
                 items_list.append(item_data)
             print(items_list)
-            return render_template('student/history.html', items_list=items_list,
+            return render_template('student/purchases.html', items_list=items_list,
                                    current_user_role=current_user.role)
         else:
             users = session.query(User).all()
@@ -153,7 +153,7 @@ def history():
                 userr['userbalance'] = user.userbalance
                 all_users.append(userr.copy())
             session.close()
-            return render_template('student/history.html', logged_in=True, username=current_user.username,
+            return render_template('student/purchases.html', logged_in=True, username=current_user.username,
                                     usersurname=current_user.usersurname, userclass=current_user.userclass,
                                     userbalance=current_user.userbalance, userotchestvo=current_user.userotchestvo,
                                     all_users=all_users, colvousers=len(all_users),
