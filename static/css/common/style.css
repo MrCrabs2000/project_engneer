@@ -5,7 +5,8 @@
     --primary: hsl(216, 50%, 70%);
     --primary-hover: hsl(216, 50%, 65%);
     --secondary: hsl(15, 72%, 52%);
-    --text-color: hsl(0, 0%, 16%);
+    --text-color: hsl(0, 0%, 15%);
+    --text-muted: hsl(0, 0%, 25%);
     --danger: hsl(0, 80%, 55%);
     --danger-hover: hsl(0, 80%, 45%);
     --border: hsl(0, 0%, 70%);
