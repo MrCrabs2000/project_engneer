@@ -52,6 +52,7 @@
     align-items: center;
     justify-content: center;
     gap: 4px;
+    font-weight: 700;
 }
 
 .item-price > img {
