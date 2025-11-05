@@ -34,7 +34,7 @@
     flex-direction: column;
     gap: 8px;
     color: var(--text-color);
-    font-size: 30px;
+    font-size: 26px;
 }
 
 .secondary-info {
@@ -42,6 +42,7 @@
     flex-wrap: wrap;
     gap: 4px;
     width: 100%;
+    color: var(--text-muted);
 }
 
 .secondary-info > div {
@@ -50,7 +51,7 @@
     font-size: 16px;
     background-color: var(--bg);
     border: none;
-    border-radius: 0.6em;
+    border-radius: 16px;
     box-shadow: var(--shadow);
 }
 

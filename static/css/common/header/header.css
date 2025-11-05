@@ -1,11 +1,12 @@
 header {
-    height: 80px;
+    height: 70px;
     max-width: 1400px;
     width: 100%;
-    margin: 0 auto 0 auto;
+    margin: 0 auto;
     border-radius: 0 0 16px 16px;
     box-shadow: 0px 0px 6px 0px rgba(0,0,0,0.5);
     background-color: var(--primary);
+    color: var(--text-light);
 }
 
 .header-container {
@@ -28,9 +29,10 @@ header {
 }
 
 .logo {
-    height: 70px;
+    height: 58px;
     width: auto; 
     border-radius: 16px;
+    background-color: white;
 }
 
 .balance {
@@ -54,11 +56,11 @@ header {
 }
 
 .menu {
-    margin-right: 8px;
+    margin-right: 12px;
     display: flex;
     gap: 8px;
     align-items: center;
-    font-size: 30px;
+    font-size: 22px;
 }
 
 .menu button {
@@ -67,17 +69,15 @@ header {
     justify-content: center;
     align-items: center;
     background-color: transparent;
-    border: 0;
-    border-radius: 0.6em;
+    border: none;
     box-shadow: none;
     padding: 0 20px;
-    padding-top: 4px;
-    padding-bottom: 8px;
+    padding: 8px 16px;
     transition: color 0.2s ease;
     transition: background-color 0.2s ease;
 }
 
-.menu button::after {
+/* .menu button::after {
     content: '';
     width: 0px;
     height: 4px;
@@ -89,19 +89,25 @@ header {
     content: '';
     width: calc(100% + 0px);
     border-radius: 100px;
-}
+} */
 
 .menu button:hover {
     /* color: var(--secondary); */
     background-color: hsla(0, 0%, 10%, 0.15);
 }
 
-.menu button.active::after {
+.menu button.active {
+    background-color: hsl(216, 85%, 68%);
+    box-shadow: var(--shadow);
+}
+
+/* .menu button.active::after {
     content: '';
     width: calc(100% + 0px);
     border-radius: 100px;
     transition: none;
-}
+    
+} */
 
 @media (max-width: 1440px) {
     header {
