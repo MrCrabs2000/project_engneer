@@ -433,7 +433,8 @@ def items_users():
     for elem in users_items:
         users.append(session_db.query(User).filter_by(id=elem.userid).first())
     session_db.close()
-    return render_template('admin/items/items_users.html', users_items=users_items, users=users, kolvo_users=len(users_items))
+    return render_template('admin/items/items_users.html', users_items=users_items, users=users,
+                           kolvo_users=len(users_items), current_user_role=current_user.role)
 
 
 @app.route('/items/add', methods=['GET', 'POST'])
@@ -544,85 +545,6 @@ def classes():
         return redirect('/login')
 
 
-# AUTHORIZATION ROUTES
-@app.route('/register', methods=['GET', 'POST'])
-def register():
-    if request.method == 'GET':
-        return render_template('authorization/register.html')
-
-    elif request.method == 'POST':
-        username = request.form['username']
-        usersurname = request.form['usersurname']
-        userotchestvo = request.form['userotchestvo']
-        userclass = request.form['userclass']
-        password = request.form['password']
-        confirm_password = request.form['confirm_password']
-
-        userlogin = (translit(username[:3], 'ru', True)
-                     + translit(usersurname[:3], 'ru', True)
-                     + translit(userotchestvo[:3], 'ru', True)
-                     + translit(userclass, 'ru', True))
-
-        session_db = db_session.create_session()
-
-        if not all([username, usersurname, userclass, password, confirm_password]):
-            flash('Все поля обязательны для заполнения', 'error')
-            session_db.close()
-            return render_template('authorization/register.html')
-        elif password != confirm_password:
-            flash('Пароли не совпадают', 'error')
-            session_db.close()
-            return render_template('authorization/register.html')
-        elif len(password) < 6:
-            flash('Пароль должен содержать минимум 6 символов', 'error')
-            session_db.close()
-            return render_template('authorization/register.html')
-        elif session_db.query(User).filter(User.username == username).first():
-            flash('Пользователь с таким именем уже существует', 'error')
-            session_db.close()
-            return render_template('authorization/register.html')
-        
-        try:
-            new_user = User(username=username,
-                            userlogin=userlogin,
-                            usersurname=usersurname,
-                            userpassword=generate_password_hash(password),
-                            userotchestvo=userotchestvo,
-                            userclass=userclass,
-                            role='Student',
-                            userbalance=0,)
-            
-            session['user_id'] = new_user.id
-            session['username'] = new_user.username
-            session['usersurname'] = new_user.usersurname
-            session['userclass'] = new_user.userclass
-            session['role'] = new_user.role
-            session['userotchestvo'] = new_user.userotchestvo
-            session['userbalance'] = new_user.userbalance
-
-            session_db.add(new_user)
-            session_db.commit()
-
-            login_user(new_user)
-
-            flash('Вы успешно зарегистрировались!', 'success')
-        except Exception:
-            session_db.rollback()
-            flash('Ошибка при регистрации!', 'error')
-        finally:
-            session_db.close()
-        
-        if current_user.role == 'Student':
-            return redirect('/')
-        elif current_user.role == 'Teacher':
-            return redirect('/classes')
-        elif current_user.role == 'Admin':
-            return redirect('/users')
-        
-    elif not(current_user.is_authenticated):
-        return redirect('/login')
-
-
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'GET':
@@ -701,44 +623,6 @@ def profile():
         return redirect('/login')
 
 
-@app.route('/profile/edit', methods=['GET', 'POST'])
-def edit_profile():
-    if current_user.is_authenticated:
-        
-        if request.method == 'GET':
-            context = {'username': current_user.username,
-                       'usersurname': current_user.usersurname, 
-                       'userotchestvo': current_user.userotchestvo,
-                       'userclass': current_user.userclass, 
-                       'current_user_role': current_user.role, 
-                       'userbalance': current_user.userbalance}
-            
-            return render_template('common/profile/profile_edit.html', **context)
-            
-        elif request.method == 'POST':
-            session_db = db_session.create_session()
-
-            user = session_db.query(User).filter_by(id=current_user.id).first()
-            new_username = request.form['username']
-            new_usersurname = request.form['usersurname']
-            new_userclass = request.form['userclass']
-
-            if user and all([new_usersurname, new_username, new_userclass]):
-                user.username = new_username
-                user.usersurname = new_usersurname
-                user.userclass = new_userclass
-                session_db.commit()
-                session['username'] = new_username
-                session['usersurname'] = new_usersurname
-                session['userclass'] = new_userclass
-                session_db.close()
-
-                return redirect('/profile')
-            
-    elif not(current_user.is_authenticated):
-        return redirect('/login')
-
-
 @app.route('/login/telegram')
 def login_telegram():
     data = {
@@ -754,9 +638,6 @@ def login_telegram():
     else:
         return 'Ошибка авторизации'
 
-
-
-# ^^^ КОММЕНТАРИЯ В САМОМ ВЕРХУ ^^^
 
 @app.route('/<class_name>/<teacherid>', methods=['GET'])
 def class_page(class_name, teacherid):
