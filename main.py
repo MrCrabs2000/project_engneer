@@ -425,6 +425,17 @@ def items():
         return redirect('/login')
 
 
+@app.route('/items_users', methods=['GET', 'POST'])
+def items_users():
+    session_db = db_session.create_session()
+    users_items = session_db.query(Item_user).all()
+    users = []
+    for elem in users_items:
+        users.append(session_db.query(User).filter_by(id=elem.userid).first())
+    session_db.close()
+    return render_template('admin/items/items_users.html', users_items=users_items, users=users, kolvo_users=len(users_items))
+
+
 @app.route('/items/add', methods=['GET', 'POST'])
 def add_item():
     if current_user.is_authenticated and current_user.role == 'Admin':
