@@ -38,7 +38,14 @@
         </label>
       </div>
         <!-- <button class="filter-btn">Фильтр</button> -->
-      <button class="accent" type="button" onclick="document.location='/users/add'"></button>
+      <button type="button" onclick="distributePopupToggle()">Раздать</button>
+      <form id="distribute-popup" method="POST">
+       
+        <input type="number" name='razdbalance' min="0" placeholder="Число">
+        <button class="accent" type="submit">Раздать</button>
+      </form>
+
+      <button class="accent add-user-btn" type="button" onclick="document.location='/users/add'"></button>
       {# {% if adedusers == '0' %} #}
       
 
@@ -62,6 +69,15 @@
       </div>
     {% endfor %}
   </div>
+
+  <script>
+  
+    function distributePopupToggle() {
+      const  popup = document.getElementById('distribute-popup');
+      popup.classList.toggle('active');
+    }
+  
+  </script>
 
   <script>
 

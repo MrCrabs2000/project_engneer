@@ -6,7 +6,7 @@
     width: fit-content;
     margin: 0px auto;
     padding: 20px;
-    font-size: 28px;
+    font-size: 24px;
     background-color: var(--bg);
     border-radius: 0.6em;
     box-shadow: var(--shadow-big);
@@ -21,7 +21,7 @@
 .fields-container > div {
     display: flex;
     flex-direction: column;
-    width: 400px;
+    width: 360px;
 }
 
 .fields-container > div .select {
@@ -29,8 +29,8 @@
 }
 
 .fields-container > div > label {
-    color: #494949;
-    font-size: 20px;
+    color: var(--text-muted);
+    font-size: 0.71em;
     margin-left: 0.55em;
 }
 
@@ -87,7 +87,7 @@
 }
 
 .btns-container button, .btns-container input {
-    width: 400px;
+    width: 360px;
     padding-bottom: 0.15em;
     padding-top: 0.15em;
 }

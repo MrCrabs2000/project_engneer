@@ -23,3 +23,33 @@
     aspect-ratio: 1 / 1;
     height: 1em;
 }
+
+#distribute-popup {
+    visibility: hidden;
+    position: absolute;
+    top: 150px;
+    margin-right: 9px;
+    z-index: 1000;
+    width: 180px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 8px 8px;
+    background-color: var(--bg);
+    border-radius: 16px;
+    box-shadow: var(--shadow-big);
+}
+
+#distribute-popup > div {
+    font-weight: 600;
+    align-self: center;
+}
+
+#distribute-popup.active {
+    visibility: visible;
+}
+
+
+#distribute-popup > div > div {
+    width: 100%;
+}

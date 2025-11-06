@@ -8,6 +8,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 import os
 from exel import import_users
 from datetime import date
+import copy
 
 # Педелайте роуты, как они ниже расписаны, пожалуйста. Это не только мне надо, но и пользователям.
 
@@ -173,7 +174,7 @@ def users():
         search_text = request.args.get('q', '')
         filterr = request.args.get('filter', 'Фамилия')
 
-        if search_text:
+        if search_text and filterr:
             if filterr == 'Класс':
                 users = session_db.query(User).filter(User.userclass.like(f"%{search_text}%")).all()
             elif filterr == 'Фамилия':
@@ -188,19 +189,25 @@ def users():
                     for user in users:
                         if user.role == 'Teacher':
                             user.userbalance = int(user.userbalance) + int(razdbal)
-                    session_db.commit()
+                            session_db.commit()
                 except Exception as e:
                     print(f"Галя, у нас ошибка: {e}")
                     session_db.rollback()
 
+            session_db.close()
+
+            return redirect(f'/users?q={search_text}&filter={filterr}')
+        
+
         context = {
-            'users': users,
+            'users': copy.deepcopy(users),
             'current_user_role': current_user.role,
             'search_text': search_text,
             'filter': filterr
         }
 
         session_db.close()
+
         return render_template('admin/users/users_search.html', **context)
 
     elif not(current_user.is_authenticated):

@@ -5,6 +5,7 @@
     margin: 30px auto 0 auto;
     max-width: 1400px;
     width: 100%;
+    font-size: 22px;
 }
 
 .search-container > .left {
@@ -34,7 +35,7 @@
     gap: 8px;
 }
 
-.right button {
+.add-user-btn {
     position: relative;
     display: inline-block;
     align-items: center;
@@ -47,7 +48,7 @@
     
 }
 
-.right button:after, .right button:before {
+.add-user-btn:after, .add-user-btn:before {
     content: '';
     position: absolute;
     top: 50%;
@@ -57,13 +58,13 @@
     border-radius: 100px;
 }
 
-.right button:before{
+.add-user-btn:before{
     width: 4px;
     height: 20px;
 
 }
 
-.right button:after{
+.add-user-btn:after{
     width: 20px;
     height: 4px;
 }
