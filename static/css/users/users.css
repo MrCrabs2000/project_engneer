@@ -1,5 +1,6 @@
 .name {
     word-break: break-all;
+    color: var(--primary)
 }
 
 .class, .role, .user-balance {

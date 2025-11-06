@@ -13,7 +13,7 @@
     gap: 8px;
     width: 40%;
     max-width: 600px;
-    font-size: 26px;
+    font-size: 22px;
 }
 
 .search-bar {
@@ -31,7 +31,7 @@
 .search-container > .right {
     display: flex;
     justify-content: flex-end;
-    gap: 20px;
+    gap: 8px;
 }
 
 .right button {
@@ -39,6 +39,7 @@
     display: inline-block;
     align-items: center;
     justify-content: center;
+    padding: 0;
     aspect-ratio: 1/1;
     height: 40px;
     font-size: 30px;
@@ -51,7 +52,7 @@
     position: absolute;
     top: 50%;
     left: 50%;
-    background-color: var(--text-color);
+    background-color: var(--text-light);
     transform: translate(-50%, -50%);
     border-radius: 100px;
 }
@@ -69,18 +70,24 @@
 
 .filters {
     display: flex;
+    align-items: center;
     justify-content: center;
     width: fit-content;
     gap: 10px;
+    padding: 0 16px;
+    border-radius: 16px;
+    background-color: var(--bg-light);
+    box-shadow: var(--shadow);
 }
 
 .filters-header {
-    font-size: 26px;
+    font-size: 22px;
     font-weight: 600;
 }
 
 .radio-button-label {
     font-size: 20px;
+    align-items: center;
 }
 
 @media (max-width: 1440px) {
