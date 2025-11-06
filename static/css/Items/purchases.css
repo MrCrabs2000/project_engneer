@@ -1,0 +1,21 @@
+.purchase-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.purchase-top-info {
+    display: flex;
+    justify-content: space-between;
+    font-size: 20px;
+    color: var(--text-muted);
+}
+
+.status.can-be-received {
+    color: var(--success);
+}
+
+.status.accepted {
+    color: var(--primary);
+}

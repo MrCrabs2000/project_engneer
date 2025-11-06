@@ -135,7 +135,8 @@ def purchases():
                     'name': item.name,
                     'count': item.count,
                     'photo': item.photo,
-                    'description': item.description
+                    'description': item.description,
+                    'date': item.date
                 }
                 items_list.append(item_data)
             print(items_list)
