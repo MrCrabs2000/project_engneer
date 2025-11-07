@@ -6,10 +6,20 @@ main {
 }
 
 .block-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     margin-bottom: 12px;
     font-size: 28px;
     font-weight: 600;
 
+}
+
+.block-header > .buttons {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 20px;
 }
 
 .user-block {

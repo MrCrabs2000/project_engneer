@@ -59,7 +59,7 @@ button, .upload-btn {
 }
 
 button:hover, .upload-btn:hover {
-    background-color: var(--bg-dark);
+    background-color: var(--bg);
 }
 
 button.accent {
@@ -69,6 +69,7 @@ button.accent {
 
 button.danger {
     background-color: var(--danger);
+    color: var(--text-light);
 }
 
 button.accent:hover {

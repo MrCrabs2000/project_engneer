@@ -4,34 +4,41 @@
 
 {% block links %}
   <link rel="stylesheet" href="/static/css/common/form.css">
+  <link rel="stylesheet" href="/static/css/users/classes.css">
+  <link rel="stylesheet" href="/static/css/users/user.css">
 {% endblock %}
 
 {% block content %}
-  <div class="centering-container">
-    <form class="form" method="POST" enctype="multipart/form-data">
-      <title class="title">{{ surname }} {{ name[0] }}. {{ otchestvo[0] }}.</title>
-      <div class="fields-container">
+  <main>
 
+    <form class="user-block info" method="post" enctype="multipart/form-data">
+    
+      <div class="block-header">
+        <span>Информация</span>
+        <div class="buttons">
+          <button class="accent" type="submit">Подтвердить</button>
+        </div>
+      </div>
+
+      <div class="fields-container user">
+        
         <div>
           <label for="login">Логин (не изменяем)</label>
-          <input id="login" value="{{ login }}" name="login" placeholder="Логин" readonly>
+          <input id="login" value="{{ login }}" name="login" placeholder="Логин">
         </div>
-
+        
         <div>
           <label for="name">Имя</label>
           <input id="name" value="{{ name }}" name="name" placeholder="Имя">
         </div>
-
         <div>
           <label for="surname">Фамилия</label>
           <input id="surname" value="{{ surname }}" name="surname" placeholder="Фамилия">
         </div>
-
         <div>
           <label for="otchestvo">Отчество</label>
           <input id="otchestvo" value="{{ otchestvo }}" name="otchestvo" placeholder="Отчество">
         </div>
-
         <div>
           <label for="role">Роль</label>
           <div class="select">
@@ -52,24 +59,35 @@
             </select>
           </div>
         </div>
-
         <div>
           <label for="class">Класс</label>
           <input id="class" value="{{ class }}" name="class" placeholder="Класс">
         </div>
-
         <div>
           <label for="balance">Баланс</label>
           <input id="balance" name="balance" oninput="this.value = this.value.replace(/[^0-9+]/g, '')" value="{{ balance }}" placeholder="Баланс">
         </div>
-
       </div>
-
-      <div class="btns-container">
-        <button class="accent" type="submit">Подтвердить</button>
-        <button type="button" onclick="document.location = '/users/{{ id }}'">Отмена</button>
-      </div>
-
+      
     </form>
-  </div>
+    {% if role == 'Teacher' %}
+    
+    <div class="user-block">
+      <span class="block-header">Классы</span>
+      <div class="classes-grid user">
+        {% for class in classes %}
+        <div class="class-card">
+          <a href="/classes/{{ class}}">
+            <div class="class-content">
+              <div>{{ class }}</div>
+            </div>
+          </a>
+        </div>
+        {% endfor %}
+      </div>
+    
+    </div>
+    {% endif %}
+    
+  </main>
 {% endblock %}
