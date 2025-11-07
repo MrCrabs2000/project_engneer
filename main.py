@@ -6,23 +6,10 @@ from Classes import Item_user, User, Item_shop
 from tgbotiha import check_response
 from werkzeug.security import generate_password_hash, check_password_hash
 import os
-from exel import import_users
+from exel import import_users, generate_password_for_user
 from datetime import date
 import copy
 
-# Педелайте роуты, как они ниже расписаны, пожалуйста. Это не только мне надо, но и пользователям.
-
-# @app.route('/login/telegram')
-
-# @app.route('/purchases/<item>')
-
-# @app.toute('/users/distribute')
-
-# @app.route('/items/<item>)
-# @app.route('/items/<item>/edit)
-
-# @app.route('/classes/<class>')
-# @app.route('/classes/<class>/<student>')
 
 app = Flask(__name__)
 app.secret_key = '25112008'
@@ -32,6 +19,28 @@ login_manager.init_app(app)
 login_manager.login_view = 'login'
 os.makedirs('db', exist_ok=True)
 db_session.global_init(True, 'db/users.db')
+
+
+session = db_session.create_session()
+admin = session.query(User).filter_by(userlogin='Admin').first()
+try:
+    if not admin:
+        main_admin = User(
+            username='Admin',
+            usersurname='Admin',
+            userotchestvo='Admin',
+            userlogin='Admin',
+            userpassword=generate_password_for_user(),
+            role='Admin',
+            userbalance='0',
+            userclass='x',
+            adedusers='False'
+        )
+        session.add(main_admin)
+        session.commit()
+except Exception:
+    session.rollback()
+session.close()
 
 
 @login_manager.user_loader
@@ -95,6 +104,7 @@ def item(item_id):
             photo=item_shop.photo,
             date=date.today()
             )
+
             session_db.add(new_item)
             session_db.commit()
 
@@ -110,11 +120,34 @@ def item(item_id):
 
         return render_template('admin/items/item.html', **context)
 
-    elif not(current_user.is_authenticated):
+    elif not current_user.is_authenticated:
         return redirect('/login')
 
 
-# НУЖНО ОБГОВОРИТЬ ЛОГИКУ
+def make():
+    session = db_session.create_session()
+    admin = session.query(User).filter_by(userlogin='Adminchik').first()
+    try:
+        if not admin:
+            adminchik = User(
+                username='Adminchik',
+                usersurname='Adminchik',
+                userotchestvo='Adminchik',
+                userlogin='Adminchik',
+                userpassword=generate_password_for_user(),
+                role='Admin',
+                userbalance='0',
+                userclass='x',
+                adedusers='False'
+            )
+            session.add(adminchik)
+            session.commit()
+            print(adminchik.userpassword)
+    except Exception:
+        session.rollback()
+    session.close()
+
+
 @app.route('/purchases', methods=['GET'])
 def purchases():
     if current_user.is_authenticated:
@@ -156,7 +189,7 @@ def purchases():
                                     all_users=all_users, colvousers=len(all_users),
                                    current_user_role=current_user.role)
         
-    elif not(current_user.is_authenticated):
+    elif not current_user.is_authenticated:
         return redirect('/login')
 
     
@@ -206,7 +239,7 @@ def users():
 
         return render_template('admin/users/users_search.html', **context)
 
-    elif not(current_user.is_authenticated):
+    elif not current_user.is_authenticated:
         return redirect('/login')
 
 
@@ -232,7 +265,7 @@ def user(user_id):
         
         return render_template('admin/users/user.html', **context)
     
-    elif not(current_user.is_authenticated):
+    elif not current_user.is_authenticated:
         return redirect('/login')
     
 
@@ -292,8 +325,7 @@ def edit_user(user_id):
             session_db.close()
 
             return redirect(f'/users/{user_id}')
-        
-    elif not(current_user.is_authenticated):
+    elif not current_user.is_authenticated:
         return redirect('/login')
 
         
@@ -310,7 +342,7 @@ def delete_user(user_id):
 
         return redirect('/users')
     
-    elif not(current_user.is_authenticated):
+    elif not current_user.is_authenticated:
         return redirect('/login')
 
 
@@ -389,7 +421,7 @@ def add_user():
 
                     return redirect('/users')
                 
-    elif not(current_user.is_authenticated):
+    elif not current_user.is_authenticated:
         return redirect('/login')
 
 
@@ -424,20 +456,23 @@ def items():
 
         return render_template('admin/items/items_search.html', **context)
 
-    elif not (current_user.is_authenticated):
+    elif not current_user.is_authenticated:
         return redirect('/login')
 
 
 @app.route('/items_users', methods=['GET', 'POST'])
 def items_users():
-    session_db = db_session.create_session()
-    users_items = session_db.query(Item_user).all()
-    users = []
-    for elem in users_items:
-        users.append(session_db.query(User).filter_by(id=elem.userid).first())
-    session_db.close()
-    return render_template('admin/items/items_users.html', users_items=users_items, users=users,
-                           kolvo_users=len(users_items), current_user_role=current_user.role)
+    if current_user.is_authenticated and current_user.role == 'Admin':
+        session_db = db_session.create_session()
+        users_items = session_db.query(Item_user).all()
+        users = []
+        for elem in users_items:
+            users.append(session_db.query(User).filter_by(id=elem.userid).first())
+        session_db.close()
+        return render_template('admin/items/items_users.html', users_items=users_items, users=users,
+                               kolvo_users=len(users_items), current_user_role=current_user.role)
+    elif not current_user.is_authenticated:
+        return redirect('/login')
 
 
 @app.route('/items/add', methods=['GET', 'POST'])
@@ -461,7 +496,7 @@ def add_item():
 
             return redirect('/items')
         
-    elif not(current_user.is_authenticated):
+    elif not current_user.is_authenticated:
         return redirect('/login')
 
 
@@ -479,7 +514,7 @@ def delete_item(item_id):
 
         return render_template('admin/items/items_search')
 
-    elif not(current_user.is_authenticated):
+    elif not current_user.is_authenticated:
         return redirect('/login')
 
 
@@ -527,7 +562,7 @@ def edit_item(item_id):
             session_db.commit()
             return redirect(f'/items')
 
-    elif not(current_user.is_authenticated):
+    elif not current_user.is_authenticated:
         return redirect('/login')
 
 
@@ -543,8 +578,8 @@ def classes():
                    'teacherid': current_user.id}
 
         return render_template('teacher/classes_list.html', **context, role=current_user.role)
-    
-    elif not(current_user.is_authenticated):
+
+    elif not current_user.is_authenticated:
         return redirect('/login')
 
 
@@ -592,9 +627,6 @@ def login():
             session_db.close()
 
             return render_template('authorization/login.html')
-        
-    elif not(current_user.is_authenticated):
-        return redirect('/login')
 
 
 @app.route('/logout', methods=['GET'])
@@ -603,9 +635,8 @@ def logout():
         logout_user()
         
         return redirect('/login')
-    
-    elif not(current_user.is_authenticated):
-        return redirect('/login')
+
+    return redirect('/login')
     
 
 
@@ -622,7 +653,7 @@ def profile():
 
         return render_template('common/profile/profile.html', **context)
     
-    elif not(current_user.is_authenticated):
+    elif not current_user.is_authenticated:
         return redirect('/login')
 
 
@@ -679,7 +710,8 @@ def class_page(class_name, teacherid):
                                    userbalance=teacher.userbalance, userotchestvo=teacher.userotchestvo,
                                    role=teacher.role, class_name=class_name, students=students_list,
                                    students_count=len(students_list), tid=teacher.id, adminid=current_user.id)
-    return redirect(url_for('login'))
+    elif not current_user.is_authenticated:
+        return redirect(url_for('login'))
 
 
 @app.route('/student/<iduser>/<teacherid>', methods=['GET', 'POST'])
@@ -740,6 +772,8 @@ def student_page(iduser, teacherid):
                                    current_user_role=teacher.role)
 
         return redirect(url_for('main_page'))
+    elif not current_user.is_authenticated:
+        return redirect(url_for('login'))
 
 # ^^^ КОММЕНТАРИЯ В САМОМ ВЕРХУ ^^^
 
@@ -756,6 +790,8 @@ def enteracc(userid):
                                teacersurname=teacher.usersurname, teacherotchestvo=teacher.userotchestvo,
                                role=teacher.role, userbalance=teacher.userbalance, teacherid=teacher.id,
                                teacher_classes=teacher.userclass.split())
+    elif not current_user.is_authenticated:
+        return redirect(url_for('login'))
 
 
 if __name__ == "__main__":

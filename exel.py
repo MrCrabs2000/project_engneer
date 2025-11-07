@@ -40,12 +40,14 @@ def import_users():
         while (sheet[f'A{row}'].value is not None and
                sheet[f'B{row}'].value is not None and
                sheet[f'C{row}'].value is not None and
-               sheet[f'D{row}'].value is not None):
+               sheet[f'D{row}'].value is not None and
+               sheet[f'E{row}'].value is not None):
 
             name1 = (sheet[f'A{row}'].value, 'ru', True)[0]
             surname1 = (sheet[f'B{row}'].value, 'ru', True)[0]
             otchestvo1 = (sheet[f'C{row}'].value, 'ru', True)[0]
             user_class1 = (sheet[f'D{row}'].value, 'ru', True)[0]
+            role = sheet[f'E{row}'].value[0]
 
             name = translit(name1, 'ru', True)
             surname = translit(surname1, 'ru', True)
@@ -83,7 +85,7 @@ def import_users():
                 userpassword=generate_password_hash(password),
                 userotchestvo=otchestvo1,
                 userclass=user_class1,
-                role='Student',
+                role=role,
                 userbalance='0'
             )
             session.add(user)
@@ -97,4 +99,3 @@ def import_users():
 
     finally:
         session.close()
-
