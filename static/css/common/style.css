@@ -46,7 +46,7 @@ main {
 }
 
 button, .upload-btn {
-    padding: 0.2em 0.7em;
+    padding: 0.15em 0.7em;
     font-family: inherit;
     font-size: inherit;
     font-weight: 600;

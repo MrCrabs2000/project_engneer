@@ -9,7 +9,6 @@
 }
 
 .found-element-card {
-    padding: 8px 8px;
     background-color: var(--bg-light);
     border: 2px solid transparent;
     border-radius: 16px;
@@ -24,8 +23,12 @@
 }
 
 .found-element-card a {
+    box-sizing: border-box;
+    display: block;
     color: var(--text-color);
     height: 100%;
+    width: 100%;
+    padding: 8px 8px;
     text-decoration: none;
 }
 
