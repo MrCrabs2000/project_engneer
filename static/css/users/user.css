@@ -1,0 +1,41 @@
+main {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    margin-top: 30px;
+}
+
+.block-header {
+    margin-bottom: 12px;
+    font-size: 28px;
+    font-weight: 600;
+
+}
+
+.user-block {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    max-width: 1400px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 16px;
+    background-color: var(--bg);
+    border-radius: 16px;
+}
+
+.fields-container.user {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 16px;
+}
+
+.fields-container.user > div {
+    width: auto;
+    font-size: 22px;
+}
+
+.classes-grid.user {
+    margin: 0;
+    padding: 0;
+}

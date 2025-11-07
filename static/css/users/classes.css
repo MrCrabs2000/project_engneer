@@ -8,7 +8,7 @@
 
 .classes-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
     gap: 1rem;
     padding: 1rem 0px;
     max-width: 1400px;
@@ -18,9 +18,9 @@
 .class-card {
     width: 100%;
     aspect-ratio: 1 / 1;
-    background-color: var(--primary);
+    background-color: var(--bg-light);
     border-radius: 16px;
-    box-shadow: 0 4px 3px 0 rgba(0,0,0,0.2);
+    box-shadow: var(--shadow);
     transition: transform 0.3s;
 }
 
@@ -40,8 +40,8 @@
     flex-direction: column;
     height: 100%;
     width: 100%;
-    color: var(--text-color);
-    font-size: 50px;
+    color: var(--primary);
+    font-size: 32px;
     font-weight: 700;
     word-wrap: break-word;
 }
