@@ -108,6 +108,7 @@ def item(item_id):
                     count=int(amount),
                     date=date.today()
                 )
+                print(item_shop.id)
 
                 session_db.add(new_item)
                 session_db.commit()
@@ -175,7 +176,6 @@ def purchases():
                     'name': item_shop.name
                 }
                 items_list.append(item_data)
-            print(items_list)
             return render_template('student/purchases.html', items_list=items_list,
                                    current_user_role=current_user.role)
         else:
