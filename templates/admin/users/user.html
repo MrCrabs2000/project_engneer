@@ -4,75 +4,99 @@
 
 {% block links %}
   <link rel="stylesheet" href="/static/css/common/form.css">
+  <link rel="stylesheet" href="/static/css/users/classes.css">
+  <link rel="stylesheet" href="/static/css/users/user.css">
 {% endblock %}
 
 {% block content %}
-  <div class="centering-container">
-    <div class="form">
-      <title class="title">{{ surname }} {{ name[0] }}. {{ otchestvo[0] }}.</title>
-      <div class="fields-container">
-        
-        <div>
-          <label for="login">Логин (не изменяем)</label>
-          <input id="login" value="{{ login }}" name="login" placeholder="Логин" readonly>
-        </div>
-        
-        <div>
-          <label for="name">Имя</label>
-          <input id="name" value="{{ name }}" name="name" placeholder="Имя" readonly>
-        </div>
+    
+    <main>
 
-        <div>
-          <label for="surname">Фамилия</label>
-          <input id="surname" value="{{ surname }}" name="surname" placeholder="Фамилия" readonly>
-        </div>
-
-        <div>
-          <label for="otchestvo">Отчество</label>
-          <input id="otchestvo" value="{{ otchestvo }}" name="otchestvo" placeholder="Отчество" readonly>
-        </div>
-
-        <div>
-          <label for="role">Роль</label>
-          <div class="select">
-            <select id="role" name="role" disabled>
-            {% if role == 'Student' %}
-              <option selected>Student</option>
-              <option>Teacher</option>
-              <option>Admin</option>
-            {% elif role == 'Teacher' %}
-              <option>Student</option>
-              <option selected>Teacher</option>
-              <option>Admin</option>
-            {% else %}
-              <option>Student</option>
-              <option>Teacher</option>
-              <option selected>Admin</option>
-            {% endif %}
-            </select>
+      <div class="user-block info">
+        <div class="block-header">Информация</div>
+        <div class="fields-container user">
+          
+          <div>
+            <label for="login">Логин (не изменяем)</label>
+            <input id="login" value="{{ login }}" name="login" placeholder="Логин" readonly>
           </div>
+          
+          <div>
+            <label for="name">Имя</label>
+            <input id="name" value="{{ name }}" name="name" placeholder="Имя" readonly>
+          </div>
+
+          <div>
+            <label for="surname">Фамилия</label>
+            <input id="surname" value="{{ surname }}" name="surname" placeholder="Фамилия" readonly>
+          </div>
+
+          <div>
+            <label for="otchestvo">Отчество</label>
+            <input id="otchestvo" value="{{ otchestvo }}" name="otchestvo" placeholder="Отчество" readonly>
+          </div>
+
+          <div>
+            <label for="role">Роль</label>
+            <div class="select">
+              <select id="role" name="role" disabled>
+              {% if role == 'Student' %}
+                <option selected>Student</option>
+                <option>Teacher</option>
+                <option>Admin</option>
+              {% elif role == 'Teacher' %}
+                <option>Student</option>
+                <option selected>Teacher</option>
+                <option>Admin</option>
+              {% else %}
+                <option>Student</option>
+                <option>Teacher</option>
+                <option selected>Admin</option>
+              {% endif %}
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label for="class">Класс</label>
+            <input id="class" value="{{ class }}" name="class" placeholder="Класс" readonly>
+          </div>
+
+          <div>
+            <label for="balance">Баланс</label>
+            <input id="balance" name="balance" oninput="this.value = this.value.replace(/[^0-9+]/g, '')" value="{{ balance }}" placeholder="Баланс" readonly>
+          </div>
+
         </div>
 
-        <div>
-          <label for="class">Класс</label>
-          <input id="class" value="{{ class }}" name="class" placeholder="Класс" readonly>
-        </div>
-
-        <div>
-          <label for="balance">Баланс</label>
-          <input id="balance" name="balance" oninput="this.value = this.value.replace(/[^0-9+]/g, '')" value="{{ balance }}" placeholder="Баланс" readonly>
-        </div>
-
+        {# <div class="btns-container">
+          <button onclick="document.location='/users/{{ id }}/edit'">Редактировать</button>
+          <button class="danger" onclick="document.location='/users/{{ id }}/delete'">Удалить</button>
+        </div> #}
+        
       </div>
 
-      <div class="btns-container">
-        <button onclick="document.location='/users/{{ id }}/edit'">Редактировать</button>
-        <button class="danger" onclick="document.location='/users/{{ id }}/delete'">Удалить</button>
+      {% if role == 'Teacher' %}
+      
+      <div class="user-block">
+        <span class="block-header">Классы</span>
+        <div class="classes-grid user">
+          {% for class in classes %}
+          <div class="class-card">
+            <a>
+              <div class="class-content">
+                <div>{{ class }}</div>
+              </div>
+            </a>
+          </div>
+          {% endfor %}
+        </div>
+      
       </div>
+
+      {% endif %}
+    
       
     </div>
-    {% if role == 'Teacher' %}
-        <button onclick="document.location='/enterteach/{{ id }}'">Войти в пользователя</button>
-    {% endif %}
-  </div>
+  </main>
 {% endblock %}
