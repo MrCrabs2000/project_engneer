@@ -83,31 +83,26 @@ def item(item_id):
         if request.method == 'POST':
             amount = request.form['item_count']
 
-            if int(user.userbalance) >= (int(item_shop.price) * int(amount)) and item_user is None and item_shop.count - int(amount) >= 0:
-                user.userbalance = int(user.userbalance) - (int(item_shop.price) * int(amount))
-                item_shop.count -= int(amount)
+            user.userbalance = int(user.userbalance) - (int(item_shop.price) * int(amount))
+            item_shop.count -= int(amount)
 
-                new_item = Item_user(
-                userid=current_user.id,
-                status='На рассмотрении',
-                name=item_shop.name,
-                count=int(amount),
-                description=item_shop.description,
-                photo=item_shop.photo,
-                date=date.today()
-                )
-                session_db.add(new_item)
-                session_db.commit()
+            new_item = Item_user(
+            userid=current_user.id,
+            status='На рассмотрении',
+            name=item_shop.name,
+            count=int(amount),
+            description=item_shop.description,
+            photo=item_shop.photo,
+            date=date.today()
+            )
+            session_db.add(new_item)
+            session_db.commit()
 
-            elif (int(user.userbalance) >= (int(item_shop.price) * int(amount))
-                  and item_user
-                  and item_shop.count - int(amount) >= 0):
+            context = {'userbalance': user.userbalance,
+                       'current_user_role': current_user.role,
+                       'item': item_shop}
 
-                if item_shop.count - int(amount) >= 0:
-                    user.userbalance = int(user.userbalance) - (int(item_shop.price) * int(amount))
-                    item_shop.count -= int(amount)
-                    item_user.count += int(amount)
-                    session_db.commit()
+            return render_template('student/successful_purchase.html', **context)
 
         context = {'userbalance': user.userbalance,
                    'current_user_role': current_user.role,
