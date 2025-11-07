@@ -21,8 +21,8 @@ os.makedirs('db', exist_ok=True)
 db_session.global_init(True, 'db/users.db')
 
 
-session = db_session.create_session()
-admin = session.query(User).filter_by(userlogin='Admin').first()
+session_db = db_session.create_session()
+admin = session_db.query(User).filter_by(userlogin='Admin').first()
 try:
     if not admin:
         main_admin = User(
@@ -36,11 +36,11 @@ try:
             userclass='x',
             adedusers='False'
         )
-        session.add(main_admin)
-        session.commit()
+        session_db.add(main_admin)
+        session_db.commit()
 except Exception:
-    session.rollback()
-session.close()
+    session_db.rollback()
+session_db.close()
 
 
 @login_manager.user_loader
@@ -85,39 +85,47 @@ def shop():
 def item(item_id):
     if current_user.is_authenticated and current_user.role == 'Student':
         session_db = db_session.create_session()
-        item_shop = session_db.query(Item_shop).filter_by(id=item_id).first()
+        item_shop = session_db.query(Item_shop).filter_by(id=int(item_id)).first()
         user = session_db.query(User).filter_by(id=current_user.id).first()
-        item_user = session_db.query(Item_user).filter_by(id=item_shop.id).first()
+
+        if not item_shop:
+            session_db.close()
+            return redirect('/')
 
         if request.method == 'POST':
             amount = request.form['item_count']
 
-            user.userbalance = int(user.userbalance) - (int(item_shop.price) * int(amount))
-            item_shop.count -= int(amount)
+            if (int(user.userbalance) >= (int(item_shop.price) * int(amount))
+                    and item_shop.count >= int(amount)):
 
-            new_item = Item_user(
-            userid=current_user.id,
-            status='На рассмотрении',
-            name=item_shop.name,
-            count=int(amount),
-            description=item_shop.description,
-            photo=item_shop.photo,
-            date=date.today()
-            )
+                user.userbalance = int(user.userbalance) - (int(item_shop.price) * int(amount))
+                item_shop.count -= int(amount)
 
-            session_db.add(new_item)
-            session_db.commit()
+                new_item = Item_user(
+                    userid=current_user.id,
+                    itemshopid = item_shop.id,
+                    status='На рассмотрении',
+                    count=int(amount),
+                    date=date.today()
+                )
 
-            context = {'userbalance': user.userbalance,
-                       'current_user_role': current_user.role,
-                       'item': item_shop}
+                session_db.add(new_item)
+                session_db.commit()
 
-            return render_template('student/successful_purchase.html', **context)
+                context = {'userbalance': user.userbalance,
+                           'current_user_role': current_user.role,
+                           'item': item_shop}
+
+                session_db.close()
+                return render_template('student/successful_purchase.html', **context)
+            else:
+                flash('Недостаточно средств или товара', 'error')
 
         context = {'userbalance': user.userbalance,
                    'current_user_role': current_user.role,
                    'item': item_shop}
 
+        session_db.close()
         return render_template('admin/items/item.html', **context)
 
     elif not current_user.is_authenticated:
@@ -157,14 +165,14 @@ def purchases():
             items_user = session_db.query(Item_user).filter_by(userid=user_id).all()
             items_list = []
             for item in items_user:
+                item_shop = session_db.query(Item_shop).filter_by(id=int(item.itemshopid)).first()
                 item_data = {
                     'id': item.id,
                     'status': item.status,
-                    'name': item.name,
+                    'itemshopid': item.itemshopid,
                     'count': item.count,
-                    'photo': item.photo,
-                    'description': item.description,
-                    'date': item.date
+                    'date': item.date,
+                    'name': item_shop.name
                 }
                 items_list.append(item_data)
             print(items_list)
@@ -589,13 +597,13 @@ def login():
         return render_template('authorization/login.html')
 
     elif request.method == 'POST':
-        session_db = db_session.create_session()
+        db_sess = db_session.create_session()  # заменили session_db → db_sess
 
         login = request.form['login']
         password = request.form['password']
-        
-        user = session_db.query(User).filter_by(userlogin=login).first()
-        
+
+        user = db_sess.query(User).filter_by(userlogin=login).first()
+
         if user and check_password_hash(user.userpassword, password):
             session['user_id'] = user.id
             session['username'] = user.username
@@ -604,28 +612,23 @@ def login():
             session['role'] = user.role
             session['userotchestvo'] = user.userotchestvo
             session['userbalance'] = user.userbalance
-            session_db.close()
+            db_sess.close()
 
             login_user(user)
-            flash('Вход выполнен успешно!', 'success')
-            
+
             if current_user.role == 'Student':
                 return redirect('/')
             elif current_user.role == 'Teacher':
                 return redirect('/classes')
             elif current_user.role == 'Admin':
                 return redirect('/users')
-        
+
         elif not all([login, password]):
-            flash('Все поля обязательны для заполнения', 'error')
-            session_db.close()
-
+            db_sess.close()
             return render_template('authorization/login.html')
-        
-        else:
-            flash('Неверные имя, фамилия или пароль', 'error')
-            session_db.close()
 
+        else:
+            db_sess.close()
             return render_template('authorization/login.html')
 
 
