@@ -31,7 +31,7 @@
 .fields-container > div > label {
     color: var(--text-muted);
     font-size: 0.71em;
-    margin-left: 0.55em;
+    margin-left: 0.65em;
 }
 
 .fields-container > div > input {

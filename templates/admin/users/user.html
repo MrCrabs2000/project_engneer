@@ -25,8 +25,8 @@
       <div class="fields-container user">
         
         <div>
-          <label for="login">Логин (не изменяем)</label>
-          <input id="login" value="{{ login }}" name="login" placeholder="Логин" readonly>
+          <label for="login">Логин</label>
+          <input id="login" value="{{ login }}" placeholder="Логин" readonly>
         </div>
         
         <div>
@@ -43,7 +43,7 @@
         </div>
         <div>
           <label for="role">Роль</label>
-          <div class="select">
+          <div class="select" data-disabled>
             <select id="role" name="role" disabled>
             {% if role == 'Student' %}
               <option selected>Student</option>

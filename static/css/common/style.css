@@ -1,5 +1,5 @@
 :root {
-    --bg-dark: hsl(0, 0%, 93%);
+    --bg-dark: hsl(216, 15%, 94%);
     --bg: hsl(0, 0%, 97%);
     --bg-light: hsl(0, 0%, 100%);
     --primary: hsl(216, 85%, 63%);
@@ -8,12 +8,13 @@
     --text-color: hsl(0, 0%, 15%);
     --text-muted: hsl(0, 0%, 40%);
     --text-light: hsl(0, 0%, 95%);
-    --danger: hsl(0, 80%, 55%);
-    --danger-hover: hsl(0, 80%, 45%);
+    --danger: hsl(0, 75%, 55%);
+    --danger-hover: hsl(0, 75%, 45%);
     --success: hsl(125, 55%, 45%);
     --border: hsl(0, 0%, 70%);
     --shadow-big: 0px 4px 12px 0px hsla(0, 0%, 0%, 0.2);
     --shadow: 0px 2px 8px 0px hsla(0, 0%, 0%, 0.1);
+    --shadow-soft: 0px 2px 16px 0px hsla(0, 0%, 0%, 0.1);
     /* --shadow-dark: 0px 2px 4px 0px hsla(0, 0%, 0%, 0.4);
     --shadow-light: 0px 2px 2px 0px hsla(0, 0%, 0%, 0.2); */
 }
@@ -82,7 +83,7 @@ button.danger:hover {
 
 input, select, textarea {
     box-sizing: border-box;
-    padding: 0 0.55em;
+    padding: 0.15em 0.65em;
     color: var(--text-color);
     font-size: inherit;
     font-family: inherit;
@@ -97,15 +98,27 @@ input, select, textarea {
     /* transition: transform 10s ease-out; */
 }
 
+input[readonly], select[disabled], textarea[readonly] {
+    background-color: var(--bg-dark);
+    border: 2px solid var(--border);
+    /* transition: transform 10s ease-out; */
+}
+
 input:hover, select:hover, textarea:hover {
-    background-color: var(--bg-light);
     border: 2px solid var(--primary);
     /* transform: rotate(2880deg); */
 }
 
+input[readonly]:hover, select[disabled]:hover, textarea[readonly]:hover {
+    border: 2px solid var(--border);
+}
+
 input:focus {
-    background-color: var(--bg-light);
     border: 2px solid var(--primary);
+}
+
+input[readonly]:focus, select[disabled]:focus, textarea[readonly]:focus {
+    border: 2px solid var(--border);
 }
 
 input[type="submit"]:hover, input[type="button"]:hover {
@@ -134,12 +147,15 @@ select:disabled {
     height: 0.4em;
     aspect-ratio: 1/1;
     transform: translate(-50%, -75%) rotate(45deg);
-    border: solid #7593c0;
+    border: solid var(--primary);
     border-width: 0 4px 4px 0;
     border-radius: 2px;
     pointer-events: none;
 }
 
+.select[data-disabled]::after {
+    border-color: var(--border);
+}
 
 .radio-button-label {
     display: flex;
