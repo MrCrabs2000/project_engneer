@@ -1,0 +1,41 @@
+.block-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    font-size: 28px;
+    font-weight: 600;
+}
+
+.block-header > .buttons {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 20px;
+}
+
+.block {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    max-width: 1400px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 16px;
+    background-color: var(--bg);
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+}
+
+.block.no-bg {
+    padding: 0;
+    background: none;
+    box-shadow: none;
+}
+
+@media (max-width: 1440px) {
+    .block {
+        margin: 0 20px;
+        width: auto;
+    }
+}
