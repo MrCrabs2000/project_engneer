@@ -1,11 +1,14 @@
 .change-balance-container {
     display: flex;
-    justify-content: center;
-    width: 400px;
-    gap: 4px;
+    gap: 8px;
+    font-size: 22px;
 }
 
 .change-balance-container > input {
+    width: 140px;
+}
+
+/* .change-balance-container > input {
     flex-shrink: 1;
     flex-grow: 1;
     width: 100%;
@@ -37,4 +40,4 @@
 .deduct-btn::after {
     transform: translate(-50%, -50%) rotate(-135deg);
     top: 37.5%;
-}
+} */

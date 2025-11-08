@@ -114,7 +114,7 @@ input[readonly]:hover, select[disabled]:hover, textarea[readonly]:hover {
     border: 2px solid var(--border);
 }
 
-input:focus {
+input:focus, select:open {
     border: 2px solid var(--primary);
 }
 
