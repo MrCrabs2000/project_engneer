@@ -585,7 +585,7 @@ def classes():
                    'userbalance': current_user.userbalance,
                    'teacherid': current_user.id}
 
-        return render_template('teacher/classes_list.html', **context, role=current_user.role)
+        return render_template('teacher/class.html', **context, role=current_user.role)
 
     elif not current_user.is_authenticated:
         return redirect('/login')
@@ -597,12 +597,12 @@ def login():
         return render_template('authorization/login.html')
 
     elif request.method == 'POST':
-        db_sess = db_session.create_session()  # заменили session_db → db_sess
+        session_db = db_session.create_session()
 
         login = request.form['login']
         password = request.form['password']
 
-        user = db_sess.query(User).filter_by(userlogin=login).first()
+        user = session_db.query(User).filter_by(userlogin=login).first()
 
         if user and check_password_hash(user.userpassword, password):
             session['user_id'] = user.id
@@ -612,7 +612,7 @@ def login():
             session['role'] = user.role
             session['userotchestvo'] = user.userotchestvo
             session['userbalance'] = user.userbalance
-            db_sess.close()
+            session_db.close()
 
             login_user(user)
 
@@ -624,11 +624,11 @@ def login():
                 return redirect('/users')
 
         elif not all([login, password]):
-            db_sess.close()
+            session_db.close()
             return render_template('authorization/login.html')
 
         else:
-            db_sess.close()
+            session_db.close()
             return render_template('authorization/login.html')
 
 

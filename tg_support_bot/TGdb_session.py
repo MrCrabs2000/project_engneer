@@ -25,7 +25,7 @@ def global_init(*db_file):
         engine = sa.create_engine(conn_str, echo=False)
         __factory = orm.sessionmaker(bind=engine)
 
-        from Classes import User, Question
+        from TGClasses import User, Question
 
         SqlAlchemyBase.metadata.create_all(engine)
     else:
@@ -35,7 +35,7 @@ def global_init(*db_file):
         engine = sa.create_engine(url)
         __factory = orm.sessionmaker(bind=engine)
 
-        from Classes import User, Question
+        from TGClasses import User, Question
 
         SqlAlchemyBase.metadata.create_all(engine)
 
