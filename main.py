@@ -627,45 +627,32 @@ def student_page(class_name, user_id):
     if current_user.is_authenticated and current_user.role == 'Teacher':
         if user_id:
             session_db = db_session.create_session()
-            user = session_db.query(User).filter_by(id=user_id).first()
+            student = session_db.query(User).filter_by(id=user_id).first()
             teacher = session_db.query(User).filter_by(id=current_user.id).first()
 
-            if not user:
-                session_db.close()
-                return redirect(url_for('index'))
-
             if request.method == 'POST':
-                mark = request.form.get('mark')
+                coins_amount = int(request.form.get('coins_amount', 0))
+                action = request.form.get('action')
 
-                marks = {
-                    '5': 200,
-                    '4': 100,
-                    '3': 0,
-                    '2': -100
-                }
+                if action == 'Выдать':
+                    if coins_amount <= int(teacher.userbalance):
+                        student.userbalance = str(int(student.userbalance) + coins_amount)
+                        teacher.userbalance = str(int(teacher.userbalance) - coins_amount)
+                        session_db.commit()
 
-                if mark in marks:
-                    balance_change = marks[mark]
+                elif action == 'Отнять':
+                    if coins_amount <= int(student.userbalance):
+                        student.userbalance = str(int(student.userbalance) - coins_amount)
+                        teacher.userbalance = str(int(teacher.userbalance) + coins_amount)
+                        session_db.commit()
 
-                    if balance_change > 0:
-                        if int(current_user.userbalance) >= balance_change:
-                            user.userbalance = user.userbalance + balance_change
-                            teacher.userbalance = teacher.userbalance - balance_change
-                            session_db.commit()
 
-                    elif balance_change < 0:
-                        balance_abs = abs(balance_change)
-                        if int(user.userbalance) >= balance_abs:
-                            user.userbalance = int(user.userbalance + balance_change)
-                            teacher.userbalance = int(teacher.userbalance + balance_abs)
-                            session_db.commit()
-
-            username = user.username
-            usersurname = user.usersurname
-            userotchestvo = user.userotchestvo
-            userclass = user.userclass
-            userbalance = user.userbalance
-            teacherbalance= teacher.userbalance
+            username = student.username
+            usersurname = student.usersurname
+            userotchestvo = student.userotchestvo
+            userclass = student.userclass
+            userbalance = student.userbalance
+            teacherbalance = teacher.userbalance
             session_db.close()
 
             return render_template('teacher/student.html',
@@ -678,7 +665,7 @@ def student_page(class_name, user_id):
                                    user_id=user_id,
                                    current_user_role=current_user.role)
 
-        return redirect(url_for('main_page'))
+        return redirect(url_for('index'))
     elif not current_user.is_authenticated:
         return redirect(url_for('login'))
 
