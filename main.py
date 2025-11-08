@@ -591,6 +591,35 @@ def classes():
         return redirect('/login')
 
 
+@app.route('/classes/<class>')
+def classs(teacherclass):
+    if current_user.is_authenticated and current_user.role == 'Teacher':
+        classes = current_user.userclass.split(' ')
+        session_db = db_session.create_session()
+        students = session_db.query(User).filter_by(userclass=teacherclass).all()
+        students_list = []
+        for student in students:
+            student_data = {
+                'id': student.id,
+                'username': student.username,
+                'usersurname': student.usersurname,
+                'userotchestvo': student.userotchestvo,
+                'userbalance': student.userbalance
+            }
+            students_list.append(student_data)
+        session_db.close()
+        context = {'current_user_role': current_user.role,
+                   'classes': classes,
+                   'userbalance': current_user.userbalance,
+                   'teacherid': current_user.id,
+                   'students': students_list}
+
+        return render_template('teacher/class.html', **context, role=current_user.role)
+
+    elif not current_user.is_authenticated:
+        return redirect('/login')
+
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'GET':
