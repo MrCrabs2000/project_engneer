@@ -51,6 +51,30 @@ def load_user(user_id):
     return user
 
 
+def make():
+    session = db_session.create_session()
+    admin = session.query(User).filter_by(userlogin='Adminchik').first()
+    try:
+        if not admin:
+            adminchik = User(
+                username='Adminchik',
+                usersurname='Adminchik',
+                userotchestvo='Adminchik',
+                userlogin='Adminchik',
+                userpassword=generate_password_for_user(),
+                role='Admin',
+                userbalance='0',
+                userclass='x',
+                adedusers='False'
+            )
+            session.add(adminchik)
+            session.commit()
+            print(adminchik.userpassword)
+    except Exception:
+        session.rollback()
+    session.close()
+
+
 @app.route('/', methods=['GET'])
 def index():
     if current_user.is_authenticated:
@@ -131,30 +155,6 @@ def item(item_id):
 
     elif not current_user.is_authenticated:
         return redirect('/login')
-
-
-def make():
-    session = db_session.create_session()
-    admin = session.query(User).filter_by(userlogin='Adminchik').first()
-    try:
-        if not admin:
-            adminchik = User(
-                username='Adminchik',
-                usersurname='Adminchik',
-                userotchestvo='Adminchik',
-                userlogin='Adminchik',
-                userpassword=generate_password_for_user(),
-                role='Admin',
-                userbalance='0',
-                userclass='x',
-                adedusers='False'
-            )
-            session.add(adminchik)
-            session.commit()
-            print(adminchik.userpassword)
-    except Exception:
-        session.rollback()
-    session.close()
 
 
 @app.route('/purchases', methods=['GET'])
@@ -591,22 +591,24 @@ def classes():
         return redirect('/login')
 
 
-@app.route('/classes/<class>')
-def classs(teacherclass):
+@app.route('/classes/<class_name>')
+def show_class(class_name):
     if current_user.is_authenticated and current_user.role == 'Teacher':
         classes = current_user.userclass.split(' ')
         session_db = db_session.create_session()
-        students = session_db.query(User).filter_by(userclass=teacherclass).all()
+        students = session_db.query(User).filter_by(userclass=class_name).all()
         students_list = []
         for student in students:
-            student_data = {
-                'id': student.id,
-                'username': student.username,
-                'usersurname': student.usersurname,
-                'userotchestvo': student.userotchestvo,
-                'userbalance': student.userbalance
-            }
-            students_list.append(student_data)
+            if student.id != current_user.id:
+                student_data = {
+                    'id': student.id,
+                    'username': student.username,
+                    'usersurname': student.usersurname,
+                    'userotchestvo': student.userotchestvo,
+                    'userbalance': student.userbalance,
+                    'userclass': student.userclass
+                }
+                students_list.append(student_data)
         session_db.close()
         context = {'current_user_role': current_user.role,
                    'classes': classes,
@@ -618,6 +620,67 @@ def classs(teacherclass):
 
     elif not current_user.is_authenticated:
         return redirect('/login')
+
+
+@app.route('/classes/<class_name>/<user_id>', methods=['GET', 'POST'])
+def student_page(class_name, user_id):
+    if current_user.is_authenticated and current_user.role == 'Teacher':
+        if user_id:
+            session_db = db_session.create_session()
+            user = session_db.query(User).filter_by(id=user_id).first()
+            teacher = session_db.query(User).filter_by(id=current_user.id).first()
+
+            if not user:
+                session_db.close()
+                return redirect(url_for('index'))
+
+            if request.method == 'POST':
+                mark = request.form.get('mark')
+
+                marks = {
+                    '5': 200,
+                    '4': 100,
+                    '3': 0,
+                    '2': -100
+                }
+
+                if mark in marks:
+                    balance_change = marks[mark]
+
+                    if balance_change > 0:
+                        if int(current_user.userbalance) >= balance_change:
+                            user.userbalance = user.userbalance + balance_change
+                            teacher.userbalance = teacher.userbalance - balance_change
+                            session_db.commit()
+
+                    elif balance_change < 0:
+                        balance_abs = abs(balance_change)
+                        if int(user.userbalance) >= balance_abs:
+                            user.userbalance = int(user.userbalance + balance_change)
+                            teacher.userbalance = int(teacher.userbalance + balance_abs)
+                            session_db.commit()
+
+            username = user.username
+            usersurname = user.usersurname
+            userotchestvo = user.userotchestvo
+            userclass = user.userclass
+            userbalance = user.userbalance
+            teacherbalance= teacher.userbalance
+            session_db.close()
+
+            return render_template('teacher/student.html',
+                                   username=username,
+                                   usersurname=usersurname,
+                                   userotchestvo=userotchestvo,
+                                   userclass=userclass,
+                                   userbalance=teacherbalance,
+                                   studbalance=userbalance,
+                                   user_id=user_id,
+                                   current_user_role=current_user.role)
+
+        return redirect(url_for('main_page'))
+    elif not current_user.is_authenticated:
+        return redirect(url_for('login'))
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -705,107 +768,47 @@ def login_telegram():
         return 'Ошибка авторизации'
 
 
-@app.route('/<class_name>/<teacherid>', methods=['GET'])
-def class_page(class_name, teacherid):
-    if current_user.is_authenticated and (current_user.role == 'Teacher' or current_user.role == 'Admin'):
-        session_db = db_session.create_session()
-        teacher = session_db.query(User).filter_by(id=teacherid).first()
-        students = session_db.query(User).filter(User.userclass == class_name, User.role == 'Student').all()
-        students_list = []
-        for student in students:
-            student_data = {
-                'id': student.id,
-                'username': student.username,
-                'usersurname': student.usersurname,
-                'userotchestvo': student.userotchestvo,
-                'userbalance': student.userbalance
-            }
-            students_list.append(student_data)
-        session_db.close()
-        if int(teacherid) == int(current_user.id):
-            return render_template('teacher/class.html',
-                                   logged_in=True,
-                                   username=teacher.username,
-                                   usersurname=teacher.usersurname,
-                                   userclass=teacher.userclass,
-                                   userbalance=teacher.userbalance,
-                                   userotchestvo=teacher.userotchestvo,
-                                   current_user_role=teacher.role,
-                                   class_name=class_name,
-                                   students=students_list,
-                                   students_count=len(students_list),
-                                   tid=teacher.id,
-                                   adminid='nul')
-        else:
-            return render_template('teacher/class.html', logged_in=True, username=teacher.username,
-                                   usersurname=teacher.usersurname, userclass=teacher.userclass,
-                                   userbalance=teacher.userbalance, userotchestvo=teacher.userotchestvo,
-                                   role=teacher.role, class_name=class_name, students=students_list,
-                                   students_count=len(students_list), tid=teacher.id, adminid=current_user.id)
-    elif not current_user.is_authenticated:
-        return redirect(url_for('login'))
+# @app.route('/<class_name>/<teacherid>', methods=['GET'])
+# def class_page(class_name, teacherid):
+#     if current_user.is_authenticated and (current_user.role == 'Teacher' or current_user.role == 'Admin'):
+#         session_db = db_session.create_session()
+#         teacher = session_db.query(User).filter_by(id=teacherid).first()
+#         students = session_db.query(User).filter(User.userclass == class_name, User.role == 'Student').all()
+#         students_list = []
+#         for student in students:
+#             student_data = {
+#                 'id': student.id,
+#                 'username': student.username,
+#                 'usersurname': student.usersurname,
+#                 'userotchestvo': student.userotchestvo,
+#                 'userbalance': student.userbalance
+#             }
+#             students_list.append(student_data)
+#         session_db.close()
+#         if int(teacherid) == int(current_user.id):
+#             return render_template('teacher/class.html',
+#                                    logged_in=True,
+#                                    username=teacher.username,
+#                                    usersurname=teacher.usersurname,
+#                                    userclass=teacher.userclass,
+#                                    userbalance=teacher.userbalance,
+#                                    userotchestvo=teacher.userotchestvo,
+#                                    current_user_role=teacher.role,
+#                                    class_name=class_name,
+#                                    students=students_list,
+#                                    students_count=len(students_list),
+#                                    tid=teacher.id,
+#                                    adminid='nul')
+#         else:
+#             return render_template('teacher/class.html', logged_in=True, username=teacher.username,
+#                                    usersurname=teacher.usersurname, userclass=teacher.userclass,
+#                                    userbalance=teacher.userbalance, userotchestvo=teacher.userotchestvo,
+#                                    role=teacher.role, class_name=class_name, students=students_list,
+#                                    students_count=len(students_list), tid=teacher.id, adminid=current_user.id)
+#     elif not current_user.is_authenticated:
+#         return redirect(url_for('login'))
 
 
-@app.route('/student/<iduser>/<teacherid>', methods=['GET', 'POST'])
-def student_page(iduser, teacherid):
-    if current_user.is_authenticated and (current_user.role == 'Teacher' or current_user.role == 'Admin'):
-        if iduser:
-            session_db = db_session.create_session()
-            user = session_db.query(User).filter_by(id=iduser).first()
-            teacher = session_db.query(User).filter_by(id=teacherid).first()
-
-            if not user or not teacher:
-                session_db.close()
-                return redirect(url_for('main_page'))
-
-            if request.method == 'POST':
-                mark = request.form.get('mark')
-
-                marks = {
-                    '5': 200,
-                    '4': 100,
-                    '3': 0,
-                    '2': -100
-                }
-
-                if mark in marks:
-                    balance_change = marks[mark]
-
-                    if balance_change > 0:
-                        if int(teacher.userbalance) >= balance_change:
-                            user.userbalance = str(int(user.userbalance) + balance_change)
-                            teacher.userbalance = str(int(teacher.userbalance) - balance_change)
-                            session_db.commit()
-
-                    elif balance_change < 0:
-                        balance_abs = abs(balance_change)
-                        if int(user.userbalance) >= balance_abs:
-                            user.userbalance = str(int(user.userbalance) + balance_change)
-                            teacher.userbalance = str(int(teacher.userbalance) + balance_abs)
-                            session_db.commit()
-
-            username = user.username
-            usersurname = user.usersurname
-            userotchestvo = user.userotchestvo
-            userclass = user.userclass
-            userbalance = user.userbalance
-            teacher_balance = teacher.userbalance
-            session_db.close()
-
-            return render_template('teacher/student.html',
-                                   username=username,
-                                   usersurname=usersurname,
-                                   userotchestvo=userotchestvo,
-                                   userclass=userclass,
-                                   userbalance=teacher_balance,
-                                   studbalance=userbalance,
-                                   iduser=iduser,
-                                   teacherid=teacherid,
-                                   current_user_role=teacher.role)
-
-        return redirect(url_for('main_page'))
-    elif not current_user.is_authenticated:
-        return redirect(url_for('login'))
 
 # ^^^ КОММЕНТАРИЯ В САМОМ ВЕРХУ ^^^
 

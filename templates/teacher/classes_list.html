@@ -4,24 +4,124 @@
 
 {% block links %}
   <link rel="stylesheet" href="/static/css/users/classes.css">
+  <link rel="stylesheet" href="/static/css/common/block.css">
 {% endblock %}
 
 {% block content %}
-  <h1 class="classes-header">Мои классы:</h1>
-    {% if adminid %}
-        <button onclick="document.location='/userprofile/{{ teacherid }}'">Назад</button>
-    {% endif %}
-    <div class="classes-grid">
-    {% if classes %}
-      {% for class in classes %}
-        <div class="class-card">
-          <a href="/{{ class }}/{{ teacherid }}">
-            <div class="class-content">
-              <div>{{ class }}</div>
+
+  <main>
+
+    <div class="block no-bg">
+      <div class="block-header">
+        <span>Мои классы</span>
+      </div>
+
+        <div class="classes-grid">
+        {% if classes %}
+          {% for class in classes %}
+            <div class="class-card">
+              <a href="/{{ class }}/{{ teacherid }}">
+                <div class="class-content">
+                  <div>{{ class }}</div>
+                </div>
+              </a>
             </div>
-          </a>
+
+            <div class="class-card">
+              <a href="/{{ class }}/{{ teacherid }}">
+                <div class="class-content">
+                  <div>{{ class }}</div>
+                </div>
+              </a>
+            </div>
+            <div class="class-card">
+              <a href="/{{ class }}/{{ teacherid }}">
+                <div class="class-content">
+                  <div>{{ class }}</div>
+                </div>
+              </a>
+            </div>
+            <div class="class-card">
+              <a href="/{{ class }}/{{ teacherid }}">
+                <div class="class-content">
+                  <div>{{ class }}</div>
+                </div>
+              </a>
+            </div>
+            <div class="class-card">
+              <a href="/{{ class }}/{{ teacherid }}">
+                <div class="class-content">
+                  <div>{{ class }}</div>
+                </div>
+              </a>
+            </div>
+            <div class="class-card">
+              <a href="/{{ class }}/{{ teacherid }}">
+                <div class="class-content">
+                  <div>{{ class }}</div>
+                </div>
+              </a>
+            </div>
+            <div class="class-card">
+              <a href="/{{ class }}/{{ teacherid }}">
+                <div class="class-content">
+                  <div>{{ class }}</div>
+                </div>
+              </a>
+            </div>
+            <div class="class-card">
+              <a href="/{{ class }}/{{ teacherid }}">
+                <div class="class-content">
+                  <div>{{ class }}</div>
+                </div>
+              </a>
+            </div>
+            <div class="class-card">
+              <a href="/{{ class }}/{{ teacherid }}">
+                <div class="class-content">
+                  <div>{{ class }}</div>
+                </div>
+              </a>
+            </div>
+            <div class="class-card">
+              <a href="/{{ class }}/{{ teacherid }}">
+                <div class="class-content">
+                  <div>{{ class }}</div>
+                </div>
+              </a>
+            </div>
+            <div class="class-card">
+              <a href="/{{ class }}/{{ teacherid }}">
+                <div class="class-content">
+                  <div>{{ class }}</div>
+                </div>
+              </a>
+            </div>
+            <div class="class-card">
+              <a href="/{{ class }}/{{ teacherid }}">
+                <div class="class-content">
+                  <div>{{ class }}</div>
+                </div>
+              </a>
+            </div>
+            <div class="class-card">
+              <a href="/{{ class }}/{{ teacherid }}">
+                <div class="class-content">
+                  <div>{{ class }}</div>
+                </div>
+              </a>
+            </div>
+          {% endfor %}
+        {% endif %}
         </div>
-      {% endfor %}
-    {% endif %}
-  </div>
+        
+      </div>
+    </div>
+    
+  </main>
+  <!-- <h1 class="classes-header">Мои классы:</h1>
+  {% if adminid %}
+  <button onclick="document.location='/userprofile/{{ teacherid }}'">Назад</button>
+  {% endif %} -->
 {% endblock %}
+  

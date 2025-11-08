@@ -1,88 +1,38 @@
-.headers-container {
+.class-header-container {
     display: flex;
     justify-content: space-between;
     max-width: 1400px;
+    width: 100%;
     margin: 30px auto 0 auto;
-}
-
-.headers-container span {
-    text-align: left;
-    color: var(--text-color);
-    font-size: 40px;
-    font-weight: 700;
-}
-
-.students-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 1rem;
-    padding: 1rem 0px;
-    max-width: 1400px;
-    margin: 0 auto;
-}
-
-.student-card {
-    width: 100%;
-    aspect-ratio: 4 / 2;
-    background-color: var(--primary);
-    border-radius: 16px;
-    box-shadow: 0 4px 3px 0 rgba(0,0,0,0.2);
-    transition: transform 0.3s;
-}
-
-.student-card:hover {
-    cursor: pointer;
-    transform: translateY(-6px);
-}
-
-.student-card a {
-    display: inline-block;
-    width: 100%;
-    height: 100%;
-    margin: 0;
-    text-decoration: none;
-}
-
-.student-info {
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 8px 16px;
-    width: 100%;
-    height: 100%;
-    word-wrap: break-word;
-    color: var(--text-color);
-}
-
-.student-name {
     font-size: 32px;
+}
+
+.class-selection {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: fit-content;
+}
+
+.class-selection > span {
     font-weight: 600;
 }
 
-.student-balance {
-    height: fit-content;
-    width: fit-content;
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
+.class-selection > .select {
+    width: 100px;
+    top: 2px;
 }
 
-.student-balance-ico {
-    height: 50px;
-    width: auto;
-}
-
-.student-balance div {
-    margin-left: 12px;
-    color: var(--text-color);
-    font-size: 40px;
+#class-select {
+    flex-grow: 1;
+    flex-shrink: 1;
+    font-size: 20px;
 }
 
 .no-students {
     max-width: 1400px;
-    margin: 100px auto 0 auto;
+    margin: 80px auto 0 auto;
     text-align: center;
-    font-size: 30px;
-    font-weight: 500;
+    font-size: 28px;
+    color: var(--text-muted);
 }

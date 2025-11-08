@@ -1,28 +1,39 @@
 {% extends "common/base.html" %}
 
-{% block title %}{{ class_name }}{% endblock %} 
 
 {% block links %}
   <link rel="stylesheet" href="/static/css/users/class.css">
+  <link rel="stylesheet" href="/static/css/common/search/found-elements.css">
+  <link rel="stylesheet" href="/static/css/users/users.css">
 {% endblock %}
 
 {% block content %}
 
-  <div class="headers-container">
-    <span>Класс: {{ class_name }}</span>
-    <span>Учеников: {{ students_count }}</span>  
+  <div class="class-header-container">
+    <div class="class-selection">
+
+      <span>Класс:</span>
+      <div class="select">
+        <select id="class-select">
+          <option style="display: none;" value="">...</option>
+          {% for class in classes %}
+          <option value="{{ class }}">{{ class }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      
+    </div>
   </div> 
   
   {% if students %}
-    <div class="students-grid">
+    <div class="found-elements-grid">
       {% for student in students %}
-        <div class="student-card">
-          <a href="/student/{{ student.id }}/{{ tid }}">
-            <div class="student-info">
-              <div class="student-name">{{ student.usersurname }} {{ student.username[0] }}. {{ student.userotchestvo[0] }}.</div>
-              <div class="student-balance">
-                <img class="student-balance-ico" src="/static/images/coin.png">
-                <div>{{student.userbalance}}</div>
+        <div class="found-element-card">
+          <a href="/classes/{{ student.userclass }}/{{ student.id }}">
+            <div class="found-element-info">
+              <div class="name">{{ student.usersurname }} {{ student.username[0] }}. {{ student.userotchestvo[0] }}.</div>
+              <div class="secondary-info">
+                <div class="user-balance">{{student.userbalance}} <img src="/static/images/coin.png"></div>
               </div>
             </div>
           </a>
@@ -30,7 +41,38 @@
       {% endfor %}
     </div>
   {% else %}
-    <p class="no-students">В этом классе пока нет учеников</p>
+    <div class="no-students">Пожалуйста, выберете класс.</div>
   {% endif %}
+
+
+  <script>
+    const select = document.getElementById("class-select");
+    const options = document.querySelectorAll('#class-select > option');
+    const currentClass = window.location.pathname.split('/')[2];
+
+
+    document.addEventListener("DOMContentLoaded", function() {
+      options.forEach(function(element) {
+        if (element.value == currentClass) {
+          select.value = currentClass;
+          document.title = currentClass;
+        }
+        else {
+          select.value = '';
+          document.title = "Выберете класс";
+        }
+      });
+    });
+
+
+    select.addEventListener('change', function(e) {
+      const selectedValue = event.target.value;
+
+      if (selectedValue !== '') {
+        window.location.href = `/classes/${selectedValue}`;
+      } 
+    });
+
+  </script>
 
 {% endblock %}

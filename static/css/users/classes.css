@@ -1,18 +1,21 @@
 .classes-header {
     max-width: 1400px;
+    width: 100%;
     margin: 20px auto 0 auto;
     text-align: left;
-    font-size: 40px;
-    font-weight: 800;
+    font-size: 34x;
+    font-weight: 600;
 }
 
 .classes-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
     gap: 1rem;
-    padding: 1rem 0px;
+    padding: 0 0px;
     max-width: 1400px;
+    width: 100%;
     margin: 0 auto;
+    font-size: 40px;
 }
 
 .class-card {
@@ -41,8 +44,7 @@
     height: 100%;
     width: 100%;
     color: var(--primary);
-    font-size: 32px;
-    font-weight: 700;
+    font-weight: 600;
     word-wrap: break-word;
 }
 

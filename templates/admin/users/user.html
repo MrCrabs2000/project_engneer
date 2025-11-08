@@ -6,13 +6,14 @@
   <link rel="stylesheet" href="/static/css/common/form.css">
   <link rel="stylesheet" href="/static/css/users/classes.css">
   <link rel="stylesheet" href="/static/css/users/user.css">
+  <link rel="stylesheet" href="/static/css/common/block.css">
 {% endblock %}
 
 {% block content %}
     
   <main>
 
-    <div class="user-block info">
+    <div class="block info">
 
       <div class="block-header">
         <span>Информация</span>
@@ -78,7 +79,7 @@
     </div>
     {% if role == 'Teacher' %}
     
-    <div class="user-block">
+    <div class="block">
       <span class="block-header">Классы</span>
       <div class="classes-grid user">
         {% for class in classes %}

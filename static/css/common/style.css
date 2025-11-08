@@ -33,9 +33,10 @@ html, body {
 }
 
 main {
-    position: relative;
-    height: calc(100% - 80px);
-    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    margin-top: 40px;
 }
 
 .centered-div, .profile {
@@ -132,23 +133,26 @@ select:disabled {
 .select {
     position: relative;
     font-size: inherit;
+    display: flex;
+    align-items: center;
 }
 
 .select > select {
     width: 100%;
+    cursor: pointer;
 }
 
 .select::after {
     content: "";
     position: absolute;
-    right: 0.55em;
+    right: 0.3em;
     top: 50%;
     display: inline-block;
     height: 0.4em;
     aspect-ratio: 1/1;
     transform: translate(-50%, -75%) rotate(45deg);
     border: solid var(--primary);
-    border-width: 0 4px 4px 0;
+    border-width: 0 0.1em 0.1em 0;
     border-radius: 2px;
     pointer-events: none;
 }
