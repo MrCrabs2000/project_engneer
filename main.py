@@ -30,12 +30,13 @@ try:
             usersurname='Admin',
             userotchestvo='Admin',
             userlogin='Admin',
-            userpassword=generate_password_for_user(),
+            userpassword=generate_password_hash(generate_password_for_user()),
             role='Admin',
             userbalance='0',
             userclass='x',
             adedusers='False'
         )
+        print(main_admin.userpassword)
         session_db.add(main_admin)
         session_db.commit()
 except Exception:
@@ -56,12 +57,13 @@ def make():
     admin = session.query(User).filter_by(userlogin='Adminchik').first()
     try:
         if not admin:
+            hash = generate_password_hash(generate_password_for_user())
             adminchik = User(
                 username='Adminchik',
                 usersurname='Adminchik',
                 userotchestvo='Adminchik',
                 userlogin='Adminchik',
-                userpassword=generate_password_for_user(),
+                userpassword=hash,
                 role='Admin',
                 userbalance='0',
                 userclass='x',
