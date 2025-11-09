@@ -43,8 +43,12 @@
     height: 100%;
     background-color: var(--bg-light);
     border-radius: 16px;
-    font-size: 30px;
+    font-size: 26px;
     box-shadow: var(--shadow);
+}
+
+.item-price-container buy-button {
+    height: 100%;
 }
 
 .item-price {
@@ -52,7 +56,8 @@
     align-items: center;
     justify-content: center;
     gap: 4px;
-    font-weight: 700;
+    font-size: 30px;
+    font-weight: 600;
 }
 
 .item-price > img {

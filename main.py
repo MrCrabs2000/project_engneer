@@ -110,7 +110,7 @@ def item(item_id):
                 new_item = Item_user(
                     userid=current_user.id,
                     itemshopid = item_shop.id,
-                    status='На рассмотрении',
+                    status='Принята',
                     count=int(amount),
                     date=date.today()
                 )
@@ -119,12 +119,10 @@ def item(item_id):
                 session_db.add(new_item)
                 session_db.commit()
 
-                context = {'userbalance': user.userbalance,
-                           'current_user_role': current_user.role,
-                           'item': item_shop}
+                
 
                 session_db.close()
-                return render_template('student/successful_purchase.html', **context)
+                return redirect('/shop/successful-purchase')
             else:
                 flash('Недостаточно средств или товара', 'error')
 
@@ -137,6 +135,14 @@ def item(item_id):
 
     elif not current_user.is_authenticated:
         return redirect('/login')
+
+
+@app.route('/shop/successful-purchase', methods=['GET'])
+def show_successful_purchase():
+    context = {'userbalance': current_user.userbalance,
+                'current_user_role': current_user.role}
+
+    return render_template('student/successful_purchase.html', **context)
 
 
 @app.route('/purchases', methods=['GET'])

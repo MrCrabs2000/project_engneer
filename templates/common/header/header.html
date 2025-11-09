@@ -32,6 +32,7 @@
   {% include 'common/header/profile_popup.html' %}
 </header>
 <script>
+  
   document.addEventListener("DOMContentLoaded", function() {
   const navButtons = document.querySelectorAll(".menu button");
 
@@ -50,7 +51,11 @@
 
     navButtons.forEach(button => {
       const currentPath = window.location.pathname;
-      if (currentPath.includes(button.dataset.target)) {
+
+      if (button.dataset.target == '/classes' && currentPath.includes(button.dataset.target)) {
+        button.classList.add('active');
+      }
+      else if (button.dataset.target == currentPath) {
         button.classList.add('active');
       }
     });

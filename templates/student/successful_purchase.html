@@ -5,11 +5,20 @@
 
 
 {% block links %}
-
+  <link rel="stylesheet" href="/static/css/common/block.css">
 {% endblock links %}
 
 
 {% block content %}
-    <h1>Вы сделали запрос на покупку!</h1>
-    <div>Запрос находится в рассмотрении! Проследить за его статусом можно в <a href="/purchases">истории покупок</a>.</div>
+  <main>
+
+    <div class="block">
+      <div class="block-header">
+        <span>Вы сделали запрос на покупку!</span>
+      </div>
+      <div>Запрос находится в рассмотрении! Проследить за его статусом можно в <a href="/purchases">истории покупок</a>.</div>
+    </div>
+
+  </main>
+  
 {% endblock content %}
