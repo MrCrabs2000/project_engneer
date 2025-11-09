@@ -25,18 +25,23 @@ session_db = db_session.create_session()
 admin = session_db.query(User).filter_by(userlogin='Admin').first()
 try:
     if not admin:
+        password = generate_password_for_user()
+        print(password)
+
+        passwordHash = generate_password_hash(password)
+
         main_admin = User(
             username='Admin',
             usersurname='Admin',
             userotchestvo='Admin',
             userlogin='Admin',
-            userpassword=generate_password_hash(generate_password_for_user()),
+            userpassword=passwordHash,
             role='Admin',
             userbalance='0',
             userclass='x',
             adedusers='False'
         )
-        print(main_admin.userpassword)
+
         session_db.add(main_admin)
         session_db.commit()
 except Exception:
@@ -50,31 +55,6 @@ def load_user(user_id):
     user = session.get(User, user_id)
     session.close()
     return user
-
-
-def make():
-    session = db_session.create_session()
-    admin = session.query(User).filter_by(userlogin='Adminchik').first()
-    try:
-        if not admin:
-            hash = generate_password_hash(generate_password_for_user())
-            adminchik = User(
-                username='Adminchik',
-                usersurname='Adminchik',
-                userotchestvo='Adminchik',
-                userlogin='Adminchik',
-                userpassword=hash,
-                role='Admin',
-                userbalance='0',
-                userclass='x',
-                adedusers='False'
-            )
-            session.add(adminchik)
-            session.commit()
-            print(adminchik.userpassword)
-    except Exception:
-        session.rollback()
-    session.close()
 
 
 @app.route('/', methods=['GET'])
