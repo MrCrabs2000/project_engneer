@@ -3,6 +3,7 @@ from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import Application, CommandHandler, MessageHandler, filters, CallbackQueryHandler, ContextTypes
 from TGdb_session import global_init, create_session
 from TGClasses import Question, User
+from os import makedirs
 
 
 logging.basicConfig(
@@ -12,7 +13,7 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 QUESTIONS_CHAT_ID = -1003238008855
-
+makedirs('db_bot', exist_ok=True)
 global_init(True, "db_bot/bot_database.db")
 
 

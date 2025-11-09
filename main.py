@@ -5,7 +5,7 @@ import db_session
 from Classes import Item_user, User, Item_shop
 from tgbotiha import check_response
 from werkzeug.security import generate_password_hash, check_password_hash
-import os
+from os import makedirs
 from exel import import_users, generate_password_for_user
 from datetime import date
 import copy
@@ -13,11 +13,10 @@ import copy
 
 app = Flask(__name__)
 app.secret_key = '25112008'
-app.config['TELEGRAM_BOT_TOKEN'] = '83732308533:AAExLeEupdgJyfOZV7o3GtUEiAQZxlWVMr0'
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
-os.makedirs('db', exist_ok=True)
+makedirs('db', exist_ok=True)
 db_session.global_init(True, 'db/users.db')
 
 

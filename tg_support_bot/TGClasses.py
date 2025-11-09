@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer, String, Text, Boolean
-from db_session import SqlAlchemyBase
+from TGdb_session import SqlAlchemyBase
 
 
 class Question(SqlAlchemyBase):
