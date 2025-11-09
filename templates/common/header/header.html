@@ -6,7 +6,7 @@
       {% if current_user_role == 'Student' or current_user_role == 'Teacher' %}
       <div class="balance">
         {# <img class="balance-ico" src="/static/images/coin.png"> #}
-        <div>{{userbalance}}</div>
+        <span>Баланс: {{userbalance}}<img class="balance-ico" src="/static/images/coin.png"></span>
       </div>
       {% endif %}
     </div>

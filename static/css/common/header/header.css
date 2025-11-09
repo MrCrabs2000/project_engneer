@@ -18,41 +18,45 @@ header {
 
 .header-left {
     display: flex;
-    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+    margin: 8px 0 8px 8px;
 }
 
 .logo-a {
-    height: fit-content;
+    height: 100%;
     width: fit-content;
-    margin: auto 6px;
     display: flex;
 }
 
 .logo {
-    height: 58px;
+    height: 100%;
     width: auto; 
     border-radius: 16px;
     background-color: white;
 }
 
 .balance {
-    height: fit-content;
+    box-sizing: border-box;
+    height: 100%;
     width: fit-content;
-    margin: auto 6px;
+    padding: 8px;
     display: flex;
-    justify-content: flex-start;
     align-items: center;
+    font-size: 22px;
+    background-color: hsl(216, 85%, 68%);
+    border-radius: 16px;
+    box-shadow: var(--shadow);
 }
 
 .balance-ico {
-    height: 70px;
+    height: 1.2em;
     width: auto;
 }
 
-.balance div {
-    margin-left: 12px;
-    color: var(--text-color);
-    font-size: 52px;
+.balance span {
+    display: flex;
+    align-items: center;
 }
 
 .menu {
@@ -77,22 +81,7 @@ header {
     transition: background-color 0.2s ease;
 }
 
-/* .menu button::after {
-    content: '';
-    width: 0px;
-    height: 4px;
-    background-color: var(--secondary);
-    transition: width 0.3s ease-out;
-}
-
-.menu button:hover::after {
-    content: '';
-    width: calc(100% + 0px);
-    border-radius: 100px;
-} */
-
 .menu button:hover {
-    /* color: var(--secondary); */
     background-color: hsla(0, 0%, 10%, 0.15);
 }
 
@@ -101,13 +90,6 @@ header {
     box-shadow: var(--shadow);
 }
 
-/* .menu button.active::after {
-    content: '';
-    width: calc(100% + 0px);
-    border-radius: 100px;
-    transition: none;
-    
-} */
 
 @media (max-width: 1440px) {
     header {
