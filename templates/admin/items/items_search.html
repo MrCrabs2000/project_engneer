@@ -10,11 +10,6 @@
 
 {% block content %}
 
-  <div>
-  <button onclick="document.location='/items'">магазин</button>
-  <button onclick="document.location='/items_users'">купленные</button>
-  </div>
-
   <div class="search-container">
     <div class="left">
       <input id="search-bar" class="search-bar" type="text" name="bysort" placeholder="Поиск предмета" value="{{ search_text }}">
@@ -43,9 +38,7 @@
           Цене
         </label>
       </div>
-          <!-- <button class="filter-btn">Фильтр</button> -->
-      <button class="accent" type="button" onclick="document.location='/items/add'"></button>
-        {# {% if adedusers == '0' %} #}
+      <button class="accent add-btn" type="button" onclick="document.location='/items/add'"></button>
 
     </div>
   </div>
@@ -65,9 +58,6 @@
 
           </div>
         </a>
-        {# <form action="/items/{{ item.id }}/delete" method="post" style="margin-top:10px;">
-          <input type="submit" value="Удалить" class="search-btn">
-        </form> #}
       </div>
     {% endfor %}
   </div>

@@ -20,6 +20,7 @@
       {% elif current_user_role == 'Admin'%}
         <button data-target="/users">Пользователи</button>
         <button data-target="/items">Предметы</button>
+        <button data-target="/items_users">Купленное</button>
         <button class="profile-btn" data-target="/profile">Профиль</button>
       {% elif current_user_role == 'Teacher'%}
         <button data-target="/classes">Классы</button>

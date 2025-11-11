@@ -6,23 +6,52 @@
 
 {% block links %}
   <link rel="stylesheet" href="/static/css/common/search/found-elements.css">
-  <link rel="stylesheet" href="/static/css/common/search/search.css">
-  <link rel="stylesheet" href="/static/css/items/items.css">
+  <link rel="stylesheet" href="/static/css/items/purchases.css">
 {% endblock %}
-
 
 
 {% block content %}
 
-    {% for i in range(kolvo_users) %}
-        <div>
-            <p>{{ users_items[i].name }}</p>
-            <p>{{ users_items[i].description }}</p>
-            <p>{{ users[i].userlogin }}</p>
-            <p>{{ users_items[i].count }}</p>
-            <p>{{ users_items[i].photo }}</p>
-            <p>{{ users_items[i].date }}</p>
+  {% if users_items %}
+    <div class="found-elements-grid">
+      {% for item in users_items %}
+        <div class="found-element-card">
+          <a href="items_users/{{ item.itemshopid }}">
+            <div class="found-element-info">
+              <div class="purchase-info">
+                <div class="purchase-top-info">
+
+                  {% if item.status == 'Принята' %}
+                    <div class="status accepted">{{ item.status }}</div>
+
+                  {% elif item.status == 'Ждёт вас' %}
+                    <div class="status can-be-received">Ожидает</div>
+
+                  {% elif item.status == 'Получена' %}
+                    <div class="status received">{{ item.status }}</div>
+
+                  {% endif %}
+
+                  <div>{{ item.date }}</div>
+
+                </div>
+
+                <div class="name">{{ item.name }}</div>
+
+                <div class="secondary-info">
+                  <div>{{ item.count }} ед.</div>
+                  <div></div>
+                </div>
+
+              </div>
+            </div>
+          </a>
         </div>
-    {% endfor %}
+        
+      {% endfor %}
+    </div>
+  {% else %}
+    <div id="no-purchases">Нету запросов на покупку.</div>
+  {% endif %}
 
 {% endblock %}

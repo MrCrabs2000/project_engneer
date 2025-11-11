@@ -33,9 +33,10 @@
     display: flex;
     justify-content: flex-end;
     gap: 8px;
+    height: 100%;
 }
 
-.add-user-btn {
+.add-btn {
     position: relative;
     display: inline-block;
     align-items: center;
@@ -48,7 +49,7 @@
     
 }
 
-.add-user-btn:after, .add-user-btn:before {
+.add-btn:after, .add-btn:before {
     content: '';
     position: absolute;
     top: 50%;
@@ -58,13 +59,13 @@
     border-radius: 100px;
 }
 
-.add-user-btn:before{
+.add-btn:before{
     width: 4px;
     height: 20px;
 
 }
 
-.add-user-btn:after{
+.add-btn:after{
     width: 20px;
     height: 4px;
 }

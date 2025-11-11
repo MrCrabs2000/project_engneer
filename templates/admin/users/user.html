@@ -71,10 +71,6 @@
           <input id="balance" name="balance" oninput="this.value = this.value.replace(/[^0-9+]/g, '')" value="{{ balance }}" placeholder="Баланс" readonly>
         </div>
       </div>
-      {# <div class="btns-container">
-        <button onclick="document.location='/users/{{ id }}/edit'">Редактировать</button>
-        <button class="danger" onclick="document.location='/users/{{ id }}/delete'">Удалить</button>
-      </div> #}
       
     </div>
     {% if role == 'Teacher' %}
