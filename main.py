@@ -106,19 +106,14 @@ def item(item_id):
                 user.userbalance = int(user.userbalance) - (int(item_shop.price) * int(amount))
                 item_shop.count -= int(amount)
 
-                ddate = str(date.today()).split('-')
-                datte = ''
-                for i in ddate[::-1]:
-                    datte += i
-                    datte += '-'
-                datte = datte[:-1]
+                ddate = date.today().strftime('%d-%m-%Y')
 
                 new_item = Item_user(
                     userid=current_user.id,
                     itemshopid = item_shop.id,
                     status='Принята',
                     count=int(amount),
-                    date=datte
+                    date=ddate
                 )
                 print(item_shop.id)
 
