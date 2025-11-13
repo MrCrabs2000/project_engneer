@@ -466,10 +466,26 @@ def items_users():
         for elem in users_items:
             users.append(session_db.query(User).filter_by(id=elem.userid).first())
         session_db.close()
-        return render_template('admin/items/items_users.html', users_items=users_items, users=users,
-                               kolvo_users=len(users_items), current_user_role=current_user.role)
+
+        items = []
+        for i in range(len(users)):
+            items.append({'item': users_items[i], 'user': users[i]})
+
+        return render_template('admin/items/items_users.html', items=items)
     elif not current_user.is_authenticated:
         return redirect('/login')
+
+
+@app.route('/items_users/<item_id>')
+def items_user(item_id):
+    if current_user.is_authenticated and current_user.role == 'Admin':
+        session_db = db_session.create_session()
+        item = session_db.query(Item_user).filter_by(id=item_id).first()
+        session_db.close()
+        return render_template('admin/items/purchase_request.html', item=item)
+    elif not current_user.is_authenticated:
+        return redirect('/login')
+
 
 
 @app.route('/items/add', methods=['GET', 'POST'])
@@ -726,83 +742,6 @@ def profile():
     
     elif not current_user.is_authenticated:
         return redirect('/login')
-
-
-@app.route('/login/telegram')
-def login_telegram():
-    data = {
-        'id': request.args.get('id', None),
-        'first_name': request.args.get('first_name', None),
-        'last_name': request.args.get('last_name', None),
-        'username': request.args.get('username', None),
-        'photo_url': request.args.get('photo_url', None),
-        'auth_date': request.args.get('auth_date', None),
-        'hash': request.args.get('hash', None)}
-    if check_response(data):
-        return data
-    else:
-        return 'Ошибка авторизации'
-
-
-# @app.route('/<class_name>/<teacherid>', methods=['GET'])
-# def class_page(class_name, teacherid):
-#     if current_user.is_authenticated and (current_user.role == 'Teacher' or current_user.role == 'Admin'):
-#         session_db = db_session.create_session()
-#         teacher = session_db.query(User).filter_by(id=teacherid).first()
-#         students = session_db.query(User).filter(User.userclass == class_name, User.role == 'Student').all()
-#         students_list = []
-#         for student in students:
-#             student_data = {
-#                 'id': student.id,
-#                 'username': student.username,
-#                 'usersurname': student.usersurname,
-#                 'userotchestvo': student.userotchestvo,
-#                 'userbalance': student.userbalance
-#             }
-#             students_list.append(student_data)
-#         session_db.close()
-#         if int(teacherid) == int(current_user.id):
-#             return render_template('teacher/class.html',
-#                                    logged_in=True,
-#                                    username=teacher.username,
-#                                    usersurname=teacher.usersurname,
-#                                    userclass=teacher.userclass,
-#                                    userbalance=teacher.userbalance,
-#                                    userotchestvo=teacher.userotchestvo,
-#                                    current_user_role=teacher.role,
-#                                    class_name=class_name,
-#                                    students=students_list,
-#                                    students_count=len(students_list),
-#                                    tid=teacher.id,
-#                                    adminid='nul')
-#         else:
-#             return render_template('teacher/class.html', logged_in=True, username=teacher.username,
-#                                    usersurname=teacher.usersurname, userclass=teacher.userclass,
-#                                    userbalance=teacher.userbalance, userotchestvo=teacher.userotchestvo,
-#                                    role=teacher.role, class_name=class_name, students=students_list,
-#                                    students_count=len(students_list), tid=teacher.id, adminid=current_user.id)
-#     elif not current_user.is_authenticated:
-#         return redirect(url_for('login'))
-
-
-
-# ^^^ КОММЕНТАРИЯ В САМОМ ВЕРХУ ^^^
-
-
-@app.route('/enterteach/<userid>')
-def enteracc(userid):
-
-    if current_user.is_authenticated and current_user.role == 'Admin':
-        session_db = db_session.create_session()
-        teacher = session_db.query(User).filter_by(id=userid).first()
-        session_db.close()
-        adminid = current_user.id
-        return render_template('teacher/classes_list.html', adminid=adminid, teachername=teacher.username,
-                               teacersurname=teacher.usersurname, teacherotchestvo=teacher.userotchestvo,
-                               role=teacher.role, userbalance=teacher.userbalance, teacherid=teacher.id,
-                               teacher_classes=teacher.userclass.split())
-    elif not current_user.is_authenticated:
-        return redirect(url_for('login'))
 
 
 if __name__ == "__main__":
