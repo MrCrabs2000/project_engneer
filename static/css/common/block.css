@@ -33,26 +33,6 @@
     box-shadow: none;
 }
 
-.info {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-}
-
-.info div {
-    font-size: 22px;
-}
-
-.info label {
-    margin-bottom: 8px;
-    font-size: 16px;
-    color: var(--text-muted)
-}
-
-.info span {
-
-}
-
-
 @media (max-width: 1440px) {
     .block {
         margin: 0 20px;
