@@ -38,4 +38,4 @@ class Item_user(SqlAlchemyBase):
     status = Column(String(20), nullable=False)
     count = Column(Integer, default=0)
     date = Column(String(40), nullable=True)
-
+    photo = Column(String(1000), nullable=False)

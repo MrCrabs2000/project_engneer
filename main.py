@@ -5,7 +5,7 @@ import db_session
 from Classes import Item_user, User, Item_shop
 from tgbotiha import check_response
 from werkzeug.security import generate_password_hash, check_password_hash
-from os import makedirs
+import os
 from exel import import_users, generate_password_for_user
 from datetime import date
 import copy
@@ -13,10 +13,11 @@ import copy
 
 app = Flask(__name__)
 app.secret_key = '25112008'
+app.config['FOLDER'] = 'static/images/item_images'
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
-makedirs('db', exist_ok=True)
+os.makedirs('db', exist_ok=True)
 db_session.global_init(True, 'db/users.db')
 
 
@@ -501,8 +502,10 @@ def add_item():
             price = request.form['price']
             photo = request.form['photo']
 
+            photo.save(os.path.join(app.config['FOLDER'], photo.filename))
+
             session_db = db_session.create_session()
-            new_item = Item_shop(name=name, description=description, count=count, price=price, photo=photo)
+            new_item = Item_shop(name=name, description=description, count=count, price=price, photo=photo.filename)
             session_db.add(new_item)
             session_db.commit()
             session_db.close()
@@ -520,6 +523,7 @@ def delete_item(item_id):
         item = session_db.query(Item_shop).filter_by(id=item_id).first()
         
         if item:
+            os.remove(app.config['FOLDER'] + '/' + item.photo)
             session_db.delete(item)
             session_db.commit()
 
@@ -570,7 +574,9 @@ def edit_item(item_id):
             if new_price:
                 item.price = new_price
             if new_photo:
-                item.photo = new_photo
+                os.remove(app.config['FOLDER'] + '/' + item.photo)
+                new_photo.save(os.path.join(app.config['FOLDER'], new_photo.filename))
+                item.photo = new_photo.filename
 
             session_db.commit()
             return redirect(f'/items')
