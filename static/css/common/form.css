@@ -61,22 +61,21 @@
 
 .file-input > input {
     position: absolute;
-    visibility: hidden;   
+    display: none;   
 }
 
-.file-input > div {
+.file-input > .selected-file {
     flex: 1 1;
     box-sizing: border-box;
-    display: flex;
-    align-items: center;
-    padding: 0px 16px;
-    text-align: center;
+    padding: 0.15em 0.7em;
     border-radius: 0.6em;
     background-color: var(--bg-light);
     box-shadow: var(--shadow);
+    color: var(--text-muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
-
-
 
 
 

@@ -32,8 +32,26 @@
           <input id="price" name="price" type="number" min="0" value="{{ price }}" required>
         </div>  
         <div>
-          <label for="photo">Путь к фото</label>
-          <input id="photo" name="photo" value="{{ photo }}">
+          <label for="photo">Фото</label>
+          <div class="file-input">
+            <input id="photo" type="file" name="photo" accept=".png, .jpeg, .jpg" required>
+            <label for="photo"><div class="upload-btn" disabled>Выбрать</div></label>
+            <div id="selected-file" class="selected-file">Пусто</div>
+
+            <script>
+              const input = document.getElementById('photo');
+              const selectedFileContainer = document.getElementById('selected-file');
+        
+              input.addEventListener('change', function (e) {
+                console.log('play event')
+                const selectedFile = event.target.files[0];
+                if (selectedFile) {
+                  selectedFileContainer.textContent = selectedFile.name;
+                }
+              });
+            </script>
+
+          </div>
         </div>  
       </div>
       
@@ -41,11 +59,7 @@
         <button class="accent" type="submit">Подтвердить</button>
         <button type="button" onclick="document.location = '/items'">Отмена</button>
       </div>  
-      {# {% if photo %}
-      <p>
-        <img src="{{ photo }}" alt="Фото предмета" width="200">
-      </p>
-      {% endif %} #}
+  
     </form>
   </div>
 {% endblock %}
