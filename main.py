@@ -502,7 +502,7 @@ def add_item():
             price = request.form['price']
             photo = request.form['photo']
 
-            print(photo)
+            photo.save(os.path.join(app.config['FOLDER'], photo.filename))
 
             session_db = db_session.create_session()
             new_item = Item_shop(name=name, description=description, count=count, price=price, photo=photo.filename)

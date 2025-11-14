@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, String, Boolean
 from db_session import SqlAlchemyBase
 from flask_login import UserMixin
 
@@ -27,6 +27,7 @@ class Item_shop(SqlAlchemyBase):
     count = Column(Integer, nullable=False)
     price = Column(Integer, nullable=False)
     photo = Column(String(1000), nullable=False)
+    is_arсhived = Column(Boolean, nullable=False, default=False)
 
 
 class Item_user(SqlAlchemyBase):
@@ -38,4 +39,3 @@ class Item_user(SqlAlchemyBase):
     status = Column(String(20), nullable=False)
     count = Column(Integer, default=0)
     date = Column(String(40), nullable=True)
-    photo = Column(String(1000), nullable=False)
