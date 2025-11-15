@@ -47,7 +47,7 @@ def import_users():
             surname1 = (sheet[f'B{row}'].value, 'ru', True)[0]
             otchestvo1 = (sheet[f'C{row}'].value, 'ru', True)[0]
             user_class1 = (sheet[f'D{row}'].value, 'ru', True)[0]
-            role = sheet[f'E{row}'].value[0]
+            role = sheet[f'E{row}'].value
 
             name = translit(name1, 'ru', True)
             surname = translit(surname1, 'ru', True)
@@ -99,3 +99,6 @@ def import_users():
 
     finally:
         session.close()
+
+
+import_users()

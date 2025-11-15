@@ -4,3 +4,4 @@
 *.pdf
 *.xlsx
 /tg_support_bot/db_bot
+/static/images/items_images

@@ -3,7 +3,6 @@ from flask_login import logout_user, LoginManager, login_user, current_user
 from transliterate import translit
 import db_session
 from Classes import Item_user, User, Item_shop
-from tgbotiha import check_response
 from werkzeug.security import generate_password_hash, check_password_hash
 import os
 from exel import import_users, generate_password_for_user
@@ -13,7 +12,7 @@ import copy
 
 app = Flask(__name__)
 app.secret_key = '25112008'
-app.config['FOLDER'] = 'static/images/item_images'
+app.config['FOLDER'] = 'static/images/items_images'
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
@@ -478,7 +477,7 @@ def items_users():
 
 
 @app.route('/items_users/<item_id>')
-def items_user(item_id):
+def item_user(item_id):
     if current_user.is_authenticated and current_user.role == 'Admin':
         session_db = db_session.create_session()
         item = session_db.query(Item_user).filter_by(id=item_id).first()
@@ -500,12 +499,20 @@ def add_item():
             description = request.form['description']
             count = request.form['count']
             price = request.form['price']
-            photo = request.form['photo']
+            photo = request.files['photo']
 
-            photo.save(os.path.join(app.config['FOLDER'], photo.filename))
+            razresh = photo.filename.split('.')[1]
+            k = 1
+            f = os.path.exists('static/images/items_images/' + str(k) + '.' + razresh)
+            while f:
+                k += 1
+                f = os.path.exists('static/images/items_images/' + str(k) + '.' + razresh)
+            fname = str(k) + '.' + razresh
+
+            photo.save(os.path.join(app.config['FOLDER'], fname))
 
             session_db = db_session.create_session()
-            new_item = Item_shop(name=name, description=description, count=count, price=price, photo=photo.filename)
+            new_item = Item_shop(name=name, description=description, count=count, price=price, photo=fname)
             session_db.add(new_item)
             session_db.commit()
             session_db.close()
@@ -523,8 +530,7 @@ def delete_item(item_id):
         item = session_db.query(Item_shop).filter_by(id=item_id).first()
         
         if item:
-            os.remove(app.config['FOLDER'] + '/' + item.photo)
-            session_db.delete(item)
+            item.is_arсhived = True
             session_db.commit()
 
         session_db.close()
@@ -563,7 +569,7 @@ def edit_item(item_id):
             new_description = request.form['description']
             new_count = request.form['count']
             new_price = request.form['price']
-            new_photo = request.form['photo']
+            new_photo = request.files['photo']
 
             if new_name:
                 item.name = new_name
@@ -575,8 +581,17 @@ def edit_item(item_id):
                 item.price = new_price
             if new_photo:
                 os.remove(app.config['FOLDER'] + '/' + item.photo)
-                new_photo.save(os.path.join(app.config['FOLDER'], new_photo.filename))
-                item.photo = new_photo.filename
+
+                razresh = new_photo.filename.split('.')[1]
+                k = 1
+                f = os.path.exists('static/images/items_images/' + str(k) + '.' + razresh)
+                while f:
+                    k += 1
+                    f = os.path.exists('static/images/items_images/' + str(k) + '.' + razresh)
+                fname = str(k) + '.' + razresh
+
+                new_photo.save(os.path.join(app.config['FOLDER'], fname))
+                item.photo = fname
 
             session_db.commit()
             return redirect(f'/items')
