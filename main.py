@@ -250,7 +250,6 @@ def user(user_id):
         session_db.close()
 
         context = {'current_user_role': current_user.role,
-                   'userbalance': current_user.userbalance,
                    'name': user.username,
                    'surname': user.usersurname,
                    'login': user.userlogin,
@@ -259,6 +258,8 @@ def user(user_id):
                    'class': user.userclass,
                    'balance': user.userbalance,
                    'id': user_id}
+        if current_user.role == 'Teacher':
+            context['class'] = context['class'].split()
         
         return render_template('admin/users/user.html', **context)
     
@@ -471,7 +472,11 @@ def items_users():
         for i in range(len(users)):
             items.append({'item': users_items[i], 'user': users[i]})
 
-        return render_template('admin/items/items_users.html', items=items)
+        context = {'items': items,
+                   'current_user_role': current_user.role,
+                   }
+
+        return render_template('admin/items/items_users.html', **context)
     elif not current_user.is_authenticated:
         return redirect('/login')
 
@@ -481,8 +486,9 @@ def item_user(item_id):
     if current_user.is_authenticated and current_user.role == 'Admin':
         session_db = db_session.create_session()
         item = session_db.query(Item_user).filter_by(id=item_id).first()
+        user = session_db.query(User).filter_by(id=item.userid).first()
         session_db.close()
-        return render_template('admin/items/purchase_request.html', item=item)
+        return render_template('admin/items/purchase_request.html', item=item, user=user)
     elif not current_user.is_authenticated:
         return redirect('/login')
 
@@ -582,16 +588,7 @@ def edit_item(item_id):
             if new_photo:
                 os.remove(app.config['FOLDER'] + '/' + item.photo)
 
-                razresh = new_photo.filename.split('.')[1]
-                k = 1
-                f = os.path.exists('static/images/items_images/' + str(k) + '.' + razresh)
-                while f:
-                    k += 1
-                    f = os.path.exists('static/images/items_images/' + str(k) + '.' + razresh)
-                fname = str(k) + '.' + razresh
-
-                new_photo.save(os.path.join(app.config['FOLDER'], fname))
-                item.photo = fname
+                new_photo.save(os.path.join(app.config['FOLDER'], item.photo))
 
             session_db.commit()
             return redirect(f'/items')
