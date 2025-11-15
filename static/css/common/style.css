@@ -175,14 +175,17 @@ input[type="radio"] {
 }
 
 .custom-radio-btn {
+    box-sizing: border-box;
     position: relative;
-    display: inline-block;
-    width: 24px;
-    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
     background-color: var(--bg-light);
     border: 2px solid var(--primary);
     border-radius: 10px;
-
+    box-shadow: var(--shadow);
 }
 
 input[type="radio"]:checked + .custom-radio-btn:before {
@@ -193,9 +196,7 @@ input[type="radio"]:checked + .custom-radio-btn:before {
     background: var(--primary);
     border-radius: 6px;
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    
 
 }
 
