@@ -6,29 +6,37 @@
 
 {% block links %}
   <link rel="stylesheet" href="/static/css/common/form.css">
+  <link rel="stylesheet" href="/static/css/common/block.css">
+  <link rel="stylesheet" href="/static/css/users/user.css">
 {% endblock %}
 
 
 {% block content %}
-  <div class="centering-container">
-    <form class="form" method="POST" enctype="multipart/form-data">
-      <title class="title">Добавить</title>
-      <div class="fields-container">
+  <main>
+
+    <form class="block info" method="post" enctype="multipart/form-data">
+    
+      <div class="block-header">
+        <span>Добавить пользователя</span>
+        <div class="buttons">
+          <button class="accent" type="submit">Подтвердить</button>
+        </div>
+      </div>
+
+      <div class="fields-container user">
+        
         <div>
           <label for="name">Имя</label>
           <input id="name" name="name" placeholder="Имя">
         </div>
-
         <div>
           <label for="surname">Фамилия</label>
           <input id="surname" name="surname" placeholder="Фамилия">
         </div>
-
         <div>
           <label for="otchestvo">Отчество</label>
           <input id="otchestvo" name="otchestvo" placeholder="Отчество">
         </div>
-
         <div>
           <label for="role">Роль</label>
           <div class="select">
@@ -52,7 +60,7 @@
 
         <div>
           <label for="password">Пароль</label>
-          <input id="password" name="password" placeholder="Пароль">
+          <input id="password" type="password" name="password" placeholder="Пароль">
         </div>
 
         <div>
@@ -61,12 +69,9 @@
         </div>
 
       </div>
-
-      <div class="btns-container">
-        <button class="accent" type="submit">Добавить</button>
-      </div>
-        
+      
     </form>
-  </div>
+    
+  </main>
 
 {% endblock %}
