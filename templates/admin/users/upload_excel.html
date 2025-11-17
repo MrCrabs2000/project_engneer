@@ -5,7 +5,6 @@
 
 
 {% block links %}
-  <link rel="stylesheet" href="/static/css/users/upload-excel.css">
   <link rel="stylesheet" href="/static/css/common/form.css">
 {% endblock %}
 
@@ -20,7 +19,7 @@
           <label for="upload-table">Таблица</label>
           <div class="file-input">
             <input id="upload-table" type="file" name="inputexel" accept=".xlsx, .xls" required>
-            <label for="upload-table"><span class="upload-btn" disabled>Выбрать</span></label>
+            <label for="upload-table"><div class="upload-btn">Выбрать</div></label>
             <div id="selected-file" class="selected-file">Пусто</div>
 
             <script>

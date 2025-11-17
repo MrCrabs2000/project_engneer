@@ -46,7 +46,13 @@ main {
     transform: translate(-50%, -50%);
 }
 
-button, .upload-btn {
+div.no-bg {
+    padding: 0;
+    background: none;
+    box-shadow: none;
+}
+
+button {
     padding: 0.15em 0.7em;
     font-family: inherit;
     font-size: inherit;
@@ -96,13 +102,11 @@ input, select, textarea {
     outline: none;
     appearance: none;
     transition: background-color 0.2s ease, border 0.2s ease;
-    /* transition: transform 10s ease-out; */
 }
 
 input[readonly], select[disabled], textarea[readonly] {
     background-color: var(--bg-dark);
     border: 2px solid var(--border);
-    /* transition: transform 10s ease-out; */
 }
 
 input:hover, select:hover, textarea:hover {

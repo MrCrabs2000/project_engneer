@@ -1,56 +1,59 @@
 {% extends 'common/base.html' %}
 
 
-{% block title %}{{ Запрос на покупку }}{% endblock %}
+{% block title %}Запрос на покупку{% endblock %}
 
 
 {% block links %}
     <link rel="stylesheet" href="/static/css/common/block.css">
+    <link rel="stylesheet" href="/static/css/items/purchase.css">
+    <link rel="stylesheet" href="/static/css/items/item.css">
+    <link rel="stylesheet" href="/static/css/common/form.css">
 {% endblock %}
 
 
 {% block content %}
 
     <main>
-        <div class="block">
+        <div class="block purchase">
 
             <div class="block-header">
-                <span>Запрос на покупку</span>
+                <span>Покупка</span>
                 <div class="buttons">
-                    <button class="accent">Можно забрать</button>
                 </div>
             </div>
-    
-            <div class="info">
-                <div>
-                    <label></label>
-                    <span></span>
+            
+            <div class="purchase-info">
+                
+                <img class="item-image" src="/static/images/items_images/{{ item.photo }}">
+                
+                <div class="fields-container purchase-secondary-info">
+                    
+                    <div>
+                        <label>Дата покупки</label>
+                        <input class="purchase-date" value="{{ purchase.date }}" readonly>
+                    </div>
+                    
+                    <div>
+                        <label>Ученик</label>
+                        <input class="purchase-user" value="{{ user.usersurname }} {{ user.username }} {{ user.userotchestvo }} {{ user.userclass }}" readonly>
+                    </div>
+                    
+                    <div>
+                        <label>Стоимость</label>
+                        <input value="{{ item.price * purchase.count }}" readonly>
+                    </div>
+                    
                 </div>
 
-                <div>
-                    <label></label>
-                    <span></span>
+                <div class="item-header">
+                    <span class="item-name">{{ item.name }}</span>
+                    <span class="purchase-count">{{ purchase.count }} шт.</span>
                 </div>
                 
-                <div>
-                    <label></label>
-                    <span></span>
-                </div>
-
-                <div>
-                    <label></label>
-                    <span></span>
-                </div>
-
-                <div>
-                    <label></label>
-                    <span></span>
-                </div>
-
-                <div>
-                    <label></label>
-                    <span></span>
-                </div>
+                <form id="can-be-recieved-form" method="post" style="display: none;" action="/items_users/{{ purchase.id }}/can_be_recieved"></form>
+                <button class="accent can-be-recieved" form="can-be-recieved-form">Можно забрать</button>
+                
             </div>
 
         </div>

@@ -7,6 +7,7 @@
 {% block links %}
   <link rel="stylesheet" href="/static/css/common/form.css">
   <link rel="stylesheet" href="/static/css/common/block.css">
+  <link rel="stylesheet" href="/static/css/items/item.css">
 {% endblock links %}
 
 
@@ -22,12 +23,17 @@
           <button class="accent" type="submit">Подтвердить</button>
         </div>
       </div>
-
+      
       <div class="fields-container">
         
         <div>
           <label for="name">Название</label>
           <input id="name" name="name" placeholder="Название" value="{{ name }}" required>
+        </div>
+        
+        <div class="description-container">
+          <label for="description">Описание</label>
+          <textarea id="description" name="description" maxlength="300" required>{{ description }}</textarea>
         </div>
 
         <div>
@@ -44,7 +50,7 @@
           <label for="photo">Новое фото</label>
           <div class="file-input">
             <input id="photo" type="file" name="photo" accept=".png, .jpeg, .jpg">
-            <label for="photo"><div class="upload-btn" disabled>Выбрать</div></label>
+            <label for="photo"><div class="upload-btn">Выбрать</div></label>
             <div id="selected-file" class="selected-file">Пусто</div>
             
             <script>
@@ -61,16 +67,9 @@
             </script>
              
           </div>
-          
-        </div>
-
-        <div class="description-container">
-          <label for="description">Описание</label>
-          <textarea id="description" name="description" rows="4" maxlength="300" required>{{ description }}</textarea>
         </div>
 
       </div>
-      
     </form>
   </main>
 {% endblock %}

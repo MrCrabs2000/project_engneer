@@ -494,7 +494,7 @@ def item_user(item_id):
         session_db = db_session.create_session()
         item = session_db.query(Item_user).filter_by(id=item_id).first()
         user = session_db.query(User).filter_by(id=item.userid).first()
-        item_shop = session_db.query(Item_shop).filter_by(id=item.shopid).first()
+        item_shop = session_db.query(Item_shop).filter_by(id=item.itemshopid).first()
         session_db.close()
         return render_template('admin/items/purchase_request.html', item=item_shop, user=user,
                                purchase=item, current_user_role=current_user.role)

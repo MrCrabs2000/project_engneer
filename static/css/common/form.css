@@ -36,12 +36,13 @@
 
 .fields-container > div > input {
     width: auto;
+    height: calc(100% - 24px);
 }
 
 .fields-container > div > textarea {
-    width: auto;
     resize: none;
-    font-size: 20px;
+    width: auto;
+    height: calc(100% - 24px);
 }
 
 .fields-container input[readonly] {
@@ -51,12 +52,14 @@
 
 
 
-
-
 .file-input {
     display: flex;
-    flex-direction: row;
-    gap: 8px;
+    align-items: center;
+    background-color: var(--bg-light);
+    box-shadow: var(--shadow);
+    border-radius: 16px;
+    width: auto;
+    height: calc(100% - 24px);
 }
 
 .file-input > input {
@@ -69,12 +72,32 @@
     box-sizing: border-box;
     padding: 0.15em 0.7em;
     border-radius: 0.6em;
-    background-color: var(--bg-light);
-    box-shadow: var(--shadow);
     color: var(--text-muted);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+.file-input label {
+    height: 100%;
+    padding: 0;
+}
+
+.file-input .upload-btn {
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+    height: 100%;
+    padding: 0.15em 0.65em;
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: 600;
+    color: inherit;
+    border: solid var(--border);
+    border-width: 0 2px 0 0;
+    border-radius: 16px 0 0 16px;
+    transition: background-color 0.2s ease, border 0.2s ease;
+    cursor: pointer;
 }
 
 

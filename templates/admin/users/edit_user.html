@@ -60,14 +60,22 @@
             </select>
           </div>
         </div>
+
         <div>
           <label for="class">Класс</label>
           <input id="class" value="{{ class }}" name="class" placeholder="Класс">
         </div>
+
         <div>
           <label for="balance">Баланс</label>
           <input id="balance" name="balance" oninput="this.value = this.value.replace(/[^0-9+]/g, '')" value="{{ balance }}" placeholder="Баланс">
         </div>
+
+        <div>
+          <label for="password">Новый пароль</label>
+          <input id="password" name="password" type="password" placeholder="Новый пароль">
+        </div>
+
       </div>
       
     </form>

@@ -27,11 +27,6 @@
     box-shadow: var(--shadow);
 }
 
-.block.no-bg {
-    padding: 0;
-    background: none;
-    box-shadow: none;
-}
 
 .block .fields-container {
     display: grid;
@@ -42,10 +37,6 @@
 .block .fields-container > div {
     width: auto;
     font-size: 22px;
-}
-
-.fields-container .description-container {
-    grid-column: 1 / 3;
 }
 
 
