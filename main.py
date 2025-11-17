@@ -17,8 +17,7 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
 os.makedirs('db', exist_ok=True)
-os.makedirs('images', exist_ok=True)
-os.makedirs('images/items_images', exist_ok=True)
+os.makedirs('static/images/items_images', exist_ok=True)
 db_session.global_init(True, 'db/users.db')
 
 
@@ -508,7 +507,7 @@ def item_user(item_id):
 def add_item():
     if current_user.is_authenticated and current_user.role == 'Admin':
         if request.method == 'GET':
-            return render_template('admin/items/add_item.html')
+            return render_template('admin/items/add_item.html', current_user_role=current_user.role)
         
         elif request.method == 'POST':
             name = request.form['name']
