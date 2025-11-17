@@ -436,18 +436,24 @@ def items():
         if search_text:
             if filterr == 'Название':
                 items = query.filter(Item_shop.name.like(f"%{search_text}%")).all()
+                items_archived = [x for x in items if x.is_archived]
             elif filterr == 'Описание':
                 items = query.filter(Item_shop.description.like(f"%{search_text}%")).all()
+                items_archived = [x for x in items if x.is_archived]
             elif filterr == 'Цена':
                 items = query.filter(Item_shop.price.like(f"%{search_text}%")).all()
+                items_archived = [x for x in items if x.is_archived]
             else:
                 items = query.all()
+                items_archived = [x for x in items if x.is_archived]
         else:
             items = query.all()
+            items_archived = [x for x in items if x.is_archived]
 
         session_db.close()
 
         context = {'items': items,
+                   'items_archived': items_archived,
                    'current_user_role': current_user.role,
                    'search_text': search_text,
                    'filter': filterr}
