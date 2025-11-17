@@ -27,7 +27,7 @@ class Item_shop(SqlAlchemyBase):
     count = Column(Integer, nullable=False)
     price = Column(Integer, nullable=False)
     photo = Column(String(1000), nullable=False)
-    is_arсhived = Column(Boolean, nullable=False, default=False)
+    is_archived = Column(Boolean, nullable=False, default=False)
 
 
 class Item_user(SqlAlchemyBase):

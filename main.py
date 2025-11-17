@@ -17,6 +17,8 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
 os.makedirs('db', exist_ok=True)
+os.makedirs('images', exist_ok=True)
+os.makedirs('images/items_images', exist_ok=True)
 db_session.global_init(True, 'db/users.db')
 
 
@@ -557,7 +559,7 @@ def delete_item(item_id):
         item = session_db.query(Item_shop).filter_by(id=item_id).first()
         
         if item:
-            item.is_arсhived = True
+            item.is_archived = True
             session_db.commit()
 
         session_db.close()
