@@ -4,35 +4,37 @@
 
 {% block links %}
   <link rel="stylesheet" href="/static/css/common/form.css">
+  <link rel="stylesheet" href="/static/css/common/block.css">
 {% endblock %}
 
 {% block content %}
-  <div class="centering-container">
-    <form class="form" method="POST" enctype="multipart/form-data">
-      <div class="title">Добавить</div>
+  <main>
+
+    <form class="block" method="post" enctype="multipart/form-data">
+    
+      <div class="block-header">
+        <span>Добавить предмет</span>
+        <div class="buttons">
+          <button class="accent" type="submit">Подтвердить</button>
+        </div>
+      </div>
 
       <div class="fields-container">
-
+        
         <div>
           <label for="name">Название</label>
           <input id="name" name="name" placeholder="Название" required>
         </div>
-
-        <div>
-          <label for="description">Описание</label>
-          <input id="description" name="description" placeholder="Описание" required>
-        </div>
-
         <div>
           <label for="count">Количество</label>
-          <input id="count" name="count" placeholder="Количество" oninput="this.value = this.value.replace(/[^0-9+]/g, '')" required>
+          <input id="count" name="count" type="number" min="1" placeholder="Количество" required>
         </div>
         
         <div>
           <label for="price">Цена</label>
-          <input id="price" name="price" placeholder="Цена" oninput="this.value = this.value.replace(/[^0-9+]/g, '')" required>
+          <input id="price" name="price" type="number" min="1" placeholder="Цена" required>
         </div>
-
+        
         <div>
           <label for="photo">Фото</label>
           <div class="file-input">
@@ -43,7 +45,7 @@
             <script>
               const input = document.getElementById('photo');
               const selectedFileContainer = document.getElementById('selected-file');
-        
+              
               input.addEventListener('change', function (e) {
                 console.log('play event')
                 const selectedFile = event.target.files[0];
@@ -55,12 +57,13 @@
 
           </div>
         </div>
+        <div class="description-container">
+          <label for="description">Описание</label>
+          <textarea id="description" name="description" rows="4" maxlength="300" required></textarea>
+        </div>
       </div>
-
-      <div class="btns-container">
-        <button class="accent" type="submit">Добавить</button>
-      </div>
-
+      
     </form>
-  </div>
-{% endblock %}
+  </main>
+  
+  {% endblock %}

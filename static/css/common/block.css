@@ -33,6 +33,22 @@
     box-shadow: none;
 }
 
+.block .fields-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 16px;
+}
+
+.block .fields-container > div {
+    width: auto;
+    font-size: 22px;
+}
+
+.fields-container .description-container {
+    grid-column: 1 / 3;
+}
+
+
 @media (max-width: 1440px) {
     .block {
         margin: 0 20px;
