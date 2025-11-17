@@ -259,8 +259,8 @@ def user(user_id):
                    'class': user.userclass,
                    'balance': user.userbalance,
                    'id': user_id}
-        if current_user.role == 'Teacher':
-            context['class'] = context['class'].split()
+        if user.role == 'Teacher':
+            context['class'] = context['class'].split(' ')
         
         return render_template('admin/users/user.html', **context)
     
@@ -288,6 +288,9 @@ def edit_user(user_id):
                        'class': user.userclass,
                        'balance': user.userbalance,
                        'id': user_id}
+            
+            if user.role == 'Teacher':
+                context['class'] = context['class'].split(' ')
 
             return render_template('admin/users/edit_user.html', **context)
         
@@ -638,8 +641,11 @@ def classes():
 
 @app.route('/classes/<class_name>')
 def show_class(class_name):
-    if current_user.is_authenticated and current_user.role == 'Teacher':
-        classes = current_user.userclass.split(' ')
+    if current_user.is_authenticated and (current_user.role == 'Teacher' or current_user.role == 'Admin'):
+        classes = list()
+        if current_user.role == 'Teacher':
+            classes = current_user.userclass.split(' ')
+            
         session_db = db_session.create_session()
         students = session_db.query(User).filter_by(userclass=class_name).all()
         students_list = []

@@ -62,10 +62,19 @@
             </select>
           </div>
         </div>
+
+        {% if  role == 'Teacher' %}
+        <div>
+          <label for="class">Классы</label>
+          <input id="class" value="{{ ', '.join(class) }}" name="class" placeholder="Класс" readonly>
+        </div>
+        {% else %}
         <div>
           <label for="class">Класс</label>
           <input id="class" value="{{ class }}" name="class" placeholder="Класс" readonly>
         </div>
+        {% endif %}
+
         <div>
           <label for="balance">Баланс</label>
           <input id="balance" name="balance" oninput="this.value = this.value.replace(/[^0-9+]/g, '')" value="{{ balance }}" placeholder="Баланс" readonly>
@@ -78,11 +87,11 @@
     <div class="block">
       <span class="block-header">Классы</span>
       <div class="classes-grid user">
-        {% for class in classes %}
+        {% for c in class %}
         <div class="class-card">
-          <a href="/classes/{{ class}}">
+          <a href="/classes/{{ c }}">
             <div class="class-content">
-              <div>{{ class }}</div>
+              <div>{{ c }}</div>
             </div>
           </a>
         </div>
