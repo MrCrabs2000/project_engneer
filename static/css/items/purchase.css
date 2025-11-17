@@ -1,10 +1,10 @@
 .purchase {
-    max-width: 800px;
+    width: fit-content;
 }
 
 .purchase-info {
     display: grid;
-    grid-template-columns: 340px 1fr;
+    grid-template-columns: min-content 1fr;
     grid-template-rows: min-content 48px;
     gap: 16px;
 }
@@ -18,8 +18,9 @@
     
 }
 
-.purchase-item-info .item-image {
-    width: 100%;
+.purchase-info .item-image {
+    height: 286px;
+    width: auto;
 }
 
 .purchase-info .item-header {

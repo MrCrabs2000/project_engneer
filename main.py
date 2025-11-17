@@ -538,7 +538,7 @@ def add_item():
         return redirect('/login')
 
 
-@app.route('/items_users/<purchase_id>/can_be_recieved')
+@app.route('/items_users/<purchase_id>/can_be_recieved', methods=['POST'])
 def can_be_recieved(purchase_id):
     if current_user.is_authenticated and current_user.role == 'Admin':
         session_db = db_session.create_session()
