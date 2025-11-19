@@ -45,7 +45,7 @@
     text-overflow: ellipsis;
 }
 
-.purchase-info .purchase-count {
+.purchase-info .purchase-count, .purchase-info .purchase-price {
     white-space: nowrap;
     width: min-content;
     display: flex;
@@ -54,6 +54,11 @@
     background-color: var(--bg);
     border-radius: 16px;
     box-shadow: var(--shadow);
+}
+
+.purchase-info .purchase-price img {
+    height: 1.2em;
+    margin-left: 4px;
 }
 
 .fields-container.purchase-secondary-info {

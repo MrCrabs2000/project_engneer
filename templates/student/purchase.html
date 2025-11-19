@@ -33,11 +33,6 @@
                     </div>
                     
                     <div>
-                        <label>Ученик</label>
-                        <input class="purchase-user" value="{{ user.usersurname }} {{ user.username }} {{ user.userotchestvo }} {{ user.userclass }}" readonly>
-                    </div>
-                    
-                    <div>
                         <label>Статус</label>
                         {% if purchase.status == "Ждёт вас" %}
 
@@ -58,18 +53,7 @@
                     <span class="purchase-price">{{ item.price * purchase.count }} <img src="/static/images/coin.png"></span>
                 </div>
                 
-                {% if purchase.status == "Принята" %}
-
-                <form id="can-be-recieved-form" method="post" style="display: none;" action="/items_users/{{ purchase.id }}/can_be_recieved"></form>
-                <button class="accent can-be-recieved" form="can-be-recieved-form">Можно забрать</button>     
-
-                {% elif purchase.status == "Ждёт вас" %}
-
-                <form id="recieved-form" method="post" style="display: none;" action="/items_users/{{ purchase.id }}/recieved"></form>
-                <button class="accent can-be-recieved" form="recieved-form">Получена</button>    
-                    
-                {% endif %}
-                
+                <button class="accent can-be-recieved" onclick="window.location.pathname = '/shop/{{ item.id }}'">Купить ещё раз</button>     
                 
             </div>
 

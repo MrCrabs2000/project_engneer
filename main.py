@@ -189,6 +189,21 @@ def purchases():
         
     elif not current_user.is_authenticated:
         return redirect('/login')
+    
+
+@app.route('/purchases/<item_id>')
+def purchase(item_id):
+    if current_user.is_authenticated and current_user.role == 'Student':
+        session_db = db_session.create_session()
+        item = session_db.query(Item_user).filter_by(id=item_id).first()
+        user = session_db.query(User).filter_by(id=item.userid).first()
+        item_shop = session_db.query(Item_shop).filter_by(id=item.itemshopid).first()
+        session_db.close()
+        return render_template('student/purchase.html', item=item_shop, user=user,
+                               purchase=item, current_user_role=current_user.role,
+                               userbalance=current_user.userbalance)
+    elif not current_user.is_authenticated:
+        return redirect('/login')
 
     
 # ADMIN ROUTES

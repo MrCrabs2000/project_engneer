@@ -21,14 +21,14 @@
               <div class="purchase-info">
                 <div class="purchase-top-info">
 
-                  {% if item.status == 'Принята' %}
+                  {% if item['item'].status == 'Принята' %}
                     <div class="status accepted">{{ item['item'].status }}</div>
 
-                  {% elif item.status == 'Ждёт вас' %}
+                  {% elif item['item'].status == 'Ждёт вас' %}
                     <div class="status can-be-received">Ожидает</div>
 
-                  {% elif item.status == 'Получена' %}
-                    <div class="status received">{{ item.status }}</div>
+                  {% elif item['item'].status == 'Получена' %}
+                    <div class="status received">{{ item['item'].status }}</div>
 
                   {% endif %}
 
@@ -40,7 +40,7 @@
 
                 <div class="secondary-info">
                   <div>{{ item['item'].count }} ед.</div>
-                  <div></div>
+                  <div>{{ item['user'].usersurname }} {{ item['user'].username[0] }}. {{ item['user'].userotchestvo[0] }}.</div>
                 </div>
 
               </div>
