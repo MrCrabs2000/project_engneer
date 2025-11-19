@@ -639,7 +639,7 @@ def edit_item(item_id):
         return redirect('/login')
 
 
-@app.route('items_users/<item_id>/recieved')
+@app.route('/items_users/<item_id>/recieved', methods=['GET', 'POST'])
 def recieved_items(item_id):
     if current_user.is_authenticated and current_user.role == 'Admin':
         session_db = db_session.create_session()
