@@ -489,13 +489,15 @@ def items_users():
         session_db = db_session.create_session()
         users_items = session_db.query(Item_user).all()
         users = []
+        items_shop = []
         for elem in users_items:
             users.append(session_db.query(User).filter_by(id=elem.userid).first())
+            items_shop.append(session_db.query(Item_shop).filter_by(id=elem.itemshopid).first())
         session_db.close()
 
         items = []
         for i in range(len(users)):
-            items.append({'item': users_items[i], 'user': users[i]})
+            items.append({'item': users_items[i], 'user': users[i], 'shop_item': items_shop[i]})
 
         context = {'items': items,
                    'current_user_role': current_user.role,
@@ -636,6 +638,18 @@ def edit_item(item_id):
     elif not current_user.is_authenticated:
         return redirect('/login')
 
+
+@app.route('items_users/<item_id>/recieved')
+def recieved_items(item_id):
+    if current_user.is_authenticated and current_user.role == 'Admin':
+        session_db = db_session.create_session()
+        item = session_db.query(Item_user).filter_by(id=item_id).first()
+        item.status = 'Получен'
+        session_db.commit()
+        session_db.close()
+        return redirect('/')
+    elif not current_user.is_authenticated:
+        return redirect('/login')
 
 # TEACHER ROUTES
 @app.route('/classes')
