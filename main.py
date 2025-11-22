@@ -78,6 +78,11 @@ def shop():
     session_db = db_session.create_session()
     items = session_db.query(Item_shop).all()
 
+    for i in range(len(items)):
+        if int(items[i].count) == 0:
+            del items[i]
+            i -= 1
+
     context = {'current_user_role': current_user.role, 
                'items': items, 
                'userbalance': current_user.userbalance}
@@ -169,6 +174,7 @@ def purchases():
             return render_template('student/purchases.html', items_list=items_list,
                                    current_user_role=current_user.role)
         else:
+            session = db_session.create_session()
             users = session.query(User).all()
             all_users = []
             for user in users:
@@ -469,6 +475,8 @@ def items():
             items = query.all()
             items_archived = [x for x in items if x.is_archived]
 
+        items -= items_archived
+
         session_db.close()
 
         context = {'items': items,
@@ -578,7 +586,11 @@ def delete_item(item_id):
         item = session_db.query(Item_shop).filter_by(id=item_id).first()
         
         if item:
-            item.is_archived = True
+            list_items = session_db.query(Item_user).filter_by(userid=item_id).all()
+            if list_items:
+                item.is_archived = True
+            else:
+                session_db.delete(item)
             session_db.commit()
 
         session_db.close()
