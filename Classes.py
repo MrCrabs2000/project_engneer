@@ -1,7 +1,7 @@
-from sqlalchemy import Column, Integer, String, Boolean
+from sqlalchemy import Column, Integer, String, Boolean, ForeignKey
+from sqlalchemy.orm import relationship
 from db_session import SqlAlchemyBase
 from flask_login import UserMixin
-
 
 
 class User(SqlAlchemyBase, UserMixin):
@@ -18,6 +18,9 @@ class User(SqlAlchemyBase, UserMixin):
     role = Column(String(10), nullable=False, default='user')
     adedusers = Column(String(10), nullable=True, default='False')
 
+    user_items = relationship("Item_user", back_populates="user")
+
+
 class Item_shop(SqlAlchemyBase):
     __tablename__ = 'items_shop'
 
@@ -29,13 +32,18 @@ class Item_shop(SqlAlchemyBase):
     photo = Column(String(1000), nullable=False)
     is_archived = Column(Boolean, nullable=False, default=False)
 
+    user_items = relationship("Item_user", back_populates="shop_item")
+
 
 class Item_user(SqlAlchemyBase):
     __tablename__ = 'items_users'
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    userid = Column(Integer, nullable=False)
-    itemshopid = Column(Integer, nullable=False)
+    userid = Column(Integer, ForeignKey('users.id'), nullable=False)
+    itemshopid = Column(Integer, ForeignKey('items_shop.id'), nullable=False)
     status = Column(String(20), nullable=False)
     count = Column(Integer, default=0)
     date = Column(String(40), nullable=True)
+
+    user = relationship("User", back_populates="user_items")
+    shop_item = relationship("Item_shop", back_populates="user_items")
