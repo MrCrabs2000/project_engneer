@@ -716,7 +716,7 @@ def show_class(class_name):
 
 @app.route('/classes/<class_name>/<user_id>', methods=['GET', 'POST'])
 def student_page(class_name, user_id):
-    if current_user.is_authenticated and current_user.role == 'Teacher':
+    if current_user.is_authenticated and (current_user.role == 'Teacher' or current_user.role == 'Admin'):
         if user_id:
             session_db = db_session.create_session()
             student = session_db.query(User).filter_by(id=user_id).first()
