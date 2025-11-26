@@ -325,6 +325,7 @@ def edit_user(user_id):
             new_userclass = request.form['class']
             new_role = request.form['role']
             new_userbalance = request.form['balance']
+            new_userpassword = request.form['password']
 
             if new_usersurname:
                 user.usersurname = new_usersurname
@@ -338,6 +339,8 @@ def edit_user(user_id):
                 user.userbalance = new_userbalance
             if new_role:
                 user.role = new_role
+            if new_userpassword:
+                user.userpassword = generate_password_hash(new_userpassword)
 
             user.userlogin = (translit(new_username[:3], 'ru', True)
                               + translit(new_usersurname[:3], 'ru', True)
@@ -475,7 +478,7 @@ def items():
             items = query.all()
             items_archived = [x for x in items if x.is_archived]
 
-        items -= items_archived
+        items = [elem for elem in items if elem not in items_archived]
 
         session_db.close()
 
