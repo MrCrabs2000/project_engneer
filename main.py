@@ -172,7 +172,7 @@ def purchases():
                 }
                 items_list.append(item_data)
             return render_template('student/purchases.html', items_list=items_list,
-                                   current_user_role=current_user.role)
+                                   current_user_role=current_user.role, userbalance=current_user.userbalance)
         else:
             session = db_session.create_session()
             users = session.query(User).all()
@@ -659,7 +659,7 @@ def recieved_items(item_id):
     if current_user.is_authenticated and current_user.role == 'Admin':
         session_db = db_session.create_session()
         item = session_db.query(Item_user).filter_by(id=item_id).first()
-        item.status = 'Получен'
+        item.status = 'Получена'
         session_db.commit()
         session_db.close()
         return redirect('/')
