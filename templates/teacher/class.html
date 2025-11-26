@@ -48,7 +48,7 @@
   <script>
     const select = document.getElementById("class-select");
     const options = document.querySelectorAll('#class-select > option');
-    const currentClass = window.location.pathname.split('/')[2];
+    const currentClass = decodeURIComponent(window.location.pathname).split('/')[2];
 
 
     document.addEventListener("DOMContentLoaded", function() {
