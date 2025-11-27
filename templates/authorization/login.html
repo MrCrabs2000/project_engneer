@@ -15,12 +15,12 @@
 
         <div>
           <label for="login">Логин</label>
-          <input id="login" name="login" placeholder="Логин">
+          <input id="login" name="login" placeholder="Логин" required>
         </div>
 
         <div>
           <label for="password">Пароль</label>
-          <input id="password" name="password" type="password" placeholder="Пароль">
+          <input id="password" name="password" type="password" placeholder="Пароль" required>
         </div>
         {% if error %}
         <p class="error">{{ error }}</p>
