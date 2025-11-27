@@ -582,7 +582,7 @@ def can_be_recieved(purchase_id):
         return redirect('/login')
 
 
-@app.route('/items/<item_id>/delete', methods=['POST'])
+@app.route('/items/<item_id>/delete', methods=['GET', 'POST'])
 def delete_item(item_id):
     if current_user.is_authenticated and current_user.role == 'Admin':
         session_db = db_session.create_session()
@@ -598,7 +598,7 @@ def delete_item(item_id):
 
         session_db.close()
 
-        return render_template('admin/items/items_search')
+        return redirect('/items')
 
     elif not current_user.is_authenticated:
         return redirect('/login')
@@ -826,7 +826,8 @@ def profile():
                    'userotchestvo': current_user.userotchestvo,
                    'userclass': current_user.userclass, 
                    'current_user_role': current_user.role,
-                   'login': current_user.userlogin}
+                   'login': current_user.userlogin,
+                   'userbalance': current_user.userbalance}
 
         return render_template('common/profile/profile.html', **context)
     
