@@ -35,9 +35,17 @@
 .found-element-info {
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
     gap: 8px;
     color: var(--text-color);
     font-size: 26px;
+}
+
+.found-element-info .main-info {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
 }
 
 .secondary-info {
