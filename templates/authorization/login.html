@@ -22,8 +22,12 @@
           <label for="password">Пароль</label>
           <input id="password" name="password" type="password" placeholder="Пароль">
         </div>
+        {% if error %}
+        <p class="error">{{ error }}</p>
+        {% endif %}
 
       </div>
+
 
       <div class="btns-container">
         <button class="accent" type="submit">Продолжить</button>
