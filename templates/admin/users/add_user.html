@@ -27,15 +27,15 @@
         
         <div>
           <label for="name">Имя</label>
-          <input id="name" name="name" placeholder="Имя">
+          <input id="name" name="name" placeholder="Имя" required>
         </div>
         <div>
           <label for="surname">Фамилия</label>
-          <input id="surname" name="surname" placeholder="Фамилия">
+          <input id="surname" name="surname" placeholder="Фамилия" required>
         </div>
         <div>
           <label for="otchestvo">Отчество</label>
-          <input id="otchestvo" name="otchestvo" placeholder="Отчество">
+          <input id="otchestvo" name="otchestvo" placeholder="Отчество" required>
         </div>
         <div>
           <label for="role">Роль</label>
@@ -50,22 +50,22 @@
 
         <div>
           <label for="class">Класс</label>
-          <input id="class" name="class" placeholder="Класс">
+          <input id="class" name="class" placeholder="Класс" required>
         </div>
 
         <div>
           <label for="balance">Баланс</label>
-          <input id="balance" name="balance" oninput="this.value = this.value.replace(/[^0-9+]/g, '')" placeholder="Баланс">
+          <input id="balance" name="balance" type="number" min="0" placeholder="Баланс" required>
         </div>
 
         <div>
           <label for="password">Пароль</label>
-          <input id="password" type="password" name="password" placeholder="Пароль">
+          <input id="password" type="password" name="password" placeholder="Пароль" required>
         </div>
 
         <div>
           <label for="repeat_password">Повторите пароль</label>
-          <input id="repeat_password" type="password" name="secondpassword" placeholder="Повторите пароль">
+          <input id="repeat_password" type="password" name="secondpassword" placeholder="Повторите пароль" required>
         </div>
 
       </div>

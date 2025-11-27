@@ -12,6 +12,12 @@
     color: var(--text-muted);
 }
 
+.purchase-info .name {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 #no-purchases {
     max-width: 1400px;
     margin: 80px auto;

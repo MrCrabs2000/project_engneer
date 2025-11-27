@@ -1,7 +1,7 @@
 {% extends "common/base.html" %}
 
 
-{% block title %}Поиск предметов{% endblock %}
+{% block title %}Покупки пользователей{% endblock %}
 
 
 {% block links %}
@@ -16,7 +16,7 @@
     <div class="found-elements-grid">
       {% for item in items %}
         <div class="found-element-card">
-          <a href="items_users/{{ item['item'].itemshopid }}">
+          <a href="items_users/{{ item['item'].id }}">
             <div class="found-element-info">
               <div class="purchase-info">
                 <div class="purchase-top-info">
