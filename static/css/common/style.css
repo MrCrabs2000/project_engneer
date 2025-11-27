@@ -213,3 +213,9 @@ input[type="radio"]:checked + .custom-radio-btn:before {
     flex-grow: 1;
     padding: 40px 0;
 }
+
+.error {
+    color: var(--danger);
+    margin: 0;
+    font-size: 0.8em;
+}
