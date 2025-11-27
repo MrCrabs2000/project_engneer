@@ -799,11 +799,11 @@ def login():
 
         elif not all([login, password]):
             session_db.close()
-            return render_template('authorization/login.html')
+            return render_template('authorization/login.html', error='Все поля должны быть заполнены')
 
         else:
             session_db.close()
-            return render_template('authorization/login.html')
+            return render_template('authorization/login.html', error='Неверный логин или пароль')
 
 
 @app.route('/logout', methods=['GET'])
