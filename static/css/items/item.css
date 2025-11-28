@@ -1,6 +1,6 @@
 .item-grid {
     display: grid;
-    grid-template-columns: 300px 1fr;
+    grid-template-columns: 300px minmax(300px, 1fr);
     grid-template-rows: min-content 60px;
     gap: 12px;
     align-self: center;
@@ -22,12 +22,37 @@
 .item-info-container {
     grid-column: 2;
     grid-row: 1;
+    max-width: 100%;
 }
 
-.item-info-container .item-name {
-    grid-column: 2;
-    grid-row: 1;
+.item-info-container .item-top-info {
+    display: flex;
+    align-items: center;
+    gap: 24px;
     font-size: 36px;
+}
+
+.item-top-info > .item-name {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.item-top-info > .purchase-amount {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: fit-content;
+}
+
+.purchase-amount > input {
+    font-size: 24px;
+    color: var(--accent);
+}
+
+.purchase-amount > span {
+    font-size: 28px;
+    color: var(--text-muted);
 }
 
 .item-price-container {

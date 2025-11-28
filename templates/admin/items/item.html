@@ -15,14 +15,21 @@
     <img class="item-image" src="/static/images/items_images/{{ item.photo }}">
 
     <div class="item-info-container">
-      <div class="item-name">{{ item.name }}</div>
+      
+      <div class="item-top-info">
+        <span class="item-name">{{ item.name }}</span>
+        <div class="purchase-amount"><input type="number" min="1" max="{{ item.count }}" name="item_count" value="1" form="purchase-form"><span>.шт</span></div>
+      </div>
+        
+      <form>
+      </form>
       <div class="item-discription">{{ item.description }}</div>
     
     </div>
 
     <div class="item-price-container">
       <div class="item-price">{{ item.price }} <img src="/static/images/coin.png"></div>
-      <form method="POST"><input style="display: none" name="item_count" value="1"> <button class="accent buy-button" type="submit">Купить</button></form>
+      <form method="POST" id="purchase-form"><button class="accent buy-button" type="submit">Купить</button></form>
     </div>
 
   </div>

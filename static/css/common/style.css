@@ -15,8 +15,6 @@
     --shadow-big: 0px 4px 12px 0px hsla(0, 0%, 0%, 0.2);
     --shadow: 0px 2px 8px 0px hsla(0, 0%, 0%, 0.1);
     --shadow-soft: 0px 2px 16px 0px hsla(0, 0%, 0%, 0.1);
-    /* --shadow-dark: 0px 2px 4px 0px hsla(0, 0%, 0%, 0.4);
-    --shadow-light: 0px 2px 2px 0px hsla(0, 0%, 0%, 0.2); */
 }
 
 html, body {
@@ -200,8 +198,6 @@ input[type="radio"]:checked + .custom-radio-btn:before {
     background: var(--primary);
     border-radius: 6px;
     position: absolute;
-    
-
 }
 
 .centering-container {
