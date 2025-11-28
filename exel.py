@@ -54,7 +54,10 @@ def import_users():
             otchestvo = translit(otchestvo1, 'ru', True)
             user_class = translit(user_class1, 'ru', True)
 
-            name2 = name[:3] + surname[:3] + otchestvo[:3] + user_class
+            if role == 'Student':
+                name2 = name[:3] + surname[:3] + otchestvo[:3] + user_class
+            else:
+                name2 = name[:3] + surname[:3] + otchestvo[:3]
 
             existing_user = session.query(User).filter(User.username == name2).first()
 
@@ -73,10 +76,15 @@ def import_users():
                 'last_name': surname1,
                 'first_name': name1,
                 'patronymic': otchestvo1,
-                'class': user_class1,
                 'username': name2,
                 'password': password
             }
+            if role == 'Student':
+                pupil['class'] = user_class1
+            else:
+                pupil['class'] = '-'
+
+
             students_data.append(pupil)
             user = User(
                 username=name1,

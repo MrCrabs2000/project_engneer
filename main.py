@@ -589,7 +589,7 @@ def delete_item(item_id):
         item = session_db.query(Item_shop).filter_by(id=item_id).first()
         
         if item:
-            list_items = session_db.query(Item_user).filter_by(userid=item_id).all()
+            list_items = session_db.query(Item_user).filter_by(itemshopid=item_id).all()
             if list_items:
                 item.is_archived = True
             else:
