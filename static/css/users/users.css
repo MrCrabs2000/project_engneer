@@ -12,6 +12,13 @@
     border: 1px solid var(--border);
 }
 
+.class {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 80px;
+}
+
 .user-balance {
     display: flex;
     justify-content: center;
