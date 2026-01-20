@@ -70,7 +70,7 @@ def index():
             return redirect('/users')
 
     elif not current_user.is_authenticated:
-        return redirect('/login')
+        return shop()
 
 
 #STUDENT ROUTES
@@ -82,10 +82,13 @@ def shop():
         if int(items[i].count) == 0:
             del items[i]
             i -= 1
-
-    context = {'current_user_role': current_user.role, 
-               'items': items, 
-               'userbalance': current_user.userbalance}
+    if current_user.is_authenticated:
+        context = {'current_user_role': current_user.role, 
+                'items': items, 
+                'userbalance': current_user.userbalance}
+    else:
+        context = {'items': items,
+                   'is_not_authenticated': True}
 
     session_db.close()
 
@@ -768,7 +771,7 @@ def student_page(class_name, user_id):
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'GET':
-        return render_template('authorization/login.html')
+        return render_template('authorization/login.html', is_not_authenticated=True)
 
     elif request.method == 'POST':
         session_db = db_session.create_session()
