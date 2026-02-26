@@ -12,12 +12,14 @@ import copy
 
 app = Flask(__name__)
 app.secret_key = '25112008'
-app.config['FOLDER'] = 'static/images/items_images'
+app.config['FOLDER'] = 'tmp/images/items_images'
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
-os.makedirs('db', exist_ok=True)
-os.makedirs('static/images/items_images', exist_ok=True)
+os.makedirs('tmp', exist_ok=True)
+os.makedirs('tmp/pdf', exist_ok=True)
+os.makedirs('tmp/exel', exist_ok=True)
+os.makedirs('tmp/images/items_images', exist_ok=True)
 db_session.global_init(True, 'db/users.db')
 
 
