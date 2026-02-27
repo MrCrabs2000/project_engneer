@@ -153,7 +153,7 @@ def create_simple_pdf(filename, students_data):
 
 
 def main(students_data):
-    pdf_filename = "users.pdf"
+    pdf_filename = "tmp/pdf/users.pdf"
     try:
         create_full_page_table_pdf(pdf_filename, students_data)
     except Exception:
