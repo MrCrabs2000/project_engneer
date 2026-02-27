@@ -24,7 +24,7 @@ def generate_password_for_user():
 
 
 def import_users():
-    db_path = os.path.join('db', 'users.db')
+    db_path = os.path.join('tmp/db', 'users.db')
     global_init(True, db_path)
 
     workbook = load_workbook('exel/users.xlsx')
@@ -106,4 +106,5 @@ def import_users():
         session.rollback()
 
     finally:
+
         session.close()
